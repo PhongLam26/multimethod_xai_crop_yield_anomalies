@@ -1,0 +1,5 @@
+model,target,protocol,scope,n_test,r2,rmse_t_ha,mae_t_ha
+ExtraTrees yield,yield_t_ha,forward_time_train_1990_2015_test_2016_2021,all_rows,209,0.807,0.527,0.421
+ExtraTrees yield,yield_t_ha,forward_time_train_1990_2018_test_2019_2025,all_rows,236,0.813,0.529,0.419
+ExtraTrees residual,trend_residual_t_ha,forward_time_train_1990_2015_test_2016_2025,all_rows,343,0.091,0.431,0.326
+ExtraTrees residual,trend_residual_t_ha,forward_time_train_1990_2015_test_2016_2025,anomaly_rows,67,-4.396,0.660,0.582

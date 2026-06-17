@@ -1,0 +1,6 @@
+driver_group,features
+drought,"rain_sum, rain_mean, dry_days_1mm, dry_days_2mm, max_dry_spell_1mm, dry_spell_events_7d, dry_spell_events_14d, hot_dry_days_30_1mm"
+excess_rain,"heavy_rain_days_10, heavy_rain_days_20, heavy_rain_days_25, heavy_rain_days_50, max_1day_rain, max_3day_rain, max_7day_rain, wet_days_1mm"
+frost_cold,"season_tmin_mean, frost_days_0, cold_days_5, min_tmin, frost_events_2d"
+heat,"season_tmax_mean, season_tmean_mean, growing_degree_days_base5, heat_days_30, heat_days_35, heat_days_40, max_consecutive_heat_days_30, max_consecutive_heat_days_35, heatwave_events_3d_30, heatwave_events_3d_35, heat_degree_days_30, heat_degree_days_35"
+radiation,"radiation_sum, radiation_mean"

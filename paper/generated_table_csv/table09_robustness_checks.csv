@@ -1,0 +1,5 @@
+check,setting,result,interpretation
+Threshold,z below -1.0,214 anomalies,Default broad anomaly set
+Threshold,z below -1.5,85 anomalies,Stricter low-yield subset
+Threshold,z below -2.0,30 anomalies,Most severe low-yield subset
+Detrending,centered 7-year rolling,192 anomalies; Jaccard 0.618,Moderate overlap with linear detrending

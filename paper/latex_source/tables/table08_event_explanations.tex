@@ -1,0 +1,19 @@
+\begin{table}[!htbp]
+\centering
+\caption{Six selected event-level method-sensitivity checks using grouped SHAP and LIME.}
+\label{tab:event_explanations}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{@{}lllllll@{}}
+\toprule
+crop & state & year & trend\_residual\_z & grouped\_shap\_driver & lime\_driver & drivers\_agree \\
+\midrule
+Canola & North Dakota & 2012 & -1.49 & heat & heat & yes \\
+Oats & Kansas & 2012 & -2.33 & heat & drought & no \\
+Barley & South Dakota & 2021 & -2.98 & heat & heat & yes \\
+Wheat & Washington & 2021 & -2.92 & heat & heat & yes \\
+Oats & Oklahoma & 2022 & -3.44 & drought & heat & no \\
+Wheat & Nebraska & 2022 & -2.64 & drought & drought & yes \\
+\bottomrule
+\end{tabular}
+}
+\end{table}

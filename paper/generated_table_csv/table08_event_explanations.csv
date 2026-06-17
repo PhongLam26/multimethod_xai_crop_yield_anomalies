@@ -1,0 +1,7 @@
+crop,state,year,trend_residual_z,grouped_shap_driver,lime_driver,drivers_agree
+Canola,North Dakota,2012,-1.49,heat,heat,yes
+Oats,Kansas,2012,-2.33,heat,drought,no
+Barley,South Dakota,2021,-2.98,heat,heat,yes
+Wheat,Washington,2021,-2.92,heat,heat,yes
+Oats,Oklahoma,2022,-3.44,drought,heat,no
+Wheat,Nebraska,2022,-2.64,drought,drought,yes

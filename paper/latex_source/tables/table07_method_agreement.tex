@@ -1,0 +1,18 @@
+\begin{table}[!htbp]
+\centering
+\caption{Scale-free rank-one support summary across heterogeneous explanation methods.}
+\label{tab:method_agreement}
+\begingroup
+\small
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.08\linewidth}>{\centering\arraybackslash}p{0.08\linewidth}>{\raggedright\arraybackslash}p{0.13\linewidth}>{\raggedright\arraybackslash}p{0.09\linewidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+scope & n methods & consensus driver & rank-1 votes & supporting methods & interpretation \\
+\midrule
+global & 3 & heat & 2/3 & group ablation, group permutation & Heat has majority support across global model-reliance diagnostics. \\
+anomaly & 4 & drought; heat & 2/4 each & drought: group permutation, grouped SHAP; heat: group ablation, LIME selected cases & Heat and drought are co-leading anomaly-focused signals under rank-one support. \\
+\bottomrule
+\end{tabularx}
+\endgroup
+\end{table}

@@ -1,0 +1,17 @@
+\begin{table}[!htbp]
+\centering
+\caption{Forward-time yield and residual model performance.}
+\label{tab:model_performance}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{@{}llllllll@{}}
+\toprule
+model & target & protocol & scope & n\_test & r2 & rmse\_t\_ha & mae\_t\_ha \\
+\midrule
+ExtraTrees yield & yield\_t\_ha & forward\_time\_train\_1990\_2015\_test\_2016\_2021 & all\_rows & 209 & 0.807 & 0.527 & 0.421 \\
+ExtraTrees yield & yield\_t\_ha & forward\_time\_train\_1990\_2018\_test\_2019\_2025 & all\_rows & 236 & 0.813 & 0.529 & 0.419 \\
+ExtraTrees residual & trend\_residual\_t\_ha & forward\_time\_train\_1990\_2015\_test\_2016\_2025 & all\_rows & 343 & 0.091 & 0.431 & 0.326 \\
+ExtraTrees residual & trend\_residual\_t\_ha & forward\_time\_train\_1990\_2015\_test\_2016\_2025 & anomaly\_rows & 67 & -4.396 & 0.660 & 0.582 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}

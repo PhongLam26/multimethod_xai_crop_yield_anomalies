@@ -1,0 +1,23 @@
+\begin{table}[H]
+\centering
+\caption{Global and anomaly-focused driver-group rankings across explanation methods.}
+\label{tab:driver_rankings}
+\begingroup
+\footnotesize
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{1.02}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.08\linewidth}>{\raggedright\arraybackslash}p{0.12\linewidth}>{\centering\arraybackslash}p{0.04\linewidth}>{\raggedright\arraybackslash}p{0.13\linewidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+scope & method & n & level & rank 1 & rank 2 & rank 3 \\
+\midrule
+global & ablation & 343 & eval rows & heat (0.0078) & excess rain (0.0025) & drought (0.0017) \\
+global & permutation & 343 & eval rows & heat (0.0214) & drought (0.0199) & excess rain (0.0052) \\
+global & grouped SHAP & 343 & eval rows & drought (0.0480) & heat (0.0411) & excess rain (0.0306) \\
+anomaly & ablation & 67 & eval anomalies & heat (0.0287) & radiation (0.0044) & excess rain (0.0000) \\
+anomaly & permutation & 67 & eval anomalies & drought (0.0243) & excess rain (0.0113) & radiation (0.0071) \\
+anomaly & grouped SHAP & 67 & eval anomalies & drought (0.0614) & heat (0.0566) & excess rain (0.0353) \\
+anomaly & LIME cases & 11 & LIME cases & heat (0.0238) & drought (0.0224) & frost cold (0.0196) \\
+\bottomrule
+\end{tabularx}
+\endgroup
+\end{table}
