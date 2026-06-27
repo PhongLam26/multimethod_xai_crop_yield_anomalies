@@ -1,0 +1,557 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage[hidelinks]{hyperref}
+
+\graphicspath{{figures/}}
+\setlength{\textfloatsep}{7pt plus 2pt minus 2pt}
+\setlength{\floatsep}{7pt plus 2pt minus 2pt}
+\setlength{\intextsep}{7pt plus 2pt minus 2pt}
+\renewcommand{\arraystretch}{0.98}
+
+\title{Explaining Crop-Yield Anomalies with Multi-Method Interpretable Machine Learning}
+
+\author{\IEEEauthorblockN{Anonymous Submission}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Yield prediction alone does not explain why particular crop--state--year outcomes
+fall below their long-run expectation. This study combines detrended low-yield
+anomaly screening with a multi-method interpretable machine-learning protocol to
+identify which extreme-weather driver groups are consistently emphasized by a
+fitted residual model. We use a U.S. crop--state--year panel for Barley, Canola,
+Oats, and Wheat from 1990--2025, with USDA yield records and NASA POWER weather
+features. Linear detrending within crop--state series flags 214 of 1,257
+observations as low-yield anomalies using $z<-1.0$. ExtraTrees yield models retain
+strong forward-time skill, while the residual model is treated as a diagnostic
+surface rather than a high-skill anomaly-magnitude forecaster. We compare SHAP,
+grouped SHAP, group permutation, group ablation, ALE curves, and selected LIME
+case studies. Heat is the strongest global model-reliance signal, while
+anomaly-focused explanations show co-leading heat and drought signals across
+methods. The contribution is a robust grouped-XAI diagnostic protocol for cautious
+model-based interpretation rather than causal event attribution.
+\end{abstract}
+
+\begin{IEEEkeywords}
+crop yield, yield anomaly, explainable machine learning, SHAP, permutation
+importance, drought, heat stress
+\end{IEEEkeywords}
+
+\section{Introduction}
+Crop-yield machine learning is often evaluated by average predictive accuracy, but
+decision-makers also need to understand low-yield anomaly years. A model that
+predicts yield levels well can still leave open a diagnostic question: which
+physical weather drivers does the fitted model associate with below-trend crop
+outcomes? This distinction matters because prediction and explanation can diverge,
+especially when weather variables are correlated and yield anomalies are rare.
+
+This paper reframes the task as multi-method model explanation. We first detrend
+yield within crop--state series and flag unusually low residual years. We then train
+a weather-yield residual model and compare explanation methods that operate at
+feature, driver-group, response-curve, and selected event levels. The central
+question is: which extreme-weather driver groups are consistently emphasized by the
+fitted residual model, and are those conclusions stable across several
+interpretable machine-learning methods?
+
+The study makes three contributions. First, it combines crop--state yield
+detrending with low-yield anomaly screening to separate long-run production trends
+from short-run weather-sensitive deviations. Second, it implements a shared
+driver-group XAI protocol that compares feature-level SHAP, grouped SHAP, group
+permutation, group ablation, ALE response curves, and selected LIME explanations.
+Third, it evaluates method agreement at global and anomaly-focused levels, allowing
+driver claims to be stated more cautiously when several methods identify the same
+weather-driver group.
+
+The analysis avoids causal overclaiming. Terms such as ``driver'', ``attribution'',
+and ``explanation'' are used in a model-based diagnostic sense. Agreement across
+methods means that the fitted model repeatedly identifies the same driver group; it
+does not prove a real-world causal mechanism or formal climate-event attribution.
+This framing is useful for decision support because it distinguishes between
+forecasting yield levels and diagnosing the fitted model's behavior on below-trend
+events.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.9\textwidth]{fig01_method_workflow.png}
+  \caption{Workflow for detecting detrended low-yield anomalies, fitting residual
+  models, applying multiple explanation methods, and comparing driver-group support.}
+  \label{fig:workflow}
+\end{figure*}
+
+\section{Related Work}
+Machine-learning yield studies show that weather and climate variables can support
+crop prediction across regions and crops
+\cite{Paudel2021,Meroni2021,Khaki2019,LengHall2020}. A related literature links
+yield anomalies to weather extremes, including drought, heat, excess water, and cold
+stress \cite{Lesk2016,Zampieri2017,Vogel2019,Heino2023,Schierhorn2021,Sjulgard2023}.
+Because technological and management trends can dominate raw yield trajectories,
+detrending is a standard step before interpreting weather-related yield variability
+\cite{Ray2015,Lu2017,Meng2024}.
+
+Explainable machine learning offers complementary tools for interpreting fitted
+models. SHAP provides additive feature contributions \cite{LundbergLee2017}; LIME
+offers selected local surrogate explanations \cite{Ribeiro2016}; model-reliance and
+permutation ideas support grouped dependence checks \cite{Fisher2019}; and ALE
+curves summarize response shape while reducing unrealistic feature combinations that
+can affect simple partial-dependence displays \cite{ApleyZhu2020}. Rather than
+treating any single method as decisive, this study compares whether several methods
+point to the same physically meaningful driver groups.
+
+\section{Data}
+The unit of analysis is a crop--state--year. The processed frame contains 1,257
+observations from 1990--2025 for Barley, Canola, Oats, and Wheat across 12 U.S.
+states: Colorado, Illinois, Iowa, Kansas, Minnesota, Montana, Nebraska, North
+Dakota, Oklahoma, South Dakota, Texas, and Washington. Yield is measured in t
+ha$^{-1}$ from USDA NASS \cite{USDANASSQuickStats}. Weather features are derived
+from NASA POWER daily data \cite{NASAPOWER2025} and summarized over growing-season
+windows labelled spring or winter.
+
+Each row contains crop identity, state identity, year, growing-season window, yield,
+representative state latitude and longitude, and aggregated weather indicators. The
+weather extraction uses representative state coordinates rather than gridded or
+crop-area-weighted weather. Therefore, explanations should be interpreted at a
+state-representative scale; within-state heterogeneity in soils, irrigation,
+cultivar, and management is not resolved. The panel is moderately unbalanced:
+Canola has fewer observations and fewer states than Oats or Wheat, so crop-specific
+patterns should not be generalized equally across crops.
+
+The XAI analysis uses 35 full-season weather features grouped into heat, drought,
+frost/cold, excess rain, and radiation. Numerical predictors are median-imputed and
+standardized inside the model pipeline; crop and state identifiers are imputed by
+most frequent category and one-hot encoded. The same preprocessing pipeline is used
+for yield and residual models. The feature set includes rainfall totals, wet days,
+dry spells, heat days, heatwave summaries, frost days, and radiation summaries.
+
+\begin{table}[t]
+\centering
+\caption{Dataset summary by crop.}
+\label{tab:dataset_summary}
+\scriptsize
+\begin{tabular}{@{}lrrrrl@{}}
+\toprule
+Crop & Obs. & States & Years & Anom. & Window \\
+\midrule
+Barley & 283 & 10 & 1990--2025 & 52 & spring \\
+Canola & 133 & 6 & 1991--2025 & 21 & spring \\
+Oats & 416 & 12 & 1990--2025 & 71 & spring \\
+Wheat & 425 & 12 & 1990--2025 & 70 & spring/winter \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Extreme-weather driver groups used in the grouped-XAI analysis.}
+\label{tab:driver_groups}
+\scriptsize
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}Xr@{}}
+\toprule
+Group & Description & Features \\
+\midrule
+Heat & High temperature, heatwave, and growing-degree exposure & 12 \\
+Drought & Low rainfall, dry spells, and hot-dry compound stress & 8 \\
+Frost/cold & Cold nights, frost days, and low minimum-temperature stress & 5 \\
+Excess rain & Heavy rainfall, wetness, and short-duration rainfall maxima & 8 \\
+Radiation & Seasonal solar-radiation anomalies & 2 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Method}
+\subsection{Anomaly Screening}
+For each crop--state series, yield $y_{c,s,t}$ is linearly detrended against year:
+\begin{equation}
+  y_{c,s,t} = \alpha_{c,s} + \beta_{c,s}t + e_{c,s,t}.
+\end{equation}
+The residual is standardized within the crop--state series,
+\begin{equation}
+  z_{c,s,t} = \frac{e_{c,s,t}}{\operatorname{sd}(e_{c,s,\cdot})},
+\end{equation}
+using sample standard deviation. An observation is flagged as a low-yield anomaly
+when $z<-1.0$. Robustness checks use stricter thresholds of $z<-1.5$ and $z<-2.0$,
+and compare the linear-trend anomaly set with a centered seven-year rolling-trend
+baseline.
+
+\begin{table}[t]
+\centering
+\caption{Compact anomaly-screening robustness checks.}
+\label{tab:robustness}
+\scriptsize
+\begin{tabularx}{\linewidth}{@{}ll>{\raggedright\arraybackslash}X@{}}
+\toprule
+Check & Setting & Result \\
+\midrule
+Threshold & $z<-1.0$ & 214 anomalies; default broad anomaly set \\
+Threshold & $z<-1.5$ & 85 anomalies; stricter low-yield subset \\
+Threshold & $z<-2.0$ & 30 anomalies; most severe subset \\
+Detrending & 7-year rolling & 192 anomalies; Jaccard overlap 0.618 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Yield and Residual Models}
+The yield baseline uses ExtraTrees with year, location, crop, state, and weather
+features \cite{Geurts2006,Pedregosa2011}. Its role is to check whether the data
+contain substantial predictive signal for yield levels. The residual model uses
+weather features, location, crop, and state to predict detrended yield residuals.
+Its role is narrower: it provides a controlled diagnostic surface for comparing
+explanation methods.
+
+All SHAP-based explanations are computed on the fitted residual ExtraTrees model,
+not the yield-level baseline. Main global summaries use the forward-time evaluation
+split, while anomaly-focused summaries use low-yield anomalies within that split
+unless explicitly marked as selected LIME cases. This separation prevents global
+feature importance from being interpreted as event-level anomaly explanation.
+
+\begin{table}[t]
+\centering
+\caption{Forward-time yield and residual model performance. RMSE is in t ha$^{-1}$.}
+\label{tab:model_performance}
+\scriptsize
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}Xrrrr@{}}
+\toprule
+Target & Protocol & Scope & $n$ & $R^2$ & RMSE \\
+\midrule
+Yield & train 1990--2015; test 2016--2021 & all & 209 & 0.807 & 0.527 \\
+Yield & train 1990--2018; test 2019--2025 & all & 236 & 0.813 & 0.529 \\
+Residual & train 1990--2015; test 2016--2025 & all & 343 & 0.091 & 0.431 \\
+Residual & train 1990--2015; test 2016--2025 & anom. & 67 & -4.396 & 0.660 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Global Explanation Methods}
+Let $F_g$ be the feature set for driver group $g$, and let $\phi_{i,j}$ be the SHAP
+value for observation $i$ and feature $j$. Grouped SHAP magnitude is
+\begin{equation}
+  G_{i,g}^{abs} = \sum_{j \in F_g} |\phi_{i,j}|.
+\end{equation}
+Global grouped SHAP is the mean of $G_{i,g}^{abs}$ across forward-time evaluation
+rows; anomaly-only grouped SHAP averages the same quantity over anomaly rows in the
+same evaluation split. Signed grouped SHAP,
+\begin{equation}
+  G_{i,g}^{signed} = \sum_{j \in F_g} \phi_{i,j},
+\end{equation}
+is retained for directional inspection, while the main rankings use absolute
+grouped SHAP magnitude.
+
+Group permutation jointly shuffles all features in $F_g$ across rows in the
+evaluation set while leaving all other features unchanged. Importance is the
+increase in residual RMSE relative to the unshuffled model:
+\begin{equation}
+  I_g^{perm} =
+  \operatorname{RMSE}(\hat{f}(X_{perm(g)}), y) - \operatorname{RMSE}(\hat{f}(X), y).
+\end{equation}
+Group ablation is a retraining-level diagnostic. For each driver group, all
+features in $F_g$ are removed, the residual model is retrained with the same split
+and hyperparameters, and importance is
+\begin{equation}
+  I_g^{abl} =
+  \operatorname{RMSE}(\hat{f}_{-g}(X_{-g}), y) - \operatorname{RMSE}(\hat{f}(X), y).
+\end{equation}
+Permutation measures prediction-time dependence of the fitted model; ablation
+measures whether the model can compensate after a group is removed and retrained.
+
+\subsection{Event-Level Explanations, ALE, and Agreement}
+Event-level evidence is restricted to two non-perturbation views. First, grouped
+SHAP is aggregated for each anomaly event and the largest grouped contribution is
+used as the event's top driver. Second, LIME is applied only to selected case-study
+events from 2012, 2021, and 2022; selected cases are the lowest-$z$ anomaly rows
+within those years. LIME is therefore a selected-case check rather than a
+full-dataset ranking method.
+
+ALE curves are used as response-shape diagnostics rather than causal dose-response
+estimates. They are preferred over simple PDP-style displays because many weather
+features are correlated. The curves help check whether the fitted residual model
+responds plausibly to selected heat, drought, and rainfall variables, but they do
+not identify independent causal effects.
+
+\begin{table}[t]
+\centering
+\caption{Explanation methods and their role in the diagnostic protocol.}
+\label{tab:xai_methods}
+\scriptsize
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Method & Main question & Use in this study \\
+\midrule
+SHAP & Which features contribute to a tree-model prediction? & Feature-level ranking and signed residual inspection. \\
+Grouped SHAP & Which physical driver group has the largest total contribution? & Global and anomaly-row driver ranking. \\
+Permutation & How much does error rise when a group is jointly shuffled? & Prediction-time dependence check. \\
+Ablation & What is lost when a group is removed and the model is retrained? & Retraining-level model-reliance check. \\
+ALE & How does model response change across exposure levels? & Response-shape plausibility check. \\
+LIME & How is a selected event explained locally? & Selected 2012, 2021, and 2022 case checks. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+For a scope $s$ and method $m$, let $T_m(s)$ be the rank-one driver group. The
+consensus vote count for driver group $g$ is
+\begin{equation}
+  V_g(s) = \sum_m \mathbf{1}\{T_m(s)=g\}.
+\end{equation}
+We use rank-one vote counts rather than averaging raw explanation scores because
+SHAP magnitudes, RMSE-increase diagnostics, and LIME scores are measured on
+different scales. The vote count is therefore a scale-free summary of whether
+methods select the same top driver group.
+
+\section{Results}
+\subsection{Anomalies and Model Skill}
+The default threshold identifies 214 low-yield anomalies, or 17.0\% of the processed
+panel. The threshold is intentionally inclusive: it is designed to collect a broad
+set of below-trend yield events for explanation rather than only the most extreme
+failures. Tightening the threshold produces smaller nested sets, while the rolling
+trend baseline shows moderate overlap with the linear-trend anomaly set
+(Table \ref{tab:robustness}). We therefore interpret the reported XAI results as
+conditional on the explicit linear detrending choice, while using the stricter
+thresholds and rolling-trend comparison as robustness checks rather than alternative
+main definitions.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{fig02_anomaly_timeline.png}
+  \caption{Detrended low-yield anomaly counts by year, with 2012, 2021, and 2022
+  highlighted as plausibility-check years rather than training labels.}
+  \label{fig:anomaly_timeline}
+\end{figure}
+
+Figure \ref{fig:anomaly_timeline} shows that the anomaly set is not evenly
+distributed over time. The highlighted years are retained as sanity-check years
+because broad heat and drought conditions were documented for 2012 and for parts of
+the Northern Plains and western U.S. in 2021--2022
+\cite{NOAA2012Drought,DroughtGov2021NorthernPlains,NOAA2022Drought}. Table
+\ref{tab:model_performance} shows why the residual model is interpreted cautiously:
+yield-level prediction is strong, but residual anomaly-magnitude prediction is weak,
+so the XAI results are diagnostic explanations of fitted-model behavior.
+
+\subsection{Feature and Driver Rankings}
+Figure \ref{fig:shap_summary} indicates that the residual model relies on a mixture
+of rainfall, dry-spell, heatwave, wetness, and cold-stress features rather than a
+single variable family. This motivates grouping features by physical driver process
+instead of interpreting isolated feature rankings alone.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{fig03_shap_summary.png}
+  \caption{Top weather features by mean absolute SHAP value in the residual model on
+  the forward-time evaluation split.}
+  \label{fig:shap_summary}
+\end{figure}
+
+Grouped SHAP shows a shift between forward-time evaluation rows and anomaly rows
+(Fig.~\ref{fig:grouped_shap}). On the forward-time anomaly subset, heat and drought
+are the two largest grouped contributions, with excess rain next. The difference
+between evaluation-row and anomaly-only summaries is important: anomaly explanation
+should not be reduced to global feature importance alone.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{fig04_grouped_shap.png}
+  \caption{Grouped SHAP summaries for forward-time evaluation rows and anomaly rows.}
+  \label{fig:grouped_shap}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\caption{Global and anomaly-focused driver-group rankings across explanation methods.}
+\label{tab:driver_rankings}
+\scriptsize
+\begin{tabular}{@{}llll@{}}
+\toprule
+Scope & Method & Rank 1 & Rank 2 \\
+\midrule
+Global & Ablation & heat (0.0078) & excess rain (0.0025) \\
+Global & Permutation & heat (0.0214) & drought (0.0199) \\
+Global & Grouped SHAP & drought (0.0480) & heat (0.0411) \\
+Anomaly & Ablation & heat (0.0287) & radiation (0.0044) \\
+Anomaly & Permutation & drought (0.0243) & excess rain (0.0113) \\
+Anomaly & Grouped SHAP & drought (0.0614) & heat (0.0566) \\
+Anomaly & LIME cases & heat (0.0238) & drought (0.0224) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table \ref{tab:driver_rankings} provides complementary global and anomaly-focused
+views. Grouped SHAP, permutation, and ablation are all reported on the forward-time
+evaluation split; LIME remains a selected-case check and is identified by its
+smaller evaluation scope. Because the score units differ across methods, the table
+should be read as a cross-method rank summary rather than an identical-scale
+statistical comparison. Globally, heat is the strongest group under retraining
+ablation and group permutation, while grouped SHAP ranks drought first. On anomaly
+rows, heat and drought become co-leading signals: heat ranks first under group
+ablation and selected LIME cases, while drought ranks first under grouped SHAP and
+group permutation.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{fig05_group_importance.png}
+  \caption{Global group permutation and group ablation importance measured by
+  residual RMSE increase.}
+  \label{fig:group_importance}
+\end{figure}
+
+Figure \ref{fig:group_importance} explains why method comparison is useful.
+Permutation measures how much the fitted model depends on a driver group at
+prediction time; ablation measures whether the model can compensate when the group
+is removed and retrained. Heat ranks highest under both global diagnostics,
+suggesting robust global reliance. Drought ranks strongly under permutation but
+less strongly under retraining ablation, suggesting that drought information partly
+overlaps with other rainfall and wetness features.
+
+\subsection{Response Curves and Agreement}
+ALE curves provide qualitative support for the driver rankings. Heat-related curves
+generally decline at higher exposure levels, consistent with adverse
+high-temperature behavior in the fitted residual model. Rainfall and dry-spell
+curves are more nonlinear, suggesting that the model does not treat water stress as
+a simple monotonic process.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.92\textwidth]{fig07_ale_curves.png}
+  \caption{ALE curves for selected heat, drought, and rainfall features.}
+  \label{fig:ale}
+\end{figure*}
+
+\begin{table}[t]
+\centering
+\caption{Scale-free rank-one support across heterogeneous explanation methods.}
+\label{tab:agreement}
+\scriptsize
+\begin{tabularx}{\linewidth}{@{}lcl>{\raggedright\arraybackslash}X@{}}
+\toprule
+Scope & Methods & Driver & Interpretation \\
+\midrule
+Global & 3 & heat, 2/3 & Majority support from group ablation and group permutation. \\
+Anomaly & 4 & heat, 2/4; drought, 2/4 & Co-leading anomaly-focused signals under rank-one support. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.84\textwidth]{fig08_method_agreement.png}
+  \caption{Driver-group rank positions across global and anomaly-focused XAI methods.}
+  \label{fig:agreement}
+\end{figure*}
+
+Table \ref{tab:agreement} summarizes rank-one support across heterogeneous
+explanation methods. It should be read as a scale-free consensus summary, not as a
+statistical test of driver importance. Figure \ref{fig:agreement} visualizes rank
+positions rather than method-by-method rate estimates: darker/high-rank cells
+indicate which driver groups are placed near the top by each method. Global
+diagnostics give majority rank-one support to heat, while anomaly-focused
+explanations split their rank-one support between heat and drought.
+
+\begin{table}[t]
+\centering
+\caption{Selected event-level method-sensitivity checks using grouped SHAP and LIME.}
+\label{tab:event_checks}
+\scriptsize
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Crop/state & Year & $z$ & SHAP & LIME \\
+\midrule
+Canola ND & 2012 & -1.49 & heat & heat \\
+Oats KS & 2012 & -2.33 & heat & drought \\
+Barley SD & 2021 & -2.98 & heat & heat \\
+Wheat WA & 2021 & -2.92 & heat & heat \\
+Oats OK & 2022 & -3.44 & drought & heat \\
+Wheat NE & 2022 & -2.64 & drought & drought \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table \ref{tab:event_checks} reports representative cases from the selected LIME
+case-study set and illustrates selected case-level method sensitivity. Its purpose
+is not to validate event-level correctness. Agreement between grouped SHAP and LIME
+in four of six selected cases provides stronger diagnostic support for those
+examples, while the two disagreements indicate that event-level driver assignments
+should be treated cautiously and not reported as robust single-driver claims.
+
+\section{Discussion}
+The multi-method comparison supports a more nuanced conclusion than a single ranking
+would provide. Heat is the strongest global model-reliance driver: both group
+permutation and retraining ablation place heat first in the forward-time evaluation
+setting. Anomaly-focused explanations are more method-sensitive. Drought ranks first
+in evaluation-scope grouped SHAP and anomaly-row permutation, while heat ranks first
+in anomaly-row ablation and selected LIME cases. Excess rain is a meaningful
+secondary signal because rainfall and wetness features appear in feature-level and
+grouped summaries.
+
+Method disagreement is informative. SHAP describes additive contributions within the
+fitted tree model; permutation measures prediction-time dependence; retraining
+ablation measures whether other variables can substitute for a removed group; ALE
+describes response shape; and LIME provides selected local surrogate checks. Weather
+features are correlated, so methods that answer different questions should not agree
+perfectly. The agreement protocol clarifies which driver claims are stable across
+several lenses and which are method-sensitive.
+
+The practical application of the protocol is decision support rather than automatic
+event attribution. After a low-yield crop--state--year is detected, the workflow can
+help analysts inspect which driver groups the residual model emphasizes and whether
+that emphasis is stable across contribution, perturbation, retraining, curve-based,
+and selected local explanations. Such a tool can support post-season diagnosis,
+prioritize heat- or drought-related adaptation questions, and guide follow-up
+agronomic investigation. It should not be used as a direct insurance payout rule,
+farm-level recommendation engine, or proof that one weather driver caused a
+specific yield loss.
+
+The global and anomaly-focused scopes should also be interpreted differently.
+Global model reliance summarizes behavior across all forward-time evaluation rows,
+including ordinary years. It therefore asks which driver group is generally
+important for the fitted residual model. Anomaly-focused explanation asks a more
+specific question: among the below-trend cases selected by the anomaly screen, which
+driver groups dominate the explanation summaries? The answer shifts from a clearer
+global heat signal to a heat--drought split on anomaly rows. This is a substantive
+result rather than a nuisance, because low-yield events can concentrate in regions
+of feature space where drought, rainfall, and heat variables overlap more strongly
+than they do in the full evaluation set.
+
+The state-representative design is most appropriate for screening and triage. For
+example, if a region repeatedly shows below-trend yield years whose explanations are
+heat-dominant under both permutation and ablation, the result can motivate more
+localized investigation into heat-stress timing, cultivar sensitivity, and possible
+management adaptation. If grouped SHAP and LIME disagree on a selected event, the
+protocol deliberately lowers confidence in a single-driver narrative. This behavior
+is desirable for operational dashboards because it helps users separate robust
+model-reliance signals from event-level cases that require domain follow-up.
+
+The analysis also provides a reproducible template for extending the study. Future
+versions can replace representative state coordinates with gridded or
+crop-area-weighted weather, add soil and irrigation covariates, or evaluate
+crop-specific calendars. The same agreement logic would still apply: claims should
+be strongest when feature contribution, perturbation, retraining, response-curve,
+and local explanation views point toward the same driver group. Conversely, method
+disagreement should be reported as uncertainty rather than hidden by averaging
+incompatible scores.
+
+Several limitations remain. The dataset is state-level and uses representative
+coordinates, so it cannot capture within-state weather, soil, irrigation, cultivar,
+or management heterogeneity. Detrending choices influence which rows are labelled
+as anomalies. The residual model has limited skill for anomaly magnitudes, which
+narrows the claim to diagnostic explanation of fitted-model behavior. Finally, the
+analysis is not a formal climate-event attribution study; that task requires a
+different causal and probabilistic framework \cite{Otto2017,Oldenborgh2021,Otto2023}.
+
+\section{Conclusion}
+This study presents a reproducible multi-method XAI protocol for explaining
+detrended crop-yield anomalies. By combining anomaly screening, residual modeling,
+SHAP, grouped SHAP, group permutation, group ablation, ALE, selected LIME cases, and
+method agreement, the analysis avoids relying on a single explanation method. The
+main empirical pattern is that heat is the strongest global model-reliance driver,
+while heat and drought are co-leading anomaly-focused signals depending on the
+explanation method. The approach provides a cautious, auditable bridge between
+crop-yield prediction and diagnostic decision support.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}
