@@ -483,6 +483,51 @@ in four of six selected cases provides stronger diagnostic support for those
 examples, while the two disagreements indicate that event-level driver assignments
 should be treated cautiously and not reported as robust single-driver claims.
 
+\section{Decision-Support Prototype}
+To make the diagnostic workflow inspectable, we package the validated output tables
+in a lightweight web prototype. The dashboard is not a retraining service or a
+real-time weather system. Instead, it consumes the static CSV outputs produced by
+the reproducible pipeline and exposes the same anomaly-screening and XAI evidence
+used in the paper. This design makes the result auditable: users can inspect a
+crop--state--year event, its standardized residual, its weather indicators, and the
+available explanation tables without changing the underlying model.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{fig09_application_prototype.png}
+  \caption{Decision-support prototype architecture. The dashboard consumes static
+  validated outputs and exposes anomaly screening, residual-model diagnostics,
+  multi-method XAI evidence, and consensus summaries without retraining or
+  real-time weather queries.}
+  \label{fig:prototype_architecture}
+\end{figure}
+
+Figure \ref{fig:prototype_architecture} summarizes the deployed data flow. The
+interface first filters crop, state, year, and growing-window rows, then presents
+low-yield anomaly events selected by the detrended residual $z$-score. For a
+selected event, the tool displays weather indicators and links them to method-level
+evidence such as SHAP, grouped SHAP, group permutation, group ablation, ALE, LIME,
+and method agreement. The output is therefore a decision-support view over
+model-based diagnostics rather than an automatic attribution rule.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.98\textwidth]{fig10_web_dashboard.png}
+  \caption{Web prototype views. The anomaly explorer filters crop--state--year rows
+  and highlights the strongest low-yield residual events, while the XAI view exposes
+  feature- and driver-group evidence for selected cases.}
+  \label{fig:web_dashboard}
+\end{figure*}
+
+Figure \ref{fig:web_dashboard} illustrates the two main inspection modes. In the
+anomaly explorer, a user can focus on low-yield rows and identify the strongest
+events, such as Oats--Oklahoma in 2022 with $z=-3.44$. In the XAI view, the same
+analysis surface exposes feature rankings and driver groups, allowing a user to
+check whether heat, drought, excess rain, frost/cold, or radiation is emphasized by
+the selected method. The intended use is post-season diagnosis, screening, and
+follow-up prioritization; it is not a farm-level recommendation engine, insurance
+payout rule, or causal climate-event attribution system.
+
 \section{Discussion}
 The multi-method comparison supports a more nuanced conclusion than a single ranking
 would provide. Heat is the strongest global model-reliance driver: both group
