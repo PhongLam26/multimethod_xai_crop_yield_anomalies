@@ -7,9 +7,11 @@
 - train_rows: `159`
 - locked_rows: `92`
 - calendar_r2: `0.03370604185732062`
-- full_r2: `0.8877205771550353`
+- full_r2: `0.8877205771550355`
 - calendar_rmse: `227417.18452478028`
-- full_rmse: `77520.88682154637`
-- feature_group_delta_rmse: `-149896.2977032339`
+- full_rmse: `77520.8868215463`
+- feature_group_delta_rmse: `-149896.29770323398`
+- paired_bootstrap_ci95: `[-186036.71465840752, -119309.20913647974]`
 - feature_group_gate: `PASS`
-- claim: `external-domain feature-group comparison; not agricultural validation`
+- explanation_availability: `INTERPRET`
+- claim: `gated external-domain feature-group attribution; not causal or agricultural validation`
