@@ -9,12 +9,12 @@
 \usepackage{array}
 \usepackage{tabularx}
 \usepackage[hidelinks]{hyperref}
-\graphicspath{{figures/}{../generated/}}
+\graphicspath{{figures/}{../../../paper/generated/}}
 \setlength{\textfloatsep}{7pt plus 2pt minus 2pt}
 \setlength{\floatsep}{7pt plus 2pt minus 2pt}
 \setlength{\intextsep}{7pt plus 2pt minus 2pt}
 \renewcommand{\arraystretch}{0.98}
-\input{../generated/audit_numbers.tex}
+\input{../../../paper/generated/audit_numbers.tex}
 
 \title{Auditing Weather-Feature Reliance in Detrended Crop-Yield Models}
 \author{\IEEEauthorblockN{Anonymous Submission}}
@@ -117,7 +117,7 @@ middle-, and late-season proxies without redefining the target or locked populat
 \caption{Data-flow and final-test eligibility reconstructed from the raw inputs.}
 \label{tab:dataflow}
 \scriptsize
-\resizebox{\columnwidth}{!}{\input{../generated/table_data_flow.tex}}
+\resizebox{\columnwidth}{!}{\input{../../../paper/generated/table_data_flow.tex}}
 \end{table}
 
 For a test interval, each crop--state linear trend and residual scale is estimated
@@ -190,7 +190,7 @@ is sensitivity only. Machine-readable values are in
 \label{tab:gate}
 \footnotesize
 \renewcommand{\arraystretch}{1.12}
-\input{../generated/table_gate_definition.tex}
+\input{../../../paper/generated/table_gate_definition.tex}
 \end{table*}
 
 \begin{center}
@@ -224,7 +224,7 @@ is never used to switch configurations.
 prediction aggregation; Seed SD is the across-seed RMSE standard deviation.}
 \label{tab:selection}
 \scriptsize
-\resizebox{\columnwidth}{!}{\input{../generated/table_validation_selection.tex}}
+\resizebox{\columnwidth}{!}{\input{../../../paper/generated/table_validation_selection.tex}}
 \end{table}
 
 The selected weather-only ExtraTrees configuration ranks first in 3/5 stochastic
@@ -240,7 +240,7 @@ is across fixed stochastic seeds; 1-SE denotes inclusion under the pre-specified
 one-standard-error diagnostic, not a post-hoc replacement.}
 \label{tab:stability}
 \scriptsize
-\resizebox{\columnwidth}{!}{\input{../generated/table_selection_stability.tex}}
+\resizebox{\columnwidth}{!}{\input{../../../paper/generated/table_selection_stability.tex}}
 \end{table}
 
 On the locked test, the selected model has $R^2=\AuditSelectedRtwo{}$ and RMSE
@@ -262,7 +262,7 @@ aggregated. $\Delta$RMSE is model minus zero-residual RMSE with paired 95\%
 year-block intervals; RMSE is t ha$^{-1}$.}
 \label{tab:baselines}
 \scriptsize
-\resizebox{\textwidth}{!}{\input{../generated/table_final_baselines.tex}}
+\resizebox{\textwidth}{!}{\input{../../../paper/generated/table_final_baselines.tex}}
 \end{table*}
 
 \subsection{Event-Detection Diagnostics}
@@ -281,7 +281,7 @@ rate used in older drafts.
 not tuned on the final test and do not replace Gate A components.}
 \label{tab:event}
 \scriptsize
-\resizebox{\textwidth}{!}{\input{../generated/table_event_detection.tex}}
+\resizebox{\textwidth}{!}{\input{../../../paper/generated/table_event_detection.tex}}
 \end{table*}
 
 \begin{figure}[t]
@@ -317,10 +317,10 @@ $H$ and $P$ are $<.05$. Only $z<-1$ is primary; severe tails are sensitivities.}
 \footnotesize
 \renewcommand{\arraystretch}{1.08}
 \textbf{Panel A: Error and rank recovery}\par\smallskip
-\input{../generated/table_tail_error_rank.tex}
+\input{../../../paper/generated/table_tail_error_rank.tex}
 \par\medskip
 \textbf{Panel B: Chance-adjusted Top-10 recovery}\par\smallskip
-\input{../generated/table_tail_topk.tex}
+\input{../../../paper/generated/table_tail_topk.tex}
 \end{table*}
 
 \begin{table*}[t]
@@ -330,7 +330,7 @@ claims; primary Gate B1 is additionally required for weather-specific claims;
 Gate B2 is sensitivity only.}
 \label{tab:gateab}
 \scriptsize
-\resizebox{\textwidth}{!}{\input{../generated/table_gate_ab.tex}}
+\resizebox{\textwidth}{!}{\input{../../../paper/generated/table_gate_ab.tex}}
 \end{table*}
 
 Table~\ref{tab:robustness} gives exact temporal pass counts and summary ranges for
@@ -345,7 +345,7 @@ and settings are retained in the audit artifact.}
 \label{tab:robustness}
 \footnotesize
 \renewcommand{\arraystretch}{1.08}
-\input{../generated/table_robustness.tex}
+\input{../../../paper/generated/table_robustness.tex}
 \end{table*}
 
 \subsection{Target, Cluster, and Model-Family Sensitivity}
@@ -369,7 +369,7 @@ difference is $1.11\times10^{-16}$, so displayed metrics coincide.}
 \label{tab:sensitivity}
 \footnotesize
 \renewcommand{\arraystretch}{1.05}
-\input{../generated/table_target_model_sensitivity.tex}
+\input{../../../paper/generated/table_target_model_sensitivity.tex}
 \end{table*}
 
 \begin{table*}[t]
@@ -378,7 +378,7 @@ difference is $1.11\times10^{-16}$, so displayed metrics coincide.}
 number of clusters is a resampling property, never a row count.}
 \label{tab:resampling}
 \scriptsize
-\resizebox{\textwidth}{!}{\input{../generated/table_resampling_sensitivity.tex}}
+\resizebox{\textwidth}{!}{\input{../../../paper/generated/table_resampling_sensitivity.tex}}
 \end{table*}
 
 The standardized-target model is actually refit on the train-only residual $z$,
@@ -407,7 +407,7 @@ compares the locked weather-only configuration to zero residual with paired
 calendar-year-block 95\% intervals.}
 \label{tab:temporalcapacity}
 \scriptsize
-\resizebox{\textwidth}{!}{\input{../generated/table_temporal_capacity.tex}}
+\resizebox{\textwidth}{!}{\input{../../../paper/generated/table_temporal_capacity.tex}}
 \end{table*}
 
 \subsection{Audit Traceability and Interpretation Limits}
@@ -426,7 +426,7 @@ can distinguish an empirical model result from a narrative inference about weath
 was regenerated and checked; it does not mean a scientific gate passed.}
 \label{tab:trace}
 \scriptsize
-\resizebox{\columnwidth}{!}{\input{../generated/table_audit_traceability.tex}}
+\resizebox{\columnwidth}{!}{\input{../../../paper/generated/table_audit_traceability.tex}}
 \end{table}
 
 Several limits should shape interpretation. State-representative weather
@@ -528,6 +528,26 @@ population and is labeled as such. Full-series detrending changes target members
 by using future yields and remains retrospective only. These boundaries identify
 what should be pre-specified and externally validated before a later study revisits
 the predictive or explanatory question.
+
+\section{Synthetic and External-Domain Evidence}
+The stop-gate policy is also evaluated where ground truth is available. A
+deterministic synthetic temporal benchmark covers no, weak, moderate, and strong
+signal; correlated features; omitted confounding; temporal and geographic shift;
+leakage; small samples; imbalanced tails; measurement error; and spatial-resolution
+mismatch. Ungated explanations permit attribution in every scenario, including
+invalid regimes. The full gate reduces simulated false permission from 28.6\% to
+0\% while permitting explanation in six valid-signal scenarios. Thus the gate is
+not an always-abstain rule; it is a conditional permission rule.
+
+An external, non-agricultural stress test uses public daily PJM electricity-demand
+records. Calendar-only features are fit on January--September 2024 and evaluated
+on a locked October--December period. Adding the day-ahead demand forecast improves
+locked RMSE from 227,417 to 77,521 MWh, with paired bootstrap $\Delta$RMSE
+95\% CI $[-186,037,-119,309]$. The corresponding feature-group gate passes, so
+permutation importance is made available for this external forecasting task. This
+result establishes that the procedure can permit interpretation when its
+pre-specified predictive and incremental-value conditions are met. It is neither a
+causal claim nor evidence of agricultural transfer.
 
 \section{Conclusion}
 This paper evaluates whether an interpretable weather-only model can support
