@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "raw_files": [
+    "data\\v2_county\\raw\\nass\\wheat_2020_20260718T224235Z.json"
+  ],
+  "rows": 5338,
+  "earliest_year": 2020,
+  "latest_year": 2025,
+  "proposals": {
+    "maximum_coverage_population": 4773,
+    "balanced_crop_county_panel": 474,
+    "long_history_population": 984,
+    "selection_rule": "Choose by pre-specified coverage/history quality rules, never final model performance."
+  },
+  "coverage_csv": "reports/v2/county_yield_coverage.csv"
+}

@@ -1,0 +1,7 @@
+crop,year,states,counties,observations,suppressed_values,missing_values,missing_county_ansi,series_history_ge_3,series_history_ge_5,series_history_ge_8,series_history_ge_10,unit,source,duplicate_rows,conflicting_estimate_groups
+WHEAT,2020,27,1063,1190,0,0,35,984,474,0,0,BU / ACRE,SURVEY,191,91
+WHEAT,2021,27,999,1126,0,0,35,984,474,0,0,BU / ACRE,SURVEY,193,93
+WHEAT,2022,27,957,1077,0,0,35,984,474,0,0,BU / ACRE,SURVEY,173,80
+WHEAT,2023,27,895,1006,0,0,35,984,474,0,0,BU / ACRE,SURVEY,156,70
+WHEAT,2024,1,57,58,0,0,1,984,474,0,0,BU / ACRE,SURVEY,0,0
+WHEAT,2025,27,802,881,0,0,34,984,474,0,0,BU / ACRE,SURVEY,98,45
