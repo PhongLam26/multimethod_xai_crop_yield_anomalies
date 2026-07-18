@@ -25,7 +25,7 @@ def main()->None:
  count=request('get_counts/',{k:v for k,v in params.items() if k!='format'}).json().get('count')
  if not isinstance(count,int) or count>=50000: raise SystemExit(f'BLOCKED_REQUEST_COUNT_{count}')
  response=request('api_GET/',params); raw=response.content; stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ'); out=ROOT/'data'/'v2_county'/'raw'/'nass'; out.mkdir(parents=True,exist_ok=True)
- target=out/f'{args.crop.lower()}_{args.year_ge}_{stamp}.json'; target.write_bytes(raw); digest=hashlib.sha256(raw).hexdigest()
+ state_slug=(args.state or 'all_states').lower().replace(' ','_'); target=out/f'{args.crop.lower()}_{state_slug}_{args.year_ge}_{stamp}.json'; target.write_bytes(raw); digest=hashlib.sha256(raw).hexdigest()
  manifest={'created_utc':datetime.now(timezone.utc).isoformat(),'source_mode':'NASS_API','endpoint':'api_GET','request':{k:('<REDACTED>' if k=='key' else v) for k,v in params.items()},'count_before_download':count,'http_status':response.status_code,'raw_path':str(target.relative_to(ROOT)).replace('\\','/'),'sha256':digest,'records':len(response.json().get('data',[]))}
  mdir=ROOT/'data'/'v2_county'/'manifests'; mdir.mkdir(parents=True,exist_ok=True); (mdir/f'nass_request_{stamp}.json').write_text(json.dumps(manifest,indent=2)+'\n')
  print(json.dumps({'status':'PASS','count':count,'records':manifest['records'],'sha256':digest,'raw_path':manifest['raw_path']}))

@@ -1,11 +1,11 @@
 # County Yield Coverage Audit
 
 - status: `PASS`
-- raw_files: `['data\\v2_county\\raw\\nass\\wheat_2020_20260718T224235Z.json']`
-- rows: `5338`
-- earliest_year: `2020`
+- raw_files: `['data/v2_county/raw/nass/wheat_2020_20260718T224235Z.json', 'data/v2_county/raw/nass/wheat_colorado_2000_20260718T224732Z.json', 'data/v2_county/raw/nass/wheat_illinois_2000_20260718T224830Z.json', 'data/v2_county/raw/nass/wheat_iowa_2000_20260718T224821Z.json', 'data/v2_county/raw/nass/wheat_kansas_2000_20260718T224608Z.json', 'data/v2_county/raw/nass/wheat_minnesota_2000_20260718T224814Z.json', 'data/v2_county/raw/nass/wheat_montana_2000_20260718T224649Z.json', 'data/v2_county/raw/nass/wheat_nebraska_2000_20260718T224743Z.json', 'data/v2_county/raw/nass/wheat_north_dakota_2000_20260718T224632Z.json', 'data/v2_county/raw/nass/wheat_oklahoma_2000_20260718T224709Z.json', 'data/v2_county/raw/nass/wheat_south_dakota_2000_20260718T224803Z.json', 'data/v2_county/raw/nass/wheat_texas_2000_20260718T224723Z.json', 'data/v2_county/raw/nass/wheat_washington_2000_20260718T224700Z.json']`
+- rows: `59100`
+- earliest_year: `2000`
 - latest_year: `2025`
-- proposals: `{'maximum_coverage_population': 4773, 'balanced_crop_county_panel': 474, 'long_history_population': 984, 'selection_rule': 'Choose by pre-specified coverage/history quality rules, never final model performance.'}`
+- proposals: `{'maximum_coverage_population': 17416, 'balanced_crop_county_panel': 1019, 'long_history_population': 1313, 'selection_rule': 'Choose by pre-specified coverage/history quality rules, never final model performance.'}`
 - coverage_csv: `reports/v2/county_yield_coverage.csv`
 
-Coverage is raw-source quality evidence, not a model-selection result.
+Coverage is raw-source quality evidence, not a model-selection result. The current raw extract intentionally retains multiple class and production-practice strata; do not train a panel until a pre-specified canonical stratum has been selected and conflict counts are resolved.
