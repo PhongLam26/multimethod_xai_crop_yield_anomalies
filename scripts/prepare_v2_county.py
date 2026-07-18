@@ -7,7 +7,7 @@ import pandas as pd
 
 ROOT=Path(__file__).resolve().parents[1]; DATA=ROOT/'data'/'v2_county'
 SOURCES=[
- ('usda_nass_county_yield','USDA NASS Quick Stats','https://quickstats.nass.usda.gov/api/api_GET/','NASS_API_KEY','restricted API key','not included','python scripts/prepare_v2_county.py --download-nass'),
+ ('usda_nass_county_yield','USDA NASS Quick Stats','https://quickstats.nass.usda.gov/api/api_GET/; bulk fallback: https://www.nass.usda.gov/datasets/qs.crops_20260718.txt.gz','NASS_API_KEY','API key or official USDA NASS bulk terms','not included','API batches or NASS_OFFICIAL_BULK after disk preflight'),
  ('nasa_power_weather','NASA POWER daily API','https://power.larc.nasa.gov/api/temporal/daily/point','none','NASA attribution/notification terms','not included','documented county coordinate downloader'),
  ('cropland_data_layer','USDA NASS Cropland Data Layer','https://nassgeodata.gmu.edu/CropScape/','none','source-specific terms','not included','CropScape download/reconstruction'),
  ('us_drought_monitor','U.S. Drought Monitor','https://droughtmonitor.unl.edu/','none','source attribution','not included','official weekly data download'),
