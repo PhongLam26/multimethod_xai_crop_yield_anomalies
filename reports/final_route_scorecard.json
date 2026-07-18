@@ -1,0 +1,46 @@
+{
+  "status": "PROVISIONAL",
+  "selected_route": "Fidelity-gated XAI method benchmark",
+  "selection_rule": "highest score among routes with evidence; no final promotion until external-domain or V2 evidence is registered",
+  "routes": [
+    {
+      "route": "Applied agricultural decision support",
+      "scientific_validity": 14,
+      "predictive_or_method": 5,
+      "applied_value": 10,
+      "novelty": 6,
+      "external_validation": 0,
+      "reproducibility": 9,
+      "writing_clarity": 7,
+      "status": "INCONCLUSIVE",
+      "reason": "V1 queue is guarded abstain-only; V2 unavailable.",
+      "total": 51
+    },
+    {
+      "route": "Fidelity-gated XAI method benchmark",
+      "scientific_validity": 18,
+      "predictive_or_method": 18,
+      "applied_value": 8,
+      "novelty": 13,
+      "external_validation": 0,
+      "reproducibility": 10,
+      "writing_clarity": 8,
+      "status": "CANDIDATE",
+      "reason": "Synthetic ground-truth benchmark passes; V1 gives a real abstention case.",
+      "total": 75
+    },
+    {
+      "route": "Hybrid",
+      "scientific_validity": 16,
+      "predictive_or_method": 15,
+      "applied_value": 10,
+      "novelty": 11,
+      "external_validation": 0,
+      "reproducibility": 10,
+      "writing_clarity": 7,
+      "status": "INCONCLUSIVE",
+      "reason": "Requires V2 or external-domain evidence before promotion.",
+      "total": 69
+    }
+  ]
+}
