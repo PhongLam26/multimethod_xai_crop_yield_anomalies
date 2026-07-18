@@ -25,6 +25,7 @@ diagnostic.
 
 ## What remains unavailable?
 
-County-level agricultural V2 evidence is blocked until official USDA NASS data
-can be acquired through a valid API credential or a disk-feasible official bulk
-download followed by coverage auditing.
+County-level V2 has been acquired and audited, but its validation-selected
+weather-only model has a Gate A confidence interval crossing zero on the locked
+2022--2025 holdout. It therefore remains an agricultural ABSTAIN case, not a
+predictive or weather-specific explanation claim.

@@ -518,6 +518,18 @@ features, and model family; it does not establish that weather has no yield effe
 A future study needs prospectively versioned inputs, finer exposure measurements,
 and an independent future test interval.
 
+We also implemented a separate county-level winter-wheat check rather than
+assuming that a finer panel would rescue the state-level result. The locked
+pre-model population contains 574 counties with at least ten training-period
+observations from 2000--2025, official county yields, static county interior
+points, and annual NASA POWER weather aggregates. Validation selected a
+weather-only ExtraTrees residual model. On the untouched 2022--2025 holdout,
+its RMSE was 13.47 versus 13.78 bushels per acre for the zero-residual baseline,
+but the paired year-block 95\% CI for the difference was $[-0.67,0.26]$.
+Gate A therefore remains inconclusive, and the county workflow emits
+\textsc{Abstain}. This is an additional reproducible agricultural abstention
+case, not a successful agricultural prediction result or evidence of transfer.
+
 The temporal and population sensitivities also limit external validity. Three of
 four rolling folds have negative point estimates, but only one has a confidence
 interval entirely below zero; the direction and uncertainty are therefore not stable
@@ -555,7 +567,9 @@ substantive claims about below-trend U.S. crop-yield events. The model and featu
 family were selected before a locked 2016--2025 test. Gate A requires paired
 predictive fidelity and null-aware recovery of the primary $z<-1$ tail; primary
 Gate B1 requires incremental weather value of the selected weather-only model over
-metadata. Gate A and Gate B1 fail. Accordingly,
+metadata. Gate A and Gate B1 fail. A separately locked county-level winter-wheat
+panel also remains inconclusive under Gate A, despite a favorable point estimate.
+Accordingly,
 the permitted conclusion is procedural and negative: this fitted model may be
 described, but its explanations are not evidence of observed event drivers or
 weather-specific effects in this panel. The reusable lesson is to make data
