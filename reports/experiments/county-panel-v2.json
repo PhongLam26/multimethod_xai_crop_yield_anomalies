@@ -1,6 +1,40 @@
 {
-  "status": "BLOCKED_NASS_API_KEY",
-  "data_root": "data\\v2_county",
-  "required_source_count": 5,
-  "next_action": "Set NASS_API_KEY and run approved downloader; no experiment has run."
+  "status": "PASS_PRE_MODEL_PANEL",
+  "created_utc": "2026-07-18T22:54:21.359600+00:00",
+  "spec": "configs/experiments/county_v2_panel_spec.json",
+  "raw_file_count": 13,
+  "raw_sha256": {
+    "data/v2_county/raw/nass/wheat_2020_20260718T224235Z.json": "bcf3326c924496a2748ffdd54872bf3d71add917a619c51cc1e2d2659557d8d8",
+    "data/v2_county/raw/nass/wheat_colorado_2000_20260718T224732Z.json": "85ea548197a79dfda1196c46f9109de9eb31f0a10923261dda17c5b6bc8a0ff4",
+    "data/v2_county/raw/nass/wheat_illinois_2000_20260718T224830Z.json": "b2e7645707fdc51415cfc96984ebab6019567eb090459bd917186d603fb026e0",
+    "data/v2_county/raw/nass/wheat_iowa_2000_20260718T224821Z.json": "129bcac340121c56b8a52faea635ce5ca8a79af23de9f7b7df86812026a282e8",
+    "data/v2_county/raw/nass/wheat_kansas_2000_20260718T224608Z.json": "10adf28ad9ee7d5f80599fe447e09a1f9e971bfe69c8aff13c7de50a4e2c9d37",
+    "data/v2_county/raw/nass/wheat_minnesota_2000_20260718T224814Z.json": "4089dc9c74457ffb8c1053402cd6e33508ce5f20eda25cc1c992502b761b9e89",
+    "data/v2_county/raw/nass/wheat_montana_2000_20260718T224649Z.json": "8fe6cf521b104580ee96cf4ab1772afa1613e00197a21f0b1915d6c8ba9b17c9",
+    "data/v2_county/raw/nass/wheat_nebraska_2000_20260718T224743Z.json": "91b529747388b64494d5f1ca6923955a9ca704df63072593b46a17f103995ca3",
+    "data/v2_county/raw/nass/wheat_north_dakota_2000_20260718T224632Z.json": "a157ad2a08fd564529452b54b80a988a9cd9be2b20266fdeb15f97c1746370fc",
+    "data/v2_county/raw/nass/wheat_oklahoma_2000_20260718T224709Z.json": "035291c145dd3f45f83a9f714998d18ce9957cd84517289a8d7f64905104fc88",
+    "data/v2_county/raw/nass/wheat_south_dakota_2000_20260718T224803Z.json": "25103a19c5bbadcedb524c5c5d0bef78d566a14bb55aeb25e5b24f43625b092c",
+    "data/v2_county/raw/nass/wheat_texas_2000_20260718T224723Z.json": "881e63f4e5936d269351db25505bbd140090cf9e9edd5ab332bd1d8acc70e647",
+    "data/v2_county/raw/nass/wheat_washington_2000_20260718T224700Z.json": "b64c7e3d1728718cb8c2920b806305885c397451bd5223db3bc632de10fd0bad"
+  },
+  "canonical_rows_before_exact_deduplication": 29114,
+  "canonical_conflicting_groups": 0,
+  "selected_crop_variant": "WHEAT__WINTER",
+  "selected_rows": 11394,
+  "selected_counties": 574,
+  "excluded_short_training_history_counties": 265,
+  "year_range": [
+    2000,
+    2025
+  ],
+  "split_counts": {
+    "locked_holdout": 1024,
+    "train": 9218,
+    "validation": 1152
+  },
+  "panel_path": "data/v2_county/interim/county_yield_v2_canonical.csv",
+  "panel_sha256": "45eb442cd80580657516ff5c5a7f11c7fa7ab2676112ab70bfa5e157923d8668",
+  "coverage_path": "reports/v2/canonical_yield_population_coverage.csv",
+  "exclusions_path": "reports/v2/canonical_yield_population_exclusions.csv"
 }

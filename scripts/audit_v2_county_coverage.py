@@ -10,7 +10,7 @@ def main()->None:
  if not files: raise SystemExit('BLOCKED_NO_NASS_RAW')
  rows=[]
  for f in files: rows.extend(json.loads(f.read_text())['data'])
- df=pd.DataFrame(rows); df['year']=pd.to_numeric(df.year,errors='coerce'); df['value_numeric']=pd.to_numeric(df.Value.astype(str).str.replace(',','',regex=False),errors='coerce'); df['suppressed']=df.Value.astype(str).str.contains(r'\(D\)|\(Z\)',regex=True,na=False); df['missing_county_ansi']=df.county_ansi.isna() | df.county_ansi.astype(str).str.strip().isin(['','000'])
+ df=pd.DataFrame(rows); df['year']=pd.to_numeric(df.year,errors='coerce'); df['value_numeric']=pd.to_numeric(df.Value.astype(str).str.replace(',','',regex=False),errors='coerce'); df['suppressed']=df.Value.astype(str).str.contains(r'\(D\)|\(Z\)',regex=True,na=False); df['missing_county_ansi']=~df.county_ansi.astype(str).str.strip().str.fullmatch(r'\d{3}') | df.county_ansi.astype(str).str.strip().eq('000')
  keys=['commodity_desc','state_ansi','county_ansi','year']; dup=df.duplicated(keys,keep=False); conflicting=df[dup].groupby(keys).value_numeric.nunique().gt(1).sum()
  out=[]
  for (crop,year),g in df.groupby(['commodity_desc','year'],dropna=False):

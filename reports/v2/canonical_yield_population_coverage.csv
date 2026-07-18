@@ -1,0 +1,5 @@
+crop_variant,county_year_rows,counties,first_year,last_year,county_series_ge_10_years,county_series_ge_10_train_years
+WHEAT__ALL_CLASSES,5938,863,2000,2007,0,0
+WHEAT__SPRING_DURUM,886,94,2000,2025,44,37
+WHEAT__SPRING_EXCL_DURUM,4407,312,2000,2025,203,198
+WHEAT__WINTER,15171,1551,2000,2025,590,574

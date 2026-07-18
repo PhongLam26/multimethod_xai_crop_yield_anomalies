@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "panel_sha256": "45eb442cd80580657516ff5c5a7f11c7fa7ab2676112ab70bfa5e157923d8668",
+  "centroid_sha256": "0ccf7587b3bb2b135a56324705ce1e97cfc5cacb0040507b8cb4c969e03a4845",
+  "weather_counties": 574,
+  "weather_rows": 14924,
+  "joined_rows": 11394,
+  "missing_feature_rows": 0,
+  "temporal_contract_failures": 0,
+  "output": "data/v2_county/processed/county_winter_wheat_weather_panel.csv",
+  "output_sha256": "f0da73423685ff6a4d285f3fd091657204ec2b3e3a571426ac32562a7467e593",
+  "feature_columns": [
+    "t2m_mean_c",
+    "t2m_max_c",
+    "t2m_min_c",
+    "precip_total_mm"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "created_utc": "2026-07-18T23:07:57.165937+00:00",
+  "status": "PASS",
+  "source": "NASA POWER daily point API",
+  "endpoint": "temporal/daily/point",
+  "parameters": [
+    "T2M",
+    "T2M_MAX",
+    "T2M_MIN",
+    "PRECTOTCORR"
+  ],
+  "community": "AG",
+  "date_range": [
+    "2000-01-01",
+    "2025-12-31"
+  ],
+  "population_count": 574,
+  "requested_counties": 574,
+  "workers": 2,
+  "status_counts": {
+    "cached": 574
+  },
+  "failed_counties": [],
+  "panel_sha256": "45eb442cd80580657516ff5c5a7f11c7fa7ab2676112ab70bfa5e157923d8668",
+  "centroid_sha256": "0ccf7587b3bb2b135a56324705ce1e97cfc5cacb0040507b8cb4c969e03a4845",
+  "manifest_path": "data/v2_county/manifests/nasa_power_full_download.json",
+  "raw_file_hash_count": 574
+}

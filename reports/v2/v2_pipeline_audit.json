@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "created_utc": "2026-07-18T23:12:07.387259+00:00",
+  "checks": {
+    "nass_manifest_count": true,
+    "nass_keys_redacted": true,
+    "canonical_panel_status": true,
+    "weather_status": true,
+    "weather_county_coverage": true,
+    "unique_county_year_panel": true,
+    "split_lock": true,
+    "temporal_contract": true,
+    "complete_feature_rows": true,
+    "validation_only_selection": true,
+    "gate_consistent_claim": true
+  },
+  "model_status": "INCONCLUSIVE",
+  "explanation_availability": "ABSTAIN",
+  "next_action": "Do not promote the V2 agricultural model; retain the locked inconclusive result and improve only through a newly registered experiment."
+}

@@ -1,3 +1,3 @@
 dataset_id,status,scope,evidence
 v1_state_panel,FROZEN,State-Level Crop-Yield Panel,data/legacy/state_panel_v1/V1_IMMUTABLE_MANIFEST.json
-v2_county,BLOCKED_NASS_API_KEY,County-Level Agricultural Risk Panel,data/v2_county/DATA_MANIFEST.csv
+v2_county,PANEL_AND_WEATHER_PASS,County-Level Winter Wheat residual panel (574 counties; 2000-2025),reports/experiments/county-panel-v2.json; reports/v2/weather_feature_coverage.json

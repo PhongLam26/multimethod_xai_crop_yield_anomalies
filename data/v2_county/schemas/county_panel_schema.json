@@ -5,13 +5,13 @@
     "state_fips",
     "crop",
     "year",
-    "yield",
+    "yield_bu_acre",
     "weather_feature_date_max",
     "target_available_date",
     "split_role"
   ],
   "rules": [
-    "All features must have weather_feature_date_max before target_available_date.",
+    "All features must have weather_feature_date_max no later than target_available_date.",
     "Temporal/geographic holdout is immutable after registration.",
     "Raw files are never silently imputed or redistributed without terms review."
   ]
