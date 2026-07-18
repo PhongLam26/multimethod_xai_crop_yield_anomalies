@@ -1,0 +1,3 @@
+model_id,status,selection_basis,holdout_status,claim
+v1_extra_trees_weather_only,SENSITIVITY_ONLY,2012-2015 validation,Gate A FAIL; Gate B1 FAIL,not eligible for explanation or promotion
+synthetic_full_gate,METHOD_EVIDENCE,pre-registered synthetic scenarios,PASS,reduces simulated false permission; not an agricultural predictor
