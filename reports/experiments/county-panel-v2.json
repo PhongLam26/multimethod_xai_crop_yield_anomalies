@@ -1,0 +1,6 @@
+{
+  "status": "BLOCKED_NASS_API_KEY",
+  "data_root": "data\\v2_county",
+  "required_source_count": 5,
+  "next_action": "Set NASS_API_KEY and run approved downloader; no experiment has run."
+}
