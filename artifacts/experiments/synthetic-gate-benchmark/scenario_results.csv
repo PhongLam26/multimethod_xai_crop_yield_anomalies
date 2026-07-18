@@ -1,0 +1,15 @@
+scenario,holdout_r2,top_feature,ground_truth_driver,regime_valid_for_interpretation,ungated_permission,performance_gate_permission,full_gate_permission,false_permission_ungated,false_permission_performance,false_permission_full,correct_driver_recovery
+no_signal,-0.02867550812029962,0,0,True,True,False,False,False,False,False,True
+weak_signal,-0.07101928093116605,0,0,True,True,False,False,False,False,False,True
+moderate_signal,0.30614262926295865,0,0,True,True,True,True,False,False,False,True
+strong_signal,0.7104373557123069,0,0,True,True,True,True,False,False,False,True
+correlated_features,0.23597116963734355,1,0,True,True,True,False,False,False,False,False
+omitted_confounder,0.4693638460480506,2,-1,False,True,True,False,True,True,False,True
+temporal_drift,0.1745286291713256,0,0,False,True,True,False,True,True,False,True
+geographic_shift,0.4951629930303847,0,0,False,True,True,False,True,True,False,True
+leakage,0.9932099531738022,7,0,False,True,True,False,True,True,False,False
+train_only_detrending,0.30003323143284033,0,0,True,True,True,True,False,False,False,True
+small_sample,0.43038945790426475,0,0,True,True,True,True,False,False,False,True
+imbalanced_tail,0.40330898486183797,0,0,True,True,True,True,False,False,False,True
+measurement_error,0.04524208201463642,0,0,True,True,False,False,False,False,False,True
+spatial_resolution_mismatch,0.052122597624413514,0,0,True,True,True,True,False,False,False,True

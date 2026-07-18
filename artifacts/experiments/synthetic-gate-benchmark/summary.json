@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "scenarios": 14,
+  "ungated_false_permission_rate": 0.2857142857142857,
+  "performance_gate_false_permission_rate": 0.2857142857142857,
+  "full_gate_false_permission_rate": 0.0,
+  "full_gate_non_abstention": 6,
+  "invalid_regime_abstention": 4,
+  "criterion": "full gate reduces false permission below ungated and permits at least one valid signal scenario"
+}
