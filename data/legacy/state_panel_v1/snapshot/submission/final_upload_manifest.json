@@ -1,0 +1,30 @@
+{
+  "created_utc": "2026-07-18T19:07:36.099035+00:00",
+  "canonical_pdf": {
+    "path": "submission/ictai2026_paper_blind.pdf",
+    "sha256": "0a15dc47e2280dde271a6ac514366bf95d99a66377c8246f5b8bf03476126e1e",
+    "bytes": 404856,
+    "pages": 8
+  },
+  "anonymous_artifact": {
+    "path": "submission/ictai2026_anonymous_artifact.zip",
+    "sha256": "0a022bbbed5554d033b62b4422ad17f3ecbc6f2af350ec671c5003c71dee9e93",
+    "bytes": 5347814
+  },
+  "source_commit": "2c90bd4950c73d85dd34ae36ede4358bc730e715",
+  "worktree_dirty_at_build": true,
+  "reproduction_command": "python scripts/reproduce_all.py --clean",
+  "audit_status": {
+    "numerical_crosscheck": "PASS",
+    "pdf_technical_audit": "PASS",
+    "anonymization_audit": "PASS",
+    "artifact_hash_audit": "PASS"
+  },
+  "evidence_hashes": {
+    "gate_config": "c94d11a718d2db448ecf71e707679a0bc05fc7ae39dbe401a3bf1c8a03f01047",
+    "selected_prediction_vectors": "0749b94444b975cc9776cdd5e214e1198139fe3001829cce36ed40beff3afb52",
+    "gate_a_records": "61dafb04624739396c150f8143aef276c4e45d56649d49a9afe8ae2339537e95",
+    "gate_b_decision": "36789ece39294ae88c90ad239fe4879e4c83307a12521c8472089b0693bdec7d"
+  },
+  "scientific_status": "Gate A FAIL; primary Gate B1 FAIL; sensitivity Gate B2 FAIL. No substantive observed-event or weather-specific claim is permitted."
+}

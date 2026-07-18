@@ -1,0 +1,37 @@
+{
+  "repository_root": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies",
+  "python": "3.12.10 (CPython)",
+  "dependency_manager": "pip",
+  "git": {
+    "branch": "main",
+    "commit": "2c90bd4950c73d85dd34ae36ede4358bc730e715",
+    "working_tree": "dirty"
+  },
+  "directories": {
+    "artifacts": true,
+    "audit": true,
+    "configs": true,
+    "data": true,
+    "figures": true,
+    "manuscript": true,
+    "outputs": true,
+    "paper": true,
+    "scripts": true,
+    "src": true,
+    "submission": true,
+    "tests": true
+  },
+  "commands": {
+    "reproduce": "python scripts/reproduce_all.py --clean",
+    "tests": "python -m unittest discover -s tests -v",
+    "paper_build": "python scripts/build_paper.py --target ictai2026_blind"
+  },
+  "latex_tools": {
+    "pdflatex": "C:\\Users\\phong\\AppData\\Local\\Programs\\MiKTeX\\miktex\\bin\\x64\\pdflatex.EXE",
+    "bibtex": "C:\\Users\\phong\\AppData\\Local\\Programs\\MiKTeX\\miktex\\bin\\x64\\bibtex.EXE",
+    "pdfinfo": "C:\\Users\\phong\\AppData\\Local\\Programs\\MiKTeX\\miktex\\bin\\x64\\pdfinfo.EXE",
+    "pdffonts": "C:\\Users\\phong\\AppData\\Local\\Programs\\MiKTeX\\miktex\\bin\\x64\\pdffonts.EXE",
+    "pdftotext": "C:\\Users\\phong\\AppData\\Local\\Programs\\MiKTeX\\miktex\\bin\\x64\\pdftotext.EXE"
+  },
+  "missing_components": []
+}

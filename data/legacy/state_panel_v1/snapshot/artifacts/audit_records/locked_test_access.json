@@ -1,0 +1,7 @@
+{
+  "selected_config": "extra_trees_leaf_1",
+  "feature_family": "weather_only",
+  "validation_only": true,
+  "locked_final_test_access_for_selection": false,
+  "validation_config_sha256": "0811deea8cad0d6e80e21d24d9898832031262a65c5399922a5a77fdd23a11ba"
+}

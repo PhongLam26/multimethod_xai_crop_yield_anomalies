@@ -1,0 +1,4 @@
+gate,label,comparison,estimate,ci95_low,ci95_high,role
+Gate A,Selected vs Zero,extra_trees_leaf_1_weather_only_vs_zero,-0.0054190995744907,-0.0193637161610029,0.0090775116752038,primary
+Gate B1 PRIMARY,Weather vs Metadata,extra_trees_leaf_1_weather_only_vs_metadata_only,-0.005419099574491,-0.0193637161609967,0.0090775116752017,primary
+Gate B2 SENSITIVITY,Full vs Metadata,extra_trees_leaf_1_full_vs_metadata_only,-0.0121245141606809,-0.0293662890400475,0.0019502340837606,sensitivity
