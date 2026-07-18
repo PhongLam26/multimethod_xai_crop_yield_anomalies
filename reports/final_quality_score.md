@@ -1,0 +1,8 @@
+# Method Route Quality Score
+
+- status: `METHOD_ROUTE_CANDIDATE`
+- selected_route: `Fidelity-gated XAI method benchmark`
+- score_out_of_100: `85`
+- rubric: `{'scientific_validity': 18, 'predictive_or_method': 18, 'applied_value': 8, 'novelty': 13, 'external_validation': 10, 'reproducibility': 10, 'writing_clarity': 8}`
+- agricultural_claim_scope: `V1 and V2 are abstention cases; no agricultural predictive or weather-specific explanation claim is permitted.`
+- evidence: `['reports/experiments/synthetic-gate-benchmark.json', 'reports/experiments/external-domain-eia.json', 'reports/experiments/county-v2-weather-models.json', 'reports/v2/v2_pipeline_audit.json']`

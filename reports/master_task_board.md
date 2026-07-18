@@ -11,4 +11,4 @@
 | P2-03 | Run feature/model ladders and promotion gates | `reports/experiments/county-v2-weather-models.*` | INCONCLUSIVE | Do not reselect on holdout; register a new experiment before trying richer features. |
 | P3-01 | External-domain validation or blocker report | `reports/experiments/external-domain-eia.*` | PASS | Use only for method evidence. |
 | P4-01 | Score applied/method/hybrid routes and revise paper | `reports/final_route_scorecard.*; paper_versions/v3_method_benchmark` | CANDIDATE | Run final release audit before calling the route final. |
-| P5-01 | Final anonymous artifact and public-release audit | `release manifest and final submission package` | PENDING | Regenerate and independently audit the final release package. |
+| P5-01 | Final anonymous artifact and public-release audit | `submission/v3_method_anonymous_artifact.zip` | PASS_LIMITED_RAW_EXCLUDED | Verify source redistribution terms before publishing raw V2 payloads. |

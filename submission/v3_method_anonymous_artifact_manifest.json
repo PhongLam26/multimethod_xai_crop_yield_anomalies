@@ -1,0 +1,428 @@
+{
+  "artifact": "submission/v3_method_anonymous_artifact.zip",
+  "sha256": "6647f0bca5ae340d8c195ce0e12a926f92a88057de9fc7d462a3b670eec661dd",
+  "file_count": 84,
+  "files": [
+    {
+      "path": "artifacts/experiments/county-v2-weather-models/locked_holdout_all_candidates.csv",
+      "sha256": "f76da4bbb6f0178db935977adc88ba4d0e95cbd4c9e4905e402ca11d6cf1a6b2",
+      "bytes": 531
+    },
+    {
+      "path": "artifacts/experiments/county-v2-weather-models/summary.json",
+      "sha256": "68b8664cac2cb7e926e2924d4e2f97603ad285dda079e711b4beeff9f34fbeba",
+      "bytes": 2383
+    },
+    {
+      "path": "artifacts/experiments/county-v2-weather-models/validation_metrics.csv",
+      "sha256": "ffc4228c0264a02ace377e37460cfa55fe1318f4a9061ea3a38a15114a21d0c2",
+      "bytes": 533
+    },
+    {
+      "path": "artifacts/experiments/external-domain-eia/gated_feature_importance.csv",
+      "sha256": "95b34e54f815a9e931d4e1cd2178814f1b9b7c42cd26dc7793ba9fa1bd523e06",
+      "bytes": 241
+    },
+    {
+      "path": "artifacts/experiments/external-domain-eia/locked_predictions.csv",
+      "sha256": "d46106f858e4f06d3d932eb44c0bc08d6f26be64a698db7e9eca1cddb63d7793",
+      "bytes": 5504
+    },
+    {
+      "path": "artifacts/experiments/external-domain-eia/pjm_daily_2024.csv",
+      "sha256": "99c6aa9927743e82acc75a52e8155d27c8ad366627c588f6bcba2625cf184b9d",
+      "bytes": 24747
+    },
+    {
+      "path": "artifacts/experiments/external-domain-eia/summary.json",
+      "sha256": "3fb7be2391c5f17f2828e39f61164d6b0b3becbe6d801694f56f471ff7d5d85a",
+      "bytes": 825
+    },
+    {
+      "path": "artifacts/experiments/synthetic-gate-benchmark/scenario_results.csv",
+      "sha256": "c2aa8a6200f7a38ed0c7ab1d1f37a1a89462334b142af94d921f3d1064aaf486",
+      "bytes": 1441
+    },
+    {
+      "path": "artifacts/experiments/synthetic-gate-benchmark/summary.json",
+      "sha256": "d51a4a0f2679e4b20061adb7edf9cf2357cfc8b196dc8d3f1e4c621d1a9d4ab7",
+      "bytes": 394
+    },
+    {
+      "path": "configs/experiments/county_v2_model_spec.json",
+      "sha256": "2bd5256876041e092ada14aa82bee565549bd9b81f60f4e917b1415de641833e",
+      "bytes": 1709
+    },
+    {
+      "path": "configs/experiments/county_v2_panel_spec.json",
+      "sha256": "fee8382c816ce82ca37f248cece594c0613c2068e94c380f408e71541341a15b",
+      "bytes": 1615
+    },
+    {
+      "path": "data/v2_county/DATA_MANIFEST.md",
+      "sha256": "d9cdf894651a8cdd1a483eb4d0acf27e860fbf0805e6412670ee21e1089071b9",
+      "bytes": 1090
+    },
+    {
+      "path": "data/v2_county/feature_dictionary.csv",
+      "sha256": "5f9a769b6969a5eb13de4151e2d50e3def438a4a8a41607371000faa6593edb7",
+      "bytes": 1648
+    },
+    {
+      "path": "data/v2_county/manifests/county_centroids_tigerweb.json",
+      "sha256": "2e4940e67eb647e507dd85b2bc4c1c3157a26199f211afc0c8298f6c6d6c9649",
+      "bytes": 2072
+    },
+    {
+      "path": "data/v2_county/manifests/nasa_power_full_download.json",
+      "sha256": "a4ed21f0f3003b59254ab42fa16f32ab61f098cf0903cb90cf7beac7b89d10d0",
+      "bytes": 67846
+    },
+    {
+      "path": "data/v2_county/manifests/nasa_power_pilot_download.json",
+      "sha256": "82e8f0b6159eb3958a786ed4aa633eeb58b0b18b50346d7276a2a1a5145f1be0",
+      "bytes": 1279
+    },
+    {
+      "path": "data/v2_county/manifests/nass_request_20260718T224235Z.json",
+      "sha256": "c6b80481252cf5a89e995449c67aa37fc404868bdbbc90684ac39b2867675e3b",
+      "bytes": 636
+    },
+    {
+      "path": "data/v2_county/manifests/nass_request_20260718T224608Z.json",
+      "sha256": "dc1f77fa12a68c8398ea4e5cbb4f573fb858835afa3f593df4e169e46cd0b245",
+      "bytes": 672
+    },
+    {
+      "path": "data/v2_county/manifests/nass_request_20260718T224632Z.json",
+      "sha256": "ea2a1fcc49069a6521adc23cf62d63b6469de359f85ccf232600ecca6279b3a5",
+      "bytes": 684
+    },
+    {
+      "path": "data/v2_county/manifests/nass_request_20260718T224649Z.json",
+      "sha256": "43031ee5c37697d9a78fb594b720c9608726001abe49ff2ba2771b14e160426c",
+      "bytes": 676
+    },
+    {
+      "path": "data/v2_county/manifests/nass_request_20260718T224700Z.json",
+      "sha256": "ff6cc78d6a76b0f1400ef863a06be76f9f76862a68f8af212ef484774550f762",
+      "bytes": 680
+    },
+    {
+      "path": "data/v2_county/manifests/nass_request_20260718T224709Z.json",
+      "sha256": "3dab00280c05370c483603b0e6c487c4a841a2ccfb08a0f5ad75e647502da0d5",
+      "bytes": 676
+    },
+    {
+      "path": "data/v2_county/manifests/nass_request_20260718T224723Z.json",
+      "sha256": "d2a23518dd90457a20a7080b96fbc38f6fbfd56a1fb7bede7ddffc7a9b132155",
+      "bytes": 670
+    },
+    {
+      "path": "data/v2_county/manifests/nass_request_20260718T224732Z.json",
+      "sha256": "9b5a370434afa31c195fe37811e79c9432a73b2b86e54a104e6ea99bcff2bb3b",
+      "bytes": 676
+    },
+    {
+      "path": "data/v2_county/manifests/nass_request_20260718T224743Z.json",
+      "sha256": "fd44a336692b3da527a55bd6d11e95a7c776916ab2dc92ea88673e64c6c8d8ee",
+      "bytes": 676
+    },
+    {
+      "path": "data/v2_county/manifests/nass_request_20260718T224803Z.json",
+      "sha256": "489d3c9fc4b802dbe457b6ca73f90c9a40987da785b5d652bbb5baba458e785d",
+      "bytes": 684
+    },
+    {
+      "path": "data/v2_county/manifests/nass_request_20260718T224814Z.json",
+      "sha256": "05efecb48bc4ba708e38772397d2ca4fb2d15848025ed5ce929c3c7989d1b78a",
+      "bytes": 678
+    },
+    {
+      "path": "data/v2_county/manifests/nass_request_20260718T224821Z.json",
+      "sha256": "10378ddc558f9d294f14a5c816185290405efbcd62af2fe64ecb163b8aa78971",
+      "bytes": 666
+    },
+    {
+      "path": "data/v2_county/manifests/nass_request_20260718T224830Z.json",
+      "sha256": "d6d1dd3744f80cb4c6224e5e1c0231d794588fc09f537f3376169ec40a784123",
+      "bytes": 676
+    },
+    {
+      "path": "paper/generated/audit_numbers.tex",
+      "sha256": "93ed84ae606175ff758f87a69e6fb287c9f20fc6bb9af83f941fae86ce6f0383",
+      "bytes": 728
+    },
+    {
+      "path": "paper/generated/figure_audit_workflow.png",
+      "sha256": "650d28b175b789462c0af0f15adfb3428d74108e92f42111d3e98cf11df3d1e9",
+      "bytes": 33723
+    },
+    {
+      "path": "paper/generated/figure_final_audit.png",
+      "sha256": "f276f54df1160494f8131cc95120e7bd57c338258f898e63acc9047377319184",
+      "bytes": 41779
+    },
+    {
+      "path": "paper/generated/figure_leakage_comparison.png",
+      "sha256": "9c4dcd2420112911df4e9f709e17a462b3c8ea68816ccada4b0e2282635e5969",
+      "bytes": 60825
+    },
+    {
+      "path": "paper/generated/figure_retrospective_v2.png",
+      "sha256": "7ae9874f18650d4dce7472ad62219de6959e985bf2082169b08964a0cf595c1f",
+      "bytes": 67287
+    },
+    {
+      "path": "paper/generated/table_audit_traceability.tex",
+      "sha256": "28fa4139b9fdd7a3351bf7cad872d422daa3e3ee397fce10d6c397afd92f8f70",
+      "bytes": 646
+    },
+    {
+      "path": "paper/generated/table_data_flow.tex",
+      "sha256": "f467282c313c80ada634743a7beeb85c121afca6c5099a623f266f8b04ba3216",
+      "bytes": 442
+    },
+    {
+      "path": "paper/generated/table_event_detection.tex",
+      "sha256": "77837f11cf412e2d84f30c22d7d9effbca4c8985f55164631a874206a09d4eb5",
+      "bytes": 352
+    },
+    {
+      "path": "paper/generated/table_final_baselines.tex",
+      "sha256": "c874b6bad9a8f921e6bdbe779f4e85519bdb3ad75b75e6706f275a58a7421b44",
+      "bytes": 614
+    },
+    {
+      "path": "paper/generated/table_gate_ab.tex",
+      "sha256": "593af3ad1c1555ddb9c96e15cc547ff322eba6d0a183015bb69745e8edc6e2f8",
+      "bytes": 626
+    },
+    {
+      "path": "paper/generated/table_gate_definition.tex",
+      "sha256": "c2dd9bbca00ef81edeac60fa64d2e2fc58f209f0743f9a984702e6ab8c5c13dc",
+      "bytes": 726
+    },
+    {
+      "path": "paper/generated/table_resampling_sensitivity.tex",
+      "sha256": "aafb032aff35441efd226cbccd6ab8ea70d7ff5a1f2d1da7eb8bc2090e1117e1",
+      "bytes": 386
+    },
+    {
+      "path": "paper/generated/table_robustness.tex",
+      "sha256": "ec871ea029d8986f3ca4eb5c55f36f0d669df3eed694ff769c93cdc352b25469",
+      "bytes": 553
+    },
+    {
+      "path": "paper/generated/table_selection_stability.tex",
+      "sha256": "441f464b69eec68714fa7825ac1ea588f225c6fe3cd85d349142e41ac7ea4ed2",
+      "bytes": 526
+    },
+    {
+      "path": "paper/generated/table_tail_error_rank.tex",
+      "sha256": "fe6a905d8fc161c3a8458e11af170a11cb3af3fd87ce70327ba1855f7d71b087",
+      "bytes": 549
+    },
+    {
+      "path": "paper/generated/table_tail_gate.tex",
+      "sha256": "96e5ad84ee82491ae1313e9c18efd06a5065d396e252a50a842c39df6502a48c",
+      "bytes": 584
+    },
+    {
+      "path": "paper/generated/table_tail_topk.tex",
+      "sha256": "ed948e2e156c96cee7fd8287aad3e5e89cdd165df337338b57f1dbf805c5ca58",
+      "bytes": 425
+    },
+    {
+      "path": "paper/generated/table_target_model_sensitivity.tex",
+      "sha256": "f346677d4181f04a372e87a5c02896d4ac38497c654651ed1b12810637d08be3",
+      "bytes": 1026
+    },
+    {
+      "path": "paper/generated/table_temporal_capacity.tex",
+      "sha256": "0a86ab7c2efa96d4c4e0854457bd2a6096656400559bd615ccad0f40a410cc6b",
+      "bytes": 754
+    },
+    {
+      "path": "paper/generated/table_validation_selection.tex",
+      "sha256": "9580af59b06c2253ad9837b58f687b26facc7b9e84b0e811a15781288bca2c08",
+      "bytes": 551
+    },
+    {
+      "path": "paper_versions/v3_method_benchmark/source/IEEEtran.bst",
+      "sha256": "d83aa3c9b47fc120bb3d9d8e476216cb889c738f72ec950beeac3661c45ded24",
+      "bytes": 61632
+    },
+    {
+      "path": "paper_versions/v3_method_benchmark/source/IEEEtran.cls",
+      "sha256": "c972aca108fda004c3514d63658e02816da2e54d9a1451e870b9bd970e003f55",
+      "bytes": 288304
+    },
+    {
+      "path": "paper_versions/v3_method_benchmark/source/main.pdf",
+      "sha256": "c6350f6dda31d7520761ffcad3c5f16dc47ff9692f05ccf75084f07adc16eb85",
+      "bytes": 408572
+    },
+    {
+      "path": "paper_versions/v3_method_benchmark/source/main.tex",
+      "sha256": "8c72e786e5e5e3976e15d6310c3e35adc1df422c856c2722a05567cd8375f391",
+      "bytes": 32826
+    },
+    {
+      "path": "paper_versions/v3_method_benchmark/source/references.bib",
+      "sha256": "86c8274affd812907e0f9336cc7454fbd492c3b8e67f7117d04167bc6b02d02a",
+      "bytes": 10185
+    },
+    {
+      "path": "README.md",
+      "sha256": "fc6350036116bee5650f5bbdc83a8a2bee538426c3d93d1093ca5590e719ea60",
+      "bytes": 1131
+    },
+    {
+      "path": "reports/experiments/county-panel-v2.json",
+      "sha256": "acf6eb60437219b70202cdc3bdd533537b9ae3b4f8314c128ee78c91d8dcf42e",
+      "bytes": 2747
+    },
+    {
+      "path": "reports/experiments/county-v2-weather-models.json",
+      "sha256": "68b8664cac2cb7e926e2924d4e2f97603ad285dda079e711b4beeff9f34fbeba",
+      "bytes": 2383
+    },
+    {
+      "path": "reports/experiments/external-domain-eia.json",
+      "sha256": "3fb7be2391c5f17f2828e39f61164d6b0b3becbe6d801694f56f471ff7d5d85a",
+      "bytes": 825
+    },
+    {
+      "path": "reports/experiments/synthetic-gate-benchmark.json",
+      "sha256": "d51a4a0f2679e4b20061adb7edf9cf2357cfc8b196dc8d3f1e4c621d1a9d4ab7",
+      "bytes": 394
+    },
+    {
+      "path": "reports/final_route_scorecard.json",
+      "sha256": "cd9d2b6f80e272677b96b59350bbda70f9a1be4c598ab37de04708f1318a51fe",
+      "bytes": 4967
+    },
+    {
+      "path": "reports/final_route_scorecard.md",
+      "sha256": "f10620cc4465be7dbc7be98f0b409d17696252d43526c6a242ec53eb32186351",
+      "bytes": 706
+    },
+    {
+      "path": "reports/v2/v2_pipeline_audit.json",
+      "sha256": "74bae22a1d9b7e1e0632840ce4499a1cc9f1bbe5638c1e5ff4b49ed5fe3eb1b8",
+      "bytes": 713
+    },
+    {
+      "path": "requirements-lock.txt",
+      "sha256": "8b93adebbebe276b8da97af1f1eb50c954e52680e144de0b5cfce9638cef73d5",
+      "bytes": 2178
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "44bd0e11726ce4755b54ddf91e750a9680b75743284f9b1e5312e501fe9a96ac",
+      "bytes": 83
+    },
+    {
+      "path": "reviewer_materials/CLAIM_EVIDENCE_MAP.md",
+      "sha256": "8c79cc6fd85a73c2ccb532d60d75e9e4f4cd4c488bfd257085222f5d933d92b9",
+      "bytes": 2726
+    },
+    {
+      "path": "reviewer_materials/REVIEWER_QA.md",
+      "sha256": "cc0e27f51d86562c8e1b236e5b933305293fb8f00033f59ba0f7371ebb65c17b",
+      "bytes": 1191
+    },
+    {
+      "path": "scripts/audit_v2_county_coverage.py",
+      "sha256": "8cc40c26a20fa795cd9ea427826ed40e9adfd2e11cdcfed605a99d2ba5a26621",
+      "bytes": 3531
+    },
+    {
+      "path": "scripts/audit_v2_pipeline.py",
+      "sha256": "f9fc1a53f216453ea2fab05e5f8072c431d75ba2ed904605a020662dd555ae19",
+      "bytes": 3724
+    },
+    {
+      "path": "scripts/build_v2_county_yield_panel.py",
+      "sha256": "baec565d4304ade55616beae983516f25ee8a02b3ea5cd27c9d8e7bc21e7d68c",
+      "bytes": 7752
+    },
+    {
+      "path": "scripts/build_v2_weather_features.py",
+      "sha256": "32a3b2cfa13ed024ba31b2dc76f73426548ac2b918b96239d79589ef45df1357",
+      "bytes": 4458
+    },
+    {
+      "path": "scripts/download_nasa_power_v2_weather.py",
+      "sha256": "485b82e32ba27f3a31248423884865238b78ca65ba64f91d50a5926c1a647e0a",
+      "bytes": 5769
+    },
+    {
+      "path": "scripts/download_nass_v2_county.py",
+      "sha256": "6ca94bf6b881dab712d3335442c67a5da7596f3a6329d2895d0db0d02d02fa5d",
+      "bytes": 2585
+    },
+    {
+      "path": "scripts/download_v2_county_centroids.py",
+      "sha256": "9015b59cb07558279b8e2a7de08be6da2789933317a5481e1abb7a217bb22f02",
+      "bytes": 4749
+    },
+    {
+      "path": "scripts/run_eia_external_domain.py",
+      "sha256": "7714107c8d692cdadf50d77fed5cde0d3444b31ff09f4d182a0b49e9f7e258c4",
+      "bytes": 3688
+    },
+    {
+      "path": "scripts/run_synthetic_gate_benchmark.py",
+      "sha256": "a304c2751a035ddd9bc4b86158bc92b267d9963c1dc29bb1440864422e18c844",
+      "bytes": 4397
+    },
+    {
+      "path": "scripts/run_v2_county_weather_experiment.py",
+      "sha256": "079518a638b6743a57ce857add91d4e00a0284c60a23a1100901e8f2f9a259ab",
+      "bytes": 9687
+    },
+    {
+      "path": "scripts/score_paper_routes.py",
+      "sha256": "8932fea354bee2f92e9e85072d377f26b2fd32dfa78d726fbba77e7a3eead30d",
+      "bytes": 2530
+    },
+    {
+      "path": "src/crop_yield_xai/__init__.py",
+      "sha256": "e7ca7cd210c42392ef03eb353bd489fde574484f5fa221ddb6f91ed2ea2e839f",
+      "bytes": 88
+    },
+    {
+      "path": "src/crop_yield_xai/audit_rules.py",
+      "sha256": "25201796388402ac02b561f296729b25754c78c91ab0dc01147aa36c257d0a3a",
+      "bytes": 1984
+    },
+    {
+      "path": "src/crop_yield_xai/core.py",
+      "sha256": "6054f967966841f17b643763a8e9962a8e76055bb21c1fac751592d668d3e8e7",
+      "bytes": 10869
+    },
+    {
+      "path": "src/crop_yield_xai/null_audit.py",
+      "sha256": "23cf2b61edfaa13a89e5cd371cadf77e3db68785325c287021f2d9c042ef197a",
+      "bytes": 4281
+    },
+    {
+      "path": "src/crop_yield_xai/weather_features.py",
+      "sha256": "8ab5e6e1a221b0b7e75f880c711e45e6bfa255bd66a4950619c02043f6f16662",
+      "bytes": 11710
+    },
+    {
+      "path": "src/crop_yield_xai/xai_pipeline.py",
+      "sha256": "4d4e4bb8e3f07ed1db5f0e31c848287f0bff5ab607a8e4538fbfdea7950002fe",
+      "bytes": 53733
+    },
+    {
+      "path": "STATUS.md",
+      "sha256": "b352e0d305bca61dc9ef4252dda048d7536f86846e84d86130123ccb7fb9af8b",
+      "bytes": 481
+    }
+  ],
+  "raw_v2_payloads_included": false
+}

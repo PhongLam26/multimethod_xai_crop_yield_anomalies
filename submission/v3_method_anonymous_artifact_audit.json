@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "checks": {
+    "v3_source": true,
+    "v3_pdf": true,
+    "v2_spec": true,
+    "synthetic_evidence": true,
+    "external_evidence": true,
+    "no_raw_nass": true,
+    "no_raw_nasa": true,
+    "no_local_windows_path": true,
+    "no_literal_nass_key": true
+  },
+  "archive": "submission/v3_method_anonymous_artifact.zip",
+  "files": 84
+}

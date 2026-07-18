@@ -1,0 +1,3 @@
+experiment_id,status,reason,allowed_use
+v1_extra_trees_weather_only,SENSITIVITY_ONLY,Gate A and primary Gate B1 fail on the locked state-level evaluation.,Descriptive abstention case only.
+v2_extra_trees_weather,INCONCLUSIVE,Validation-selected model's Gate A paired confidence interval crosses zero on the locked 2022-2025 holdout.,County-level abstention case only.

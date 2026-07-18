@@ -110,13 +110,13 @@
   {
     "task_id": "P5-01",
     "objective": "Final anonymous artifact and public-release audit",
-    "output": "release manifest and final submission package",
+    "output": "submission/v3_method_anonymous_artifact.zip",
     "dependency": "P4-01",
     "branch": "paper/route-b-method",
-    "command": "Run release-specific audit scripts after selecting a venue package",
+    "command": "python scripts/build_v3_method_anonymous_artifact.py; python scripts/audit_v3_method_anonymous_artifact.py",
     "expected_runtime": "minutes",
-    "result": "Not re-audited for the updated V3/V2 evidence",
-    "status": "PENDING",
-    "next_action": "Regenerate and independently audit the final release package."
+    "result": "Anonymous method artifact audited PASS; local V2 raw payloads are intentionally excluded pending redistribution review.",
+    "status": "PASS_LIMITED_RAW_EXCLUDED",
+    "next_action": "Verify source redistribution terms before publishing raw V2 payloads."
   }
 ]
