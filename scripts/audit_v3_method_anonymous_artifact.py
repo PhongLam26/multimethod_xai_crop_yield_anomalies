@@ -19,8 +19,8 @@ def main() -> None:
             if Path(name).suffix.lower() in {".md", ".tex", ".py", ".json", ".csv", ".txt"}
         )
     required = {
-        "v3_source": "paper_versions/v3_method_benchmark/source/main.tex" in names,
-        "v3_pdf": "paper_versions/v3_method_benchmark/source/main.pdf" in names,
+        "v3_source": "paper_versions/v3_method_benchmark/source/fidelity_gated_xai_method_benchmark_v3.tex" in names,
+        "v3_pdf": "paper_versions/v3_method_benchmark/source/fidelity_gated_xai_method_benchmark_v3.pdf" in names,
         "v2_spec": "configs/experiments/county_v2_model_spec.json" in names,
         "synthetic_evidence": any(name.startswith("artifacts/experiments/synthetic-gate-benchmark/") for name in names),
         "external_evidence": any(name.startswith("artifacts/experiments/external-domain-eia/") for name in names),

@@ -1,6 +1,6 @@
 {
   "artifact": "submission/v3_method_anonymous_artifact.zip",
-  "sha256": "6647f0bca5ae340d8c195ce0e12a926f92a88057de9fc7d462a3b670eec661dd",
+  "sha256": "13dff0f4911fbd516c37d98447faf0376618842b0a8e27ea619c117a0328451b",
   "file_count": 84,
   "files": [
     {
@@ -249,6 +249,16 @@
       "bytes": 551
     },
     {
+      "path": "paper_versions/v3_method_benchmark/source/fidelity_gated_xai_method_benchmark_v3.pdf",
+      "sha256": "0c664859c3a8223af57defd218189dadb38fe19678a883be2e358912b873e2dc",
+      "bytes": 408572
+    },
+    {
+      "path": "paper_versions/v3_method_benchmark/source/fidelity_gated_xai_method_benchmark_v3.tex",
+      "sha256": "8c72e786e5e5e3976e15d6310c3e35adc1df422c856c2722a05567cd8375f391",
+      "bytes": 32826
+    },
+    {
       "path": "paper_versions/v3_method_benchmark/source/IEEEtran.bst",
       "sha256": "d83aa3c9b47fc120bb3d9d8e476216cb889c738f72ec950beeac3661c45ded24",
       "bytes": 61632
@@ -257,16 +267,6 @@
       "path": "paper_versions/v3_method_benchmark/source/IEEEtran.cls",
       "sha256": "c972aca108fda004c3514d63658e02816da2e54d9a1451e870b9bd970e003f55",
       "bytes": 288304
-    },
-    {
-      "path": "paper_versions/v3_method_benchmark/source/main.pdf",
-      "sha256": "c6350f6dda31d7520761ffcad3c5f16dc47ff9692f05ccf75084f07adc16eb85",
-      "bytes": 408572
-    },
-    {
-      "path": "paper_versions/v3_method_benchmark/source/main.tex",
-      "sha256": "8c72e786e5e5e3976e15d6310c3e35adc1df422c856c2722a05567cd8375f391",
-      "bytes": 32826
     },
     {
       "path": "paper_versions/v3_method_benchmark/source/references.bib",

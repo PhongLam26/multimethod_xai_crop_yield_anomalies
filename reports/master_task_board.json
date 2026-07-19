@@ -101,7 +101,7 @@
     "output": "reports/final_route_scorecard.*; paper_versions/v3_method_benchmark",
     "dependency": "P2-01,P2-02,P2-03,P3-01",
     "branch": "paper/route-b-method",
-    "command": "python scripts/score_paper_routes.py; pdflatex main.tex",
+    "command": "python scripts/score_paper_routes.py; pdflatex fidelity_gated_xai_method_benchmark_v3.tex",
     "expected_runtime": "minutes",
     "result": "Selected route: Fidelity-gated XAI method benchmark",
     "status": "CANDIDATE",

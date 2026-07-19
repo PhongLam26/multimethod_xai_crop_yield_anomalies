@@ -1,7 +1,7 @@
 {
-  "paper_versions/v3_method_benchmark/source/main.pdf": "c6350f6dda31d7520761ffcad3c5f16dc47ff9692f05ccf75084f07adc16eb85",
-  "submission/v3_method_anonymous_artifact.zip": "6647f0bca5ae340d8c195ce0e12a926f92a88057de9fc7d462a3b670eec661dd",
-  "submission/v3_method_anonymous_artifact_manifest.json": "d1dec44282e0546f10d53e9cc4ad73bc42d743f3752cd42b4645868f95f8ee66",
+  "paper_versions/v3_method_benchmark/source/fidelity_gated_xai_method_benchmark_v3.pdf": "0c664859c3a8223af57defd218189dadb38fe19678a883be2e358912b873e2dc",
+  "submission/v3_method_anonymous_artifact.zip": "13dff0f4911fbd516c37d98447faf0376618842b0a8e27ea619c117a0328451b",
+  "submission/v3_method_anonymous_artifact_manifest.json": "c76664aca804466207a6b01baada497570f90e2e33666f80f418ad897e96c454",
   "reports/experiments/county-v2-weather-models.json": "68b8664cac2cb7e926e2924d4e2f97603ad285dda079e711b4beeff9f34fbeba",
   "reports/v2/v2_pipeline_audit.json": "74bae22a1d9b7e1e0632840ce4499a1cc9f1bbe5638c1e5ff4b49ed5fe3eb1b8",
   "data/legacy/state_panel_v1/V1_IMMUTABLE_MANIFEST.json": "8e46efd745893a52814f16d76d6c64120cde55c16d49a55e2213edd91e16fe15"
