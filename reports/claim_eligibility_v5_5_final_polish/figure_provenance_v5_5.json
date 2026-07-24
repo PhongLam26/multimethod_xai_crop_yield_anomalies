@@ -1,0 +1,124 @@
+{
+  "fig2": {
+    "config_id": "v5_5_final_polish_evidence_board",
+    "row_id": "Barley|Colorado|2016|spring",
+    "prediction_x": 0.20949014122422643,
+    "observed_x": -0.5095273846155033,
+    "geometry_assertions": {
+      "observed_x_equals_source_value": -0.5095273846155033,
+      "prediction_x_equals_source_value": 0.20949014122422643,
+      "observed_left_of_minus_0_5": true,
+      "prediction_right_of_plus_0_2": true,
+      "reconstructs_prediction": true
+    },
+    "shap_source": "artifacts\\xai\\local_case_decomposition.csv",
+    "shap_source_sha256": "8e2f929244d28d68327cdd1168eff4cb39342ac98ff32a81e5782c64b7baed1e",
+    "exact_values": {
+      "row_id": "Barley|Colorado|2016|spring",
+      "prediction": 0.20949014122422643,
+      "observed": -0.5095273846155033,
+      "base_value": -1.96217552381899e-14,
+      "reconstruction_error": 8.271161533457416e-15,
+      "contributions": [
+        [
+          "Heat",
+          0.08063031743271429
+        ],
+        [
+          "Drought",
+          0.0604208070160434
+        ],
+        [
+          "Frost/cold",
+          0.05359162896328663
+        ],
+        [
+          "Excess rain",
+          0.03533157906429514
+        ],
+        [
+          "Radiation",
+          -0.013432099767318106
+        ],
+        [
+          "Other/remainder",
+          -0.007052091484794937
+        ]
+      ],
+      "source": "artifacts\\xai\\local_case_decomposition.csv",
+      "source_sha256": "8e2f929244d28d68327cdd1168eff4cb39342ac98ff32a81e5782c64b7baed1e"
+    },
+    "outputs": [
+      "paper/generated/figure_xai_evidence_board_v5_5.pdf",
+      "paper/generated/figure_xai_evidence_board_v5_5.png"
+    ]
+  },
+  "fig3": {
+    "config_id": "v5_5_final_polish_synthetic_heatmap",
+    "table_iii_source": "paper\\generated\\table_synthetic_scenario_decisions_v5_1.tex",
+    "table_iii_source_sha256": "1a0a702294a3d045426adfc1a6f17147ffbfd8c6eb6596a7b9dd0000ee043d57",
+    "values": [
+      {
+        "scenario": "No signal",
+        "group": "Signal absent or degraded",
+        "ungated_false_permission_pct": 100,
+        "audit_false_permission_pct": 0,
+        "reduction_pp": 100
+      },
+      {
+        "scenario": "Weak signal",
+        "group": "Signal absent or degraded",
+        "ungated_false_permission_pct": 100,
+        "audit_false_permission_pct": 7,
+        "reduction_pp": 93
+      },
+      {
+        "scenario": "Measurement error",
+        "group": "Signal absent or degraded",
+        "ungated_false_permission_pct": 100,
+        "audit_false_permission_pct": 67,
+        "reduction_pp": 33
+      },
+      {
+        "scenario": "Temporal drift",
+        "group": "Invalidity that preserves predictive performance",
+        "ungated_false_permission_pct": 100,
+        "audit_false_permission_pct": 97,
+        "reduction_pp": 3
+      },
+      {
+        "scenario": "Leakage",
+        "group": "Invalidity that preserves predictive performance",
+        "ungated_false_permission_pct": 100,
+        "audit_false_permission_pct": 100,
+        "reduction_pp": 0
+      },
+      {
+        "scenario": "Omitted confounding",
+        "group": "Invalidity that preserves predictive performance",
+        "ungated_false_permission_pct": 100,
+        "audit_false_permission_pct": 100,
+        "reduction_pp": 0
+      },
+      {
+        "scenario": "Correlated features",
+        "group": "Invalidity that preserves predictive performance",
+        "ungated_false_permission_pct": 100,
+        "audit_false_permission_pct": 100,
+        "reduction_pp": 0
+      },
+      {
+        "scenario": "Geographic shift",
+        "group": "Invalidity that preserves predictive performance",
+        "ungated_false_permission_pct": 100,
+        "audit_false_permission_pct": 100,
+        "reduction_pp": 0
+      }
+    ],
+    "assertion": "Fig. 3 values are parsed from the Table III machine-readable source hash above; ungated false permission is fixed at 100% for invalid regimes by the synthetic benchmark summary.",
+    "outputs": [
+      "paper/generated/figure_synthetic_heatmap_v5_5.pdf",
+      "paper/generated/figure_synthetic_heatmap_v5_5.png"
+    ]
+  }
+}

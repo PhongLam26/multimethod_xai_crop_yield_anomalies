@@ -1,0 +1,57 @@
+issue_id,severity,status,evidence_path,manuscript_location,note
+P1-1,P1,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P1-2,P1,PASS,audit/leakage_audit.csv; tests/test_no_future.py,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P1-3,P1,PASS,artifacts/xai/group_size_sensitivity.csv; artifacts/xai/balanced_group_results.csv,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P1-4,P1,PASS,artifacts/xai/shap_family_share.csv; artifacts/metrics/same_task_baselines.csv,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P1-5,P1,PASS,artifacts/xai/local_case_decomposition.csv; artifacts/xai/shap_reconstruction_checks.csv; artifacts/xai/case_selection_log.csv,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P1-6,P1,PASS,artifacts/xai/conditional_permutation_results.csv; artifacts/xai/permutation_ood_diagnostics.csv,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P1-7,P1,PASS,artifacts/models/model_selection_log.csv; artifacts/models/final_model_config.yaml,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P1-8,P1,PASS,audit/claim_evidence_matrix.csv; paper/ictai2026_blind/main.tex,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-1,P2,PASS,artifacts/metrics/same_task_baselines.csv; artifacts/metrics/bootstrap_ci.csv,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-2,P2,PASS,audit/claim_evidence_matrix.csv; paper/ictai2026_blind/main.tex,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-3,P2,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-4,P2,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-5,P2,PASS,artifacts/metrics/rolling_origin_results.csv,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-6,P2,PASS,audit/claim_evidence_matrix.csv; artifacts/metrics/tail_metrics.csv,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-7,P2,PASS,paper/ictai2026_blind/main.tex; artifacts/metrics/tail_metrics.csv,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-8,P2,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-9,P2,PASS,audit/claim_evidence_matrix.csv; paper/ictai2026_blind/main.tex,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-10,P2,PASS,artifacts/xai/shap_config.yaml; artifacts/xai/shap_reconstruction_checks.csv,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-11,P2,PASS,artifacts/xai/correlation_clusters.csv; paper/ictai2026_blind/main.tex,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-12,P2,PASS,audit/claim_evidence_matrix.csv; paper/ictai2026_blind/main.tex,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-13,P2,PASS,audit/claim_evidence_matrix.csv; paper/ictai2026_blind/main.tex,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-14,P2,PASS,audit/claim_evidence_matrix.csv; paper/ictai2026_blind/main.tex,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-15,P2,PASS,audit/claim_evidence_matrix.csv; paper/ictai2026_blind/main.tex,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-16,P2,PASS,artifacts/xai/local_case_decomposition.csv; artifacts/xai/shap_reconstruction_checks.csv,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-17,P2,PASS,artifacts/metrics/macro_micro_metrics.csv; artifacts/metrics/per_crop_results.csv,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-18,P2,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-19,P2,PASS,scripts/rebuild_weather_features.py; tests/test_weather_reconstruction.py; artifacts/data/weather_reconstruction_validation.csv,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-20,P2,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-21,P2,PASS,artifacts/data/missingness.csv; artifacts/data/data_flow.csv; artifacts/data/exclusions.csv,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-22,P2,PASS,artifacts/data/yield_unit_conversion.csv; paper/ictai2026_blind/main.tex,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-23,P2,PASS,artifacts/data/data_vintage.md; paper/ictai2026_blind/main.tex,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-24,P2,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-25,P2,PASS,artifacts/metrics/pooling_comparison.csv; artifacts/metrics/crop_specific_results.csv,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P2-26,P2,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P3-1,P3,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P3-2,P3,PASS,audit/reproducibility_traceability.md; paper/ictai2026_blind/main.tex,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P3-3,P3,PASS,paper/ictai2026_blind/main.tex,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P3-4,P3,PASS,paper/ictai2026_blind/main.tex,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P3-5,P3,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P3-6,P3,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P3-7,P3,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P3-8,P3,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P3-9,P3,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P3-10,P3,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P3-11,P3,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P3-12,P3,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P3-13,P3,PASS,scripts/run_revision_audit.py; paper/ictai2026_blind/figures/fig02_revision_baselines.png,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+P3-14,P3,PASS,artifacts/ and audit/,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+R-1,R,PASS,paper/ictai2026_blind/main.tex,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+R-2,R,PASS,artifacts/; audit/reproducibility_traceability.md,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+R-3,R,PASS,audit/numerical_consistency_report.md; artifacts/predictions/final_test_row_level_predictions.csv,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+R-4,R,PASS,audit/reference_forensic_audit.md; paper/ictai2026_blind/references.bib,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+R-5,R,PASS,submission/anonymization_audit.md; paper/ictai2026_blind/main.pdf,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+R-6,R,PASS,submission/venue_compliance.md,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+R-7,R,PASS,submission/pdf_technical_qa.md; paper/ictai2026_blind/main.pdf,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.
+R-8,R,PASS,submission/final_upload_manifest.md,paper/ictai2026_blind/main.tex,Status is updated only when the corresponding artifact and manuscript change are verified.

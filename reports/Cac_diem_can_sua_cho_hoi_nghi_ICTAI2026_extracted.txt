@@ -1,0 +1,160 @@
+CÁC ĐIỂM CẦN SỬA
+Bài: Auditing Weather-Feature Reliance in Detrended Crop-Yield Models. Nộp IEEE ICTAI 2026
+1. Điều kiện nộp ICTAI 2026 (kiểm tra trước khi bấm nộp)
+Đây là phần dễ bị loại trước khi bài được đọc, nên xử lý đầu tiên. Bốn ràng buộc cứng của ICTAI 2026:
+• Phản biện kín hai chiều. Tên và cơ quan không được xuất hiện ở bất kỳ đâu. Bài đã để “Anonymous Submission” là đúng hướng, nhưng còn hai chỗ hay lộ: trường Author trong metadata của file PDF, và mọi liên kết tới repository / manifest (xem mục 16, 17).
+• Giới hạn 8 trang tính cả tài liệu tham khảo. Mua thêm tối đa 2 trang (100 USD/trang) nên tối đa là 10 trang; quá 10 trang bị desk reject tự động, không phản biện. Bài này nhiều hình, bảng và một thuật toán nên phải đo bản biên dịch ngay (mục 6).
+• Bắt buộc dùng template IEEE (single-spaced, double-column, font 10pt). Lệch template có thể bị hệ thống loại. Kiểm tra bài đang dùng đúng bản IEEE conference mới nhất.
+• Nộp qua EasyChair: https://easychair.org/conferences/?conf=ictai2026
+2. Điểm phản biện sẽ đánh mạnh nhất
+Bài này khác hẳn tình huống “câu văn không theo kịp thí nghiệm”. Số liệu trong bài nhất quán với nhau và bài tự ý thức được giới hạn. Rủi ro lớn nhất không phải sai số, mà là định vị đóng góp.
+Bảng calibration tổng hợp (mục V.A) cho thấy chính sách quan sát được A+B+E có specificity chỉ 28.7%: nó cho phép 71.2% (171/240) số lần chạy không hợp lệ. Cụ thể leakage, omitted confounding, geographic shift và correlated features gần như 30/30 seed đều được cho phép. Người phản biện sẽ đọc con số này trước và kết luận ngay: “cổng chặn được đề xuất không thật sự chặn”. Đây là câu hỏi sinh tử của bài.
+Bài đã trả lời đúng về mặt kỹ thuật (modules là cần chứ không đủ), nhưng câu trả lời đang nằm rải rác ở Limitations và Conclusion. Phải kéo nó lên Abstract và mở đầu Discussion, và nói theo hướng biến con số này thành đóng góp chứ không phải thú nhận thất bại:
+Gating bằng độ chính xác dự báo out-of-sample loại bỏ hoàn toàn kiểu hỏng tệ nhất: giải thích không kiểm soát cho phép 100% (240/240) số lần chạy không hợp lệ, chính sách A+B+E kéo xuống 71.2% (171/240). Đó là phần cổng thật sự có tác dụng, và hiện đang bị chôn ở cuối bài.
+Phần 71.2% còn lại về bản chất không thể phát hiện bằng chỉ số dự báo: leakage và confounding làm TĂNG độ chính xác dự báo, nên không một cổng dựa trên dự báo nào bắt được chúng. Đây là một phát biểu có giá trị lý thuyết, không phải lỗi của bài. Nói thẳng câu này rồi chuyển sang khuyến nghị kiểm tra ở khâu thiết kế.
+Ba mũi tấn công phụ mà phản biện sẽ dùng (chi tiết ở mục 12, 13, 14): (a) “bài toán có bị dựng để thất bại không”; (b) ROC-AUC/PR-AUC cho thấy vẫn có phân biệt, mâu thuẫn cảm giác với “cổng trượt”; (c) Module E là hợp của quá nhiều kiểm định trên mẫu nhỏ nên gần như không thể pass.
+3. Các điểm cần sửa
+3.1 Tính nhất quán số liệu, hình và bảng
+STT
+Chỗ
+Vấn đề / Rủi ro
+Sửa thế nào
+Ưu tiên
+1
+Hình 2, panel B
+Năm đóng góp có dấu cộng lại bằng +0.217 (0.081 + 0.060 + 0.054 + 0.035 − 0.013) nhưng panel ghi “predicted 0.209”. Chênh 0.008 gần như chắc là base/expected value của SHAP nhưng không hiển thị, nên nhìn vào hình các cột không khớp con số dự báo.
+Thêm base value vào panel hoặc caption để bars + base = 0.209; hoặc ghi rõ một câu rằng phần còn lại là giá trị nền của SHAP.
+2
+2
+Bảng calibration, mục V.A
+Bảng liệt kê 14 regime (Corr. feat., Geo. shift, …) không có số hiệu bảng và caption chuẩn, trong khi mọi bảng khác đánh số Table I–VI. Nó đang trôi tự do chỉ với một dòng in nghiêng phía trên.
+Đánh số thành Table VII, thêm caption đầy đủ như các bảng khác. Vừa đúng chuẩn IEEE vừa để phản biện trích dẫn được.
+1
+3
+Table IV
+Dòng “Zero residual” ghi ∆RMSE “0.000” không có ngoặc [CI], trong khi “Crop train mean” và “Train mean” ghi “[0.000, 0.000]”. Cùng một cột hai kiểu trình bày.
+Đồng nhất trình bày, hoặc thêm một chú thích: zero residual là mốc tham chiếu nên cả ∆ và CI đều bằng 0 theo định nghĩa.
+3
+4
+Abstract; Table VI
+Khoảng [−0.029, 0.002] được gọi là “Full trừ Metadata” (Module B), nhưng cột nguồn ở Table IV lại là “∆RMSE vs zero-residual”. Phản biện không biết khoảng này là bootstrap ghép cặp Full−Metadata hay Full−zero.
+Nói rõ khoảng Module B là bootstrap ghép cặp Full−Metadata, và nó trùng Full−zero vì Metadata ≈ zero (max abs diff cỡ 1×10⁻¹³). Một câu là đủ.
+2
+5
+Toàn bài
+Dấu phân tách hàng nghìn không nhất quán: “1257 / 343 / 574” (không dấu) so với “2,000” và “77,521 / 335,037” (có dấu).
+Thống nhất một quy ước theo IEEE trong cả bài.
+3
+3.2 Cấu trúc, độ dài và trình bày
+STT
+Chỗ
+Vấn đề / Rủi ro
+Sửa thế nào
+Ưu tiên
+6
+Toàn bài
+Giới hạn 8 trang tính cả references. Bài có 3 hình + 6 bảng đánh số + Algorithm 1 + 1 bảng calibration + khoảng 35 tài liệu, nhiều khả năng vượt 8 trang.
+Đo bản biên dịch NGAY. Nếu vượt, mua tối đa 2 trang hoặc cắt bớt (mục 7, 10). Tuyệt đối không quá 10 trang, quá là desk reject.
+1
+7
+Fig 1; Table II; Algorithm 1
+Fig 1 (workflow), Table II (fixed modules) và Algorithm 1 đang mã hoá cùng một đường quyết định ba lần. Tốn chỗ trong khi giới hạn trang chặt.
+Gộp Fig 1 với Algorithm 1, hoặc bỏ một cái. Lấy chỗ đó để làm rõ phần định vị đóng góp ở mục 2.
+2
+8
+Abstract
+Khoảng 230 từ, rất đặc, mở đầu bằng phương pháp và giao thức. Phát hiện chính (model trượt cổng; cổng là cần-không-đủ) bị đẩy xuống cuối.
+Rút còn khoảng 200 từ, mở đầu bằng phát hiện, dẫn số 240/240 → 171/240 để làm nổi phần cổng có tác dụng.
+2
+9
+Module D
+Bài nói D “trùng số với Module A trong panel này”. Phản biện sẽ hỏi vì sao còn giữ D.
+Thêm một câu ở lần nhắc đầu tiên: D giữ lại để tổng quát cho dữ liệu khác, chỉ trùng A ở đây vì Metadata ≈ zero.
+2
+10
+Các bảng cảm quan (sensitivity, rolling-origin, prefix, cluster)
+Đang chiếm chỗ trong thân bài nhưng phần lớn là robustness, không phải quyết định chính.
+Chuyển bớt sang phụ lục ẩn danh; giữ trong thân bài các quyết định chính (Module A, B, E và Table VI).
+2
+3.3 Lập luận và định vị đóng góp
+STT
+Chỗ
+Vấn đề / Rủi ro
+Sửa thế nào
+Ưu tiên
+11
+Abstract; Discussion; Conclusion
+Specificity 28.7% (cho phép 71.2% lần chạy không hợp lệ) đang nằm rải rác cuối bài, dễ bị đọc thành “phương pháp không chạy”. Đây là rủi ro số một của bài (mục 2).
+Đưa câu “cần-không-đủ” lên trước, dẫn 240/240 → 171/240, và nói rõ leakage/confounding về bản chất không thể bắt bằng chỉ số dự báo.
+1
+12
+Discussion
+R² = −0.014 dễ bị quy cho setup yếu (chỉ weather, trung bình cấp bang, thiếu soil/management/irrigation), tức “bài toán bị dựng để thất bại”.
+Củng cố phản biện: (a) case PJM dương chứng minh policy không luôn abstain; (b) county check cho thấy độ phân giải mịn hơn cũng không cứu; (c) câu hỏi “model đã fit có đủ tư cách chống lưng claim sự kiện không” là hợp lệ bất kể có tồn tại model tốt hơn.
+2
+13
+Mục IV.B
+ROC-AUC 0.641/0.672 và PR-AUC 0.338 > prevalence 0.219 cho thấy có phân biệt dù yếu, mâu thuẫn cảm giác với “cổng trượt”.
+Thêm một câu sắc: phân biệt trên toàn bộ hàng khác với cải thiện lỗi ghép cặp trên đuôi định trước; cổng nhắm cái sau, nên hai kết quả không mâu thuẫn.
+2
+14
+Module E (Table V)
+E là hợp của nhiều kiểm định (tail RMSE/MAE + rank ρ với perm p<.05 + top-k lift + hypergeometric + perm + year-block CI) trên n nhỏ (73/52/36) → power thấp, gần như không thể pass. Phản biện có thể gọi E là “thiết kế để trượt”.
+Bảo vệ: mỗi kiểm định canh một kiểu lỗi khác nhau; và dẫn ngay bảng synthetic (E = 100% ở strong/moderate signal) để chứng minh E CÓ thể pass khi thật sự có tín hiệu.
+2
+15
+Mục III.B; V.C
+Bootstrap chỉ 10 khối năm-lịch → khoảng rộng, precision thấp; gần như mọi khoảng chính đều cắt 0 một phần do đó.
+Thêm một câu về hệ quả power và vì sao year-block vẫn là đơn vị đúng (giữ phụ thuộc chéo trong cùng một năm).
+3
+3.4 Ẩn danh (double-blind) và artifact
+STT
+Chỗ
+Vấn đề / Rủi ro
+Sửa thế nào
+Ưu tiên
+16
+Toàn bài (repository, released acceptance audit, E1–E10 manifest, artifact manifest, map manifest)
+Bài nhắc các nguồn này nhiều lần. Với double-blind, nếu bất kỳ link nào trỏ về GitHub/OSF có tên thật thì desk reject.
+Ẩn danh mọi link (dùng anonymous.4open.science hoặc phụ lục ẩn danh), hoặc đổi thành “sẽ công bố khi bài được chấp nhận”.
+1
+17
+Metadata file PDF
+Trường Author trong thuộc tính PDF (và \author trong nguồn LaTeX) là chỗ lộ tên phổ biến nhất trong double-blind, dù trang bìa đã ẩn danh.
+Mở thuộc tính PDF kiểm tra; xoá tên tác giả khỏi metadata trước khi nộp.
+1
+18
+Acknowledgment / Funding
+Bản nộp hiện không có phần này, đúng với double-blind.
+Giữ nguyên; chỉ thêm ở camera-ready sau khi được chấp nhận.
+3
+19
+Quan hệ với bài house-price cùng họ
+Nếu bài house-price (cùng phương pháp stop-gate) cũng nộp ICTAI 2026, có rủi ro trùng lặp theo chính sách IEEE double-submission, và cross-cite dễ tự lộ danh.
+Rà phần overlap để hai bài là đóng góp phân biệt rõ (khác domain/dữ liệu); cross-cite ẩn danh kiểu “a companion audit”, tránh trỏ tên tác giả.
+2
+3.5 Tài liệu tham khảo
+STT
+Chỗ
+Vấn đề / Rủi ro
+Sửa thế nào
+Ưu tiên
+20
+Related Work II.B
+Phần method XAI dừng ở khoảng 2020 (Janzing 2020, Slack 2020). Faithfulness và counterfactual explanation đã đi tiếp nhiều trong 2021–2025; phản biện mảng XAI sẽ để ý.
+Thêm 4–6 tài liệu XAI-faithfulness / counterfactual gần đây, mỗi cái trích ở đúng chỗ nó phục vụ lập luận.
+2
+21
+Danh mục tài liệu
+Một số mục dùng “et al.” không đồng nhất với các mục liệt kê đủ tác giả.
+Thống nhất theo IEEE conference style trong cả danh mục.
+3
+Cần làm ngay (hôm nay, trước AoE 21/07)
+1. Ẩn danh: kiểm tra metadata PDF (xoá tên trong trường Author) và ẩn danh mọi link repository/manifest. Đây là thứ khiến bài bị loại trước khi được đọc. (mục 16, 17)
+2. Đo độ dài bản biên dịch: đưa về ≤ 8 trang, hoặc mua ≤ 2 trang. Tuyệt đối ≤ 10 trang. (mục 6)
+3. Đánh số bảng calibration thành Table VII kèm caption. (mục 2)
+4. Sửa Fig 2 panel B: hiện base value để các cột khớp với predicted 0.209. (mục 1)
+5. Sửa Abstract và Conclusion: đưa câu “cần-không-đủ” lên trước và dẫn 240/240 → 171/240. (mục 8, 11)
+6. Rà lại đúng template IEEE, rồi nộp qua EasyChair trước AoE.
+Một lưu ý để định vị đúng
+Khác với bài trước, ở đây số liệu nhất quán và bài tự biết giới hạn của mình. Vì thế phần lớn công sức không nên đổ vào “sửa lỗi” mà vào một việc: một kết quả âm tính trung thực rất dễ bị đọc thành “phương pháp không chạy”. Nếu abstract và mở đầu Discussion nói rõ rằng cổng dự báo là điều kiện cần đã lọc bỏ 100% permission sai của giải thích không kiểm soát, và phần còn lại thuộc về kiểm tra ở khâu thiết kế, thì con số 28.7% biến từ điểm yếu thành đóng góp. Việc còn lại chỉ là bảo đảm các điều kiện nộp kín (ẩn danh, số trang, template) để bài không bị loại trước khi được đọc.

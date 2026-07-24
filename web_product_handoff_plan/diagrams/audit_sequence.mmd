@@ -1,0 +1,27 @@
+sequenceDiagram
+  participant UI as Web UI
+  participant API as API
+  participant V as Validator
+  participant E as Audit Engine
+  participant S as Storage
+  participant R as Report Generator
+
+  UI->>API: Submit mapping and config
+  API->>V: validate_project and validate_schema
+  V->>S: write validation issues and hashes
+  API->>E: evaluate Module A
+  E->>E: paired metrics and bootstrap CI
+  alt Module A does not pass
+    E->>S: persist model-descriptive verdict
+  else Module A passes
+    API->>E: evaluate Module B
+    alt Event claim requested and Module B passes
+      API->>E: evaluate Module E
+    end
+    API->>E: evaluate optional Module D
+    E->>S: persist module results and verdict
+  end
+  UI->>API: Request export
+  API->>R: generate report from stored run
+  R->>S: store export artifact
+

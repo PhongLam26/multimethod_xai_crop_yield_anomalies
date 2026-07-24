@@ -1,0 +1,6 @@
+fold,train_end,test_start,test_end,purpose
+fold_1,2003,2004,2006,rolling_origin
+fold_2,2006,2007,2009,rolling_origin
+fold_3,2009,2010,2012,rolling_origin
+fold_4,2012,2013,2015,rolling_origin
+fold_5,2015,2016,2025,final_test

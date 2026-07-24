@@ -1,0 +1,230 @@
+CÁC ĐIỂM CÒN LẠI CẦN SỬA
+Tài liệu triển khai trực tiếp cho Codex
+Paper: "Auditing Weather-Feature Reliance in Detrended Crop-Yield Models"
+Bản được kiểm | fidelity_gated_xai_method_benchmark_v3(2).pdf — 8 trang.
+Trạng thái | Lỗi P1 về Gate B1 đã được sửa đúng. Paper gần đạt mức submission-ready về nội dung manuscript.
+Mục tiêu tài liệu | Sửa các lỗi logic và trình bày còn lại, đồng thời tránh làm thay đổi protocol hoặc mở lại locked test.
+Ưu tiên | P2-01 và P2-02 phải xử lý trước; sau đó sửa các lỗi nhất quán và bố cục.
+Nguyên tắc | Không bịa Gate A/PJM result; không viết claim mới nếu artifact chưa có; mọi con số phải lấy từ artifact.
+CẢNH BÁO CHO CODEXKhông dùng locked test để chọn lại Full hoặc Metadata-only.Không tự viết rằng PJM Gate A PASS nếu artifact không có phép so sánh Gate A.Không chỉ sửa PDF generated; phải sửa source LaTeX, script tạo bảng/hình và artifact tương ứng.Không rerun toàn bộ protocol nếu lỗi chỉ là caption/layout; chỉ rerun experiment khi logic hoặc số liệu thay đổi.
+1. Executive verdict
+Verdict: GẦN OK, NHƯNG CHƯA FINAL.
+Bản mới đã sửa đúng central P1: Gate B1 hiện dùng Full versus Metadata-only, Gate B2 đã chuyển thành Weather-only versus Metadata-only diagnostic, và wording 'independent' đã được đổi thành 'distinct required conditions'. Contributions, post-season task framing, target equations, no-shortcut statement, synthetic benchmark, county case và XAI provenance cũng đã được cải thiện.
+ID | Mức | Lỗi còn lại | Hành động chính | Trạng thái
+P2-01 | Major | Chưa rõ Full và Metadata-only của Gate B1 được khóa/chọn bằng validation như thế nào. | Làm rõ feature-family selection rule và artifact provenance. | OPEN
+P2-02 | Major | PJM cho phép XAI sau feature-group gate nhưng chưa báo rõ Gate A. | Báo cả Gate A và Gate B1, hoặc hạ claim PJM. | OPEN
+P3-01 | Minor | Caption Table VIII vẫn gọi Gate B2 là sensitivity. | Đổi thành diagnostic/exploratory diagnostic. | OPEN
+P3-02 | Minor | Figure 1 còn quá chung và wording 'prospective' dễ gây nhầm. | Đổi caption hoặc redesign timeline. | OPEN
+P3-03 | Minor | Table XIII quá nhỏ, khó đọc ở 100% zoom. | Đưa full-width hoặc rút command sang supplement. | OPEN
+Điều kiện chốt: Chỉ coi manuscript final sau khi P2-01 và P2-02 được giải quyết bằng artifact thật; ba lỗi P3 được sửa đồng bộ trong source và PDF.
+P2-01. Làm rõ cách khóa Full và Metadata-only cho primary Gate B1
+Mức độ | P2/MAJOR — cần sửa trước khi nộp.
+Vị trí | Section III-B/C, Table III/IV, Section IV-A và artifacts selected_config/validation grid.
+Vấn đề | Paper nói overall validation-selected model là Weather-only ExtraTrees, trong khi primary Gate B1 lại dùng Full versus Metadata-only. Hiện reader chưa biết Full và Metadata-only dùng hyperparameter nào, được chọn riêng trong feature family bằng validation hay được cố định trước.
+Rủi ro reviewer | Reviewer có thể xem đây là lỗi logic/protocol hoặc inconsistency nếu không được giải thích rõ.
+Chuỗi/lệnh tìm trong repository
+rg -n "selected_config|validation_grid|feature.family|metadata_only|weather_only|full" .
+rg -n "Gate A uses|Gate B1|non-selected ExtraTrees full|locked-test access" paper_versions src scripts configs tests .
+Codex phải làm
+1. Tìm validation-selection code cho từng feature family: metadata-only, weather-only và full.
+2. Xác định protocol thật: mỗi family có validation-locked representative, hay Full/Metadata dùng cùng pre-specified architecture/hyperparameter.
+3. Kiểm selected_config.json, validation_grid.csv và prediction hashes để chứng minh Full và Metadata-only đã bị khóa trước locked test.
+4. Nếu mỗi family được chọn riêng bằng validation, ghi rõ selection metric, tie rule, seeds và selected config cho từng family.
+5. Nếu Full/Metadata không được chọn riêng mà dùng một cấu hình cố định trước, ghi rõ pre-specification và nguồn config.
+6. Cập nhật artifact manifest để Gate A model và Gate B1 pair có role riêng, tránh hiểu rằng Full được chọn sau khi xem test.
+7. Cập nhật Table III hoặc thêm một bảng nhỏ/column Role cho Gate A candidate, Gate B1 Full và Gate B1 Metadata.
+8. Chạy unit test xác nhận locked test access flag vẫn false trong feature-family selection.
+File/artifact cần kiểm tra hoặc cập nhật
+configs/fidelity_gate.yaml
+selected_config.json hoặc selected_config_by_feature_family.json
+validation_grid.csv / seed_level_metrics.csv
+paired_full_vs_metadata.csv
+baseline_vector_hashes.csv
+test_gate_b1_pairing.py
+test_locked_test_not_used_for_selection.py
+LaTeX source của Section III-B/C và Table III/IV
+Thay đổi trong manuscript
+Phân biệt rõ Gate A dùng single overall validation-selected configuration.
+Phân biệt rõ Gate B1 là pre-specified feature-group contrast dùng hai representative đã khóa trước test.
+Nêu Full và Metadata-only được chọn/khóa bằng rule nào.
+Không dùng phrase 'non-selected Full model' mà không giải thích role của nó trong Gate B1.
+Nếu Table III không chứa Metadata-only representative, thêm dòng hoặc reference artifact cụ thể.
+Wording gợi ý
+Gate A uses the single overall validation-selected configuration. Gate B1 is a separate pre-specified feature-group contrast: the Full and Metadata-only representatives are each selected within their feature family using validation data only and are locked before the final test. They cannot replace the Gate A model after the locked period is observed.
+Nếu protocol thực tế là fixed architecture thay vì per-family selection, sửa wording cho đúng: The Full and Metadata-only configurations used by Gate B1 were fixed before final evaluation under the pre-specified configuration rule.
+Tiêu chí PASS
+Reader biết chính xác Full model nào và Metadata-only model nào tạo Gate B1.
+Có artifact path và hash cho cả hai prediction vectors.
+Có evidence hai cấu hình được khóa trước locked test.
+Không có test-set reselection.
+Table/prose/config/artifact dùng cùng selection rule.
+Không được làm
+Không chọn lại Full model vì Table V cho point estimate đẹp hơn.
+Không viết per-family validation selection nếu code không làm như vậy.
+Không chỉ thêm một câu prose mà không bổ sung artifact provenance.
+P2-02. PJM phải báo rõ cả Gate A và Gate B1 trước khi cho phép XAI
+Mức độ | P2/MAJOR — central external permission case.
+Vị trí | Section VI-C Cross-Domain Permission Case, PJM artifacts và Conclusion/Discussion nếu có nhắc permission.
+Vấn đề | Đoạn PJM hiện báo Full cải thiện so với Calendar-only và gọi feature-group gate PASS, sau đó cho phép permutation importance. Theo policy của paper, weather/feature-specific interpretation cần cả predictive fidelity Gate A và incremental-value Gate B1.
+Rủi ro reviewer | Reviewer có thể xem đây là lỗi logic/protocol hoặc inconsistency nếu không được giải thích rõ.
+Chuỗi/lệnh tìm trong repository
+rg -n "PJM|feature-group gate|permutation importance|INTERPRET|release" .
+rg -n "pjm_gate|calendar.only|day.ahead|naive baseline|Gate A" scripts configs artifacts tests .
+Codex phải làm
+1. Mở PJM protocol/config và xác định Gate A baseline đã được pre-specify hay chưa.
+2. Nếu có Gate A: tính/báo Gate A model-minus-naive-baseline metric và paired CI riêng.
+3. Xác định Gate B1: Full (Calendar + day-ahead forecast) versus Calendar-only.
+4. Báo trạng thái Gate A và Gate B1 tách biệt trong artifact và manuscript.
+5. Chỉ giữ statement 'permutation importance is made available' khi cả hai gate PASS theo đúng policy.
+6. Nếu PJM không có Gate A hợp lệ, hạ claim thành 'feature-group contrast demonstration' và không gọi đây là full INTERPRET case.
+7. Cập nhật synthetic/external gate-decision manifest và XAI manifest của PJM.
+8. Thêm unit test rằng XAI release flag = true chỉ khi Gate A and Gate B1 cùng PASS.
+File/artifact cần kiểm tra hoặc cập nhật
+pjm_protocol.yaml
+pjm_predictions.csv
+pjm_gate_decisions.json
+pjm_bootstrap.csv
+pjm_xai_manifest.csv
+test_xai_release_requires_both_gates.py
+LaTeX source Section VI-C
+Thay đổi trong manuscript
+Nêu Gate A baseline là gì và pass rule là gì.
+Nêu Gate B1 là Full versus Calendar-only.
+Báo từng ΔRMSE và CI riêng.
+Sửa câu permission để chỉ phát hành XAI khi cả hai condition pass.
+Giữ boundary: predictive reliance, không causal và không agricultural transfer.
+Wording gợi ý
+PJM Gate A compares the validation-locked full model with the pre-specified naive demand baseline and passes (report metric and paired 95% CI). Gate B1 compares Full with Calendar-only and also passes (report Delta RMSE and paired 95% CI). Because both conditions pass, permutation importance is released for the locked PJM rows.
+Nếu không có Gate A: The PJM result is retained as a feature-group contrast demonstration only; it is not treated as a full INTERPRET case under the study-level gate.
+Tiêu chí PASS
+PJM có hai gate decision riêng hoặc claim đã được hạ đúng.
+XAI release logic khớp formal policy.
+Gate A baseline không được chọn sau khi xem locked period.
+Artifact và manuscript báo cùng metric/CI/status.
+Không causal overclaim.
+Không được làm
+Không tự bịa Gate A baseline hoặc con số CI.
+Không dùng Calendar-only comparison vừa làm Gate A vừa làm Gate B1 mà không giải thích estimand.
+Không giữ câu 'gate passes, so XAI is available' nếu chỉ có Gate B1.
+P3-01. Sửa caption Table VIII: Gate B2 là diagnostic, không phải sensitivity
+Mức độ | P3/MINOR nhưng phải sửa để nhất quán.
+Vị trí | Caption Table VIII, page 5; các generator của Table VIII.
+Vấn đề | Method, Table II và Figure 2 đã gọi Gate B2 là Diagnostic. Caption Table VIII vẫn ghi 'GATE B2 IS SENSITIVITY ONLY', gây inconsistency.
+Rủi ro reviewer | Reviewer có thể xem đây là lỗi logic/protocol hoặc inconsistency nếu không được giải thích rõ.
+Chuỗi/lệnh tìm trong repository
+rg -n "Gate B2.*sensitivity|B2 IS SENSITIVITY|sensitivity only" .
+Codex phải làm
+1. Tìm source caption Table VIII.
+2. Đổi 'sensitivity only' thành 'an exploratory diagnostic only' hoặc wording tương đương.
+3. Regenerate table/PDF từ source.
+4. Tìm toàn paper xem còn nơi nào gọi Gate B2 là sensitivity.
+File/artifact cần kiểm tra hoặc cập nhật
+LaTeX source của Table VIII
+table generator nếu caption được sinh tự động
+Final PDF
+Thay đổi trong manuscript
+Caption phải dùng Diagnostic nhất quán với Table II, Figure 2 và Section III-C.
+Dòng Gate B2 trong bảng có thể giữ 'diagnostic locked final test'.
+Wording gợi ý
+GATE DECISION COMPONENTS. GATE A CONTROLS SUBSTANTIVE OBSERVED-EVENT CLAIMS; PRIMARY GATE B1 IS ADDITIONALLY REQUIRED FOR WEATHER-SPECIFIC CLAIMS; GATE B2 IS AN EXPLORATORY DIAGNOSTIC ONLY.
+Tiêu chí PASS
+Không còn câu nào gọi Gate B2 là primary hoặc sensitivity gate.
+Table II, Table VIII, Figure 2, Method và Conclusion dùng cùng role.
+Không được làm
+Không đổi Gate B2 thành PASS/FAIL gate mới.
+P3-02. Figure 1 cần nhất quán với post-season scientific audit
+Mức độ | P3/MINOR — presentation/task framing.
+Vị trí | Figure 1 và caption page 3.
+Vấn đề | Figure 1 vẫn là workflow năm ô rất chung và caption dùng 'Prospective audit workflow'. Trong Method, paper đã nói task là post-season scientific audit, không phải pre-harvest forecast.
+Rủi ro reviewer | Reviewer có thể xem đây là lỗi logic/protocol hoặc inconsistency nếu không được giải thích rõ.
+Chuỗi/lệnh tìm trong repository
+rg -n "Prospective audit workflow|Fig. 1|Train-only target|Validation selection" .
+Codex phải làm
+1. Chọn cách sửa tối thiểu hoặc redesign.
+2. Cách tối thiểu: đổi caption 'Prospective audit workflow' thành 'Future-period locked audit workflow'.
+3. Cách tốt hơn: thêm completed-season weather availability và hai gate roles vào timeline.
+4. Đảm bảo wording prospective chỉ nói future-period evaluation, không nói operational forecasting.
+5. Regenerate figure từ source script, không chỉnh ảnh bằng tay.
+File/artifact cần kiểm tra hoặc cập nhật
+Source script/SVG/PDF của Figure 1
+LaTeX caption Figure 1
+feature_availability artifact để xác nhận timing
+Thay đổi trong manuscript
+Caption phải khớp statement post-season scientific audit.
+Nếu redesign, Figure 1 nên thể hiện completed-season weather, validation lock, future-period test, Gate A, Gate B1 và ABSTAIN/INTERPRET.
+Wording gợi ý
+Fig. 1. Future-period locked audit workflow. Completed-season weather features support a post-season scientific audit; model and feature-family choices are locked before the 2016–2025 evaluation.
+Tiêu chí PASS
+Không còn ambiguity rằng đây là pre-harvest forecast.
+Figure/caption nhất quán với Section III-A.
+Figure đọc được ở 100% zoom.
+Không được làm
+Không dùng từ prospective forecast nếu features cần completed season.
+Không redesign quá phức tạp làm tăng clutter.
+P3-03. Table XIII quá nhỏ và cần tăng khả năng đọc
+Mức độ | P3/MINOR nhưng là lỗi visual rõ nhất.
+Vị trí | Page 6, Table XIII E1–E10 traceability.
+Vấn đề | Table XIII bị ép vào nửa cột cạnh Figure 2; artifact names và reproduce commands gần như không đọc được ở 100% zoom.
+Rủi ro reviewer | Reviewer có thể xem đây là lỗi logic/protocol hoặc inconsistency nếu không được giải thích rõ.
+Chuỗi/lệnh tìm trong repository
+rg -n "TABLE XIII|E1.E10|final pdf numerical crosscheck|Reproduce" .
+Codex phải làm
+1. Ưu tiên đưa Table XIII thành table* full-width ở đầu hoặc cuối trang.
+2. Nếu page budget không cho phép, rút main-paper table còn ID, Artifact short name và Status.
+3. Đưa full reproduce command/path sang supplementary hoặc artifact README.
+4. Giữ stable IDs E1–E10 để reader map được.
+5. Kiểm font size sau render ở 100% zoom.
+6. Regenerate PDF và visual QA page 6.
+File/artifact cần kiểm tra hoặc cập nhật
+LaTeX source Table XIII
+artifact manifest/README
+supplementary nếu có
+Final PDF page 6
+Thay đổi trong manuscript
+Không để command dài trong cell quá hẹp.
+Nếu rút table, text quanh Table XIII phải chỉ reader đến full manifest.
+Giữ statement VERIFIED = regenerated and checked, not gate passed.
+Wording gợi ý
+Main-paper compact columns: ID | Artifact | Status.
+Full reproduction commands are provided in the released artifact manifest.
+Tiêu chí PASS
+Tất cả text Table XIII đọc được ở 100% zoom.
+Không mất mapping E1–E10.
+Full command/path vẫn tồn tại ở artifact hoặc supplement.
+Không tạo overflow hoặc phá page limit.
+Không được làm
+Không giảm font thêm để nhét bảng.
+Không xóa traceability evidence chỉ để tiết kiệm chỗ.
+7. Cross-file consistency audit sau khi sửa
+☐ Gate A model role, Gate B1 Full role và Gate B1 Metadata role nhất quán giữa config, validation grid, artifact và prose.
+☐ PJM gate decision status nhất quán giữa pjm_gate_decisions.json, XAI manifest và Section VI-C.
+☐ Gate B2 chỉ xuất hiện với role Diagnostic/Exploratory diagnostic.
+☐ Figure 1 caption dùng post-season/future-period wording phù hợp.
+☐ Table XIII path/command không bị mất; nếu rút gọn phải có link/reference tới manifest.
+☐ Abstract và Conclusion không thêm metric hoặc claim mới do các sửa đổi này.
+☐ Không thay đổi state-level primary conclusion: Gate A FAIL, Gate B1 FAIL, ABSTAIN.
+☐ County conclusion vẫn đúng: Gate B1 có thể PASS nhưng Gate A inconclusive nên ABSTAIN.
+8. Thứ tự triển khai cho Codex
+1. Đóng băng baseline: lưu git status, commit, PDF hash và current tests.
+2. Xử lý P2-01: xác minh feature-family selection/locking và cập nhật artifacts/prose.
+3. Xử lý P2-02: xác minh PJM Gate A; rerun/chỉnh claim tùy artifact thật.
+4. Chạy tests và numerical crosscheck cho hai issue P2.
+5. Sửa P3-01 caption Table VIII.
+6. Sửa P3-02 Figure 1 caption hoặc redesign.
+7. Sửa P3-03 layout Table XIII.
+8. Build PDF từ clean state.
+9. Render và kiểm từng trang ở 100% zoom, đặc biệt pages 3, 5, 6, 7.
+10. Cập nhật issue tracker và final work log.
+9. Prompt thực thi ngắn để đặt đầu phiên Codex
+Đọc toàn bộ file DOCX này và sửa repository theo đúng issue order P2-01 → P2-02 → P3-01 → P3-02 → P3-03.Không dùng locked test để chọn lại model. Không bịa PJM Gate A hoặc con số CI. Mọi statement về Full/Metadata selection phải khớp validation artifacts. Chỉ cho phép PJM XAI khi formal policy Gate A AND Gate B1 được đáp ứng; nếu thiếu Gate A hợp lệ thì hạ claim thành feature-group contrast demonstration.Sau khi sửa logic, cập nhật source LaTeX, config, tests, artifacts, tables và figures. Build PDF từ clean state, chạy numerical crosscheck, kiểm Gate B2 terminology toàn paper và visual QA Table XIII ở 100% zoom.Báo cáo cuối phải gồm:- file đã sửa;- artifact/test đã tạo;- Gate B1 Full/Metadata selection rule;- PJM Gate A baseline, metric, CI và status hoặc lý do hạ claim;- xác nhận Gate B2 chỉ còn Diagnostic;- PDF path và SHA-256;- các blocker còn lại.
+10. Checklist nghiệm thu cuối
+☐ P2-01 PASS: Full và Metadata-only có validation/pre-specification provenance rõ.
+☐ P2-02 PASS: PJM báo cả Gate A và Gate B1, hoặc claim được hạ đúng.
+☐ P3-01 PASS: Table VIII caption gọi Gate B2 diagnostic.
+☐ P3-02 PASS: Figure 1/caption không gây hiểu nhầm pre-harvest forecast.
+☐ P3-03 PASS: Table XIII đọc được ở 100% zoom.
+☐ Tests PASS.
+☐ Numerical crosscheck PASS.
+☐ Không có locked-test reselection.
+☐ State-level conclusion không thay đổi ngoài evidence.
+☐ Final PDF build sạch và hash được lưu.

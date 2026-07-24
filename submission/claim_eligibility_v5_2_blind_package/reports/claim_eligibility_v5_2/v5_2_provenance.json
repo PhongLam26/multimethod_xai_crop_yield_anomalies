@@ -1,0 +1,85 @@
+{
+  "created_utc": "2026-07-21T18:43:10.541761+00:00",
+  "records": [
+    {
+      "artifact_id": "fig1_exact_uploaded_workflow_v5_2",
+      "manuscript_location": "Fig. 1",
+      "source_file_basename": "wf_US.drawio.png",
+      "copied_project_path": "paper_versions/v5_claim_eligibility_audit/source/figures/claim_eligibility_workflow.png",
+      "source_sha256": "254d06c1b30d322f339e5194dda1853f9abb3944db32695835ab718d64c0a454",
+      "copy_sha256": "254d06c1b30d322f339e5194dda1853f9abb3944db32695835ab718d64c0a454",
+      "source_copy_hash_match": true,
+      "image_size_px": [
+        8110,
+        5760
+      ],
+      "image_mode": "RGBA",
+      "image_metadata_keys": [
+        "mxfile"
+      ],
+      "content_modification": "none; byte-for-byte copy of supplied PNG",
+      "latex_include_path": "figures/claim_eligibility_workflow.png",
+      "generation_timestamp_utc": "2026-07-21T18:43:10.541761+00:00",
+      "assertion_status": "PASS"
+    },
+    {
+      "artifact_id": "fig2_xai_claim_eligibility_v5_2",
+      "manuscript_location": "Fig. 2",
+      "model_family": "ExtraTrees",
+      "feature_family": "Weather-only",
+      "configuration_id": "extra_trees_leaf_1",
+      "locked_split_id": "locked_2016_2025",
+      "row_id": "Barley|Colorado|2016|spring",
+      "seed_aggregation": "five selected seeds aggregated by mean prediction where applicable",
+      "shap_explainer_type": "TreeExplainer",
+      "background_reference_configuration": "explainer: TreeExplainer\nmodel: ExtraTreesRegressor\nfeature_space: post-preprocessing\nbackground: tree_path_dependent_default\noutput: residual_t_ha\nsplit: locked_2016_2025\n",
+      "prediction_hash": "2b013499644460335744be802373acb46761de1f4629dc80c21dc7f9c41dae51",
+      "target_hash": "f06b0ce72260feb1514d56e651b18b61be1cb6d468a668a3f69c05316d3230d7",
+      "shap_artifact_path": "artifacts/xai/local_case_decomposition.csv",
+      "shap_artifact_sha256": "8e2f929244d28d68327cdd1168eff4cb39342ac98ff32a81e5782c64b7baed1e",
+      "shap_config_path": "artifacts/xai/shap_config.yaml",
+      "shap_config_sha256": "87dd04b33e1c618eb8f8ebdf5271fb08d7577e1a2d35a3da660c87d7bbf8f27b",
+      "model_hash_source": "artifacts/xai/model_hashes.json",
+      "model_hash_source_sha256": "bed3f08b0c94b35fb0231a3bbc1a87c2191bb2a9c97c07106d05181cf5578358",
+      "row_id_source": "artifacts/xai/explanation_row_ids.csv",
+      "row_id_source_sha256": "a22bf540ddbaae9e1a8d425a24c030c14303a0462424285949385d0d5f834885",
+      "exact_base_value": -1.96217552381899e-14,
+      "exact_grouped_contributions": {
+        "heat": 0.0806303174327142,
+        "drought": 0.0604208070160434,
+        "frost_cold": 0.0535916289632866,
+        "excess_rain": 0.0353315790642951,
+        "radiation": -0.0134320997673181
+      },
+      "exact_grouped_sum": 0.2165422327090212,
+      "exact_remainder": -0.007052091484775175,
+      "exact_prediction": 0.2094901412242264,
+      "observed_residual": -0.5095273846155033,
+      "displayed_values": {
+        "base": "+0.000",
+        "heat": "+0.081",
+        "drought": "+0.060",
+        "frost_cold": "+0.054",
+        "excess_rain": "+0.035",
+        "radiation": "-0.013",
+        "other_remainder": "-0.007",
+        "prediction": "+0.209",
+        "observed": "-0.510"
+      },
+      "rounding_rule": "displayed values are rounded to three decimals; unrounded terms are authoritative for reconstruction",
+      "rounded_terms_sum": 0.21,
+      "rounded_sum_note": "rounded displayed terms can sum to 0.210 while the unrounded prediction rounds to 0.209",
+      "arithmetic_assertion": {
+        "formula": "exact_base + exact_grouped_sum + exact_remainder == exact_prediction",
+        "reconstructed_prediction": 0.2094901412242264,
+        "tolerance": 1e-12,
+        "absolute_error": 0.0,
+        "assertion_status": "PASS"
+      },
+      "generation_script": "scripts/build_claim_eligibility_v5_2_provenance.py",
+      "generation_timestamp_utc": "2026-07-21T18:43:10.541761+00:00",
+      "assertion_status": "PASS"
+    }
+  ],
+  "assertion_status": "PASS"
+}

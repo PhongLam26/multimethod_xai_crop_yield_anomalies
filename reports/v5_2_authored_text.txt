@@ -1,0 +1,493 @@
+                Claim-Eligibility Auditing for Post-hoc
+                Explanations: Synthetic Calibration and
+                         Cross-Domain Cases
+                Tran Dai Phong Lam1,* [0009-0003-9320-8782], Thu Le1 [0009-0008-3480-8311]
+            Nguyen Quoc Hung1 [0009-0002-7538-7978], Nguyen Trung Trinh1 [0009-0003-5566-3469]
+                                 and Nhat Tung Le1 [0000-0002-7210-3426]
+                                            1
+                                          FPT University, Ho Chi Minh City, Vietnam
+                            phonglam2599@gmail.com, thulvn@fpt.edu.vn, hungtvt2222@gmail.com,
+                                     trinhnguyen112355@gmail.com, tungln4@fpt.edu.vn
+                                                  *
+                                                    Corresponding author
+
+
+   Abstract—Post-hoc explanations can appear coherent even                The audit uses locked, same-row, paired-uncertainty com-
+when the fitted model lacks locked-period evidence for the            parisons so that a module verdict is tied to the exact rows, tar-
+outcome claim being made. We propose a reproducible claim-            get, prediction vectors, and uncertainty procedure used by the
+eligibility audit that separates overall predictive adequacy (Mod-
+ule A), incremental feature-group value (Module B), event-            claim. Selective prediction makes row-level reject decisions;
+recovery adequacy (Module E), and descriptive diagnostics             here the decision unit is study-level permission to interpret a
+(Module D). In synthetic stress tests, ungated explanations           fitted feature family at a specified claim level.
+falsely permit 240/240 structurally invalid runs, whereas the             The audit is calibrated on synthetic regimes with known
+observable A+B+E decision rule reduces false permission to
+                                                                      claim labels and demonstrated on three locked empirical cases.
+171/240 while retaining 88.9% sensitivity. The remaining 71.2%
+false-permission rate and 28.7% specificity show a principled         The crop-state case abstains, the county case has incremental
+boundary: predictive modules cannot reliably detect leakage,          feature evidence but does not pass overall adequacy, and
+omitted confounding, or distributional violations that preserve       the PJM case permits predictive-reliance interpretation. These
+or improve predictive performance. We apply the audit to a            different verdicts under one rule show that the contribution is
+leakage-safe U.S. crop–state–year panel. A validation-selected
+                                                                      a reusable audit rather than a crop-specific negative result.
+Weather-only ExtraTrees model does not pass locked overall
+adequacy, Full-minus-Metadata incremental weather value also              This paper delivers three artifacts. First, it introduces a
+does not pass, and the complete below-trend event-recovery rule       reusable claim-eligibility audit that separates overall predictive
+does not pass. Consequently, post-hoc explanations are retained       adequacy, incremental feature-group value, and event recovery
+only as fitted-function diagnostics. County-level agriculture and     under locked, same-row evaluation. Second, it calibrates false
+PJM demand cases illustrate abstention and permission outcomes
+without changing the crop decision. The contribution is a locked,
+                                                                      permission and false abstention across synthetic regimes with
+same-row, paired-uncertainty protocol that reduces unsupported        pre-specified ground-truth claim labels, revealing both where
+interpretation while making explicit which validity checks must       predictive auditing reduces unsupported interpretation and
+remain at the study-design stage.                                     where structural-validity checks remain independently neces-
+   Index Terms—claim eligibility, explainable machine learning,       sary. Third, it provides a reproducible audit trail that binds
+temporal validation, crop yield, reproducibility                      each verdict to target construction, locked rows, prediction
+                                                                      vectors, uncertainty estimates, configuration identifiers, and
+                       I. I NTRODUCTION                               hashes. Crop, county, and PJM cases demonstrate abstention,
+                                                                      partial evidence without eligibility, and permission under the
+   Post-hoc explanations are commonly interpreted immedi-             same audit. Train-only preprocessing and locked testing are
+ately after model fitting, even when the fitted model has not         safeguards, not standalone novelty.
+demonstrated that it can support the requested study-level
+claim on future or otherwise locked outcomes. A coherent                                   II. R ELATED W ORK
+attribution can therefore be faithful to a model yet still be
+unsuitable as evidence about an observed event.                       A. Yield Modeling and Detrending
+   Existing XAI evaluation primarily asks whether an explana-            Detrending separates a local historical yield trajectory from
+tion is faithful, stable, or robust with respect to model behavior.   residual variation, but the result can depend on the detrending
+We ask a different question: whether the fitted model is eligible     procedure and information available at the evaluation date [1],
+to support the requested interpretation at all. This distinction      [2]. We therefore fit each crop–state trend and residual scale on
+motivates a claim-eligibility audit that evaluates overall pre-       training observations only. Ridge regression, Random Forest,
+dictive adequacy, incremental feature-group value, and event          and ExtraTrees provide deliberately distinct linear and tree-
+recovery before substantive interpretation is permitted.              based model families [3]–[5]; the implementations use scikit-
+learn [6]. This is a finite pre-specified comparison, not a search     maximum/minimum temperature, precipitation, and shortwave
+over the locked test period.                                           radiation come from NASA POWER [28]. The primary design
+                                                                       has 35 full-season weather features. A separate sensitivity
+B. Explanation Methods and Their Boundary                              design adds early-, middle-, and late-season proxies without
+   SHAP and LIME explain a model output under their respec-            redefining the target or locked population. Because the primary
+tive approximation and reference choices [7], [8]. Permutation-        features require a completed crop-season weather window,
+style analyses, model reliance, accumulated local effects, and         the task is a post-season scientific audit of residual-model
+conditional importance likewise describe feature dependence            reliance, not a pre-harvest forecast. Each weather feature is
+or behavior of a fitted predictor [9]–[11]. They can be useful         defined by model name, NASA POWER field, aggregation,
+diagnostic artifacts. However, none turns insufficient prospec-        window, unit, spatial rule, missing handling, and availability
+tive predictive adequacy into evidence about an observed yield         in the reproducibility record, which will be released upon
+anomaly. Prior work also shows that post-hoc explanations              acceptance.
+can be sensitive to perturbation behavior, model random-                  For a test interval, each crop–state linear trend and residual
+ization, and deletion/retraining benchmarks, and that feature          scale is estimated using only its associated training rows. A
+relevance has a causal interpretation problem unless the target        row is eligible only with at least three training observations.
+estimand and reference distribution are explicit [12]–[16].            The validation period begins with 144 candidate rows and
+Recent surveys, removal-based formulations, counterfactual             retains 140 after 4 pre-specified exclusions. The locked test
+critiques, and explanation benchmark suites further emphasize          starts with 343 candidates, excludes 10, and evaluates 333
+that faithfulness and robustness must be evaluated against             rows. Future yields cannot change a previously constructed
+explicit tasks rather than assumed from visual plausibility            evaluation target; this property has a unit test and row-level
+[17]–[21]. Those tests ask whether explanations are faithful to        audit. The learned target is the raw train-only residual in t
+                                                                                         (train)    (train)
+model behavior; the audit below asks whether model behavior            ha−1 : ŷc,s,t = ac,s     + bc,s t, rc,s,t = yc,s,t − ŷc,s,t , and
+is eligible to support a locked-period outcome claim.                  zc,s,t = rc,s,t / max(σ̂c,s,train , ϵ). The standardized residual
+                                                                       defines events, ⊮[zc,s,t < τ ], only. This distinction prevents
+C. Selective Prediction and Abstention
+                                                                       a pooled raw-error score from being misread as a stan-
+   Selective classification and reject-option systems trade cov-       dardized event-recovery metric. Min-history rules of 3, 5,
+erage for risk: a predictor may abstain when its risk target is        8, and 10 years are reported as sensitivity analyses because
+not satisfied [22], [23]. Our unit is different. The decision is not   both eligibility and the fitted residual scale can change with
+a per-row class label but a study-level permission to interpret        available history. Three observations are the minimum that
+a fitted feature family at a specified claim level. The protocol       leaves one positive residual degree of freedom for estimating
+therefore couples a predictive-adequacy module with a paired           a training residual scale; this is not claimed to provide a stable
+feature-group value module and reports false permission and            series-specific variance estimate. The model matrices exclude
+false abstention on synthetic scenarios with known data-               year, yield, trend, residual, standardized residual, event labels,
+generating mechanisms and pre-specified evaluation labels.             predictions, history length, and residual scale; the no-shortcut
+D. Evaluation and Reproducibility                                      schema and overlap audit are retained in the reproducibility
+                                                                       record.
+   Random splits can be inappropriate when temporal or
+hierarchical structure is present [24]. Leakage can create             B. Selection and Baselines
+seemingly strong scientific machine-learning results while                Ridge α ∈ {1, 10} and Random Forest/ExtraTrees with
+invalidating the intended forecast claim [25]. Reproducible ML         160 trees and min samples leaf ∈ {1, 2} are evaluated on
+also requires explicit code, data paths, settings, and numerical       metadata-only, weather-only, and full representations. Stochas-
+evidence [26]. Accordingly, every manuscript number is gen-            tic fits use fixed seeds {7, 17, 27, 37, 47}; numeric imputa-
+erated from an auditable run: configuration, prediction vectors,       tion/scaling, categorical encoding, and model fitting occur
+bootstrap draws, citation check, and final PDF are versioned           within the training fold. Mean per-row seed-aggregated valida-
+outputs.                                                               tion RMSE chooses the configuration, with lexicographic tie-
+                  III. DATA AND P ROTOCOL                              breaking and no locked-test access. Seed-level RMSE standard
+                                                                       deviations are reported so tiny differences are not presented
+A. Panel, Features, and Target                                         as deterministic wins.
+   The unit is a crop–state–year row. The processed panel                 The final audit compares learned predictions on identi-
+contains 1,257 observations from 1990–2025 for Barley,                 cal rows to zero residual, training-mean residual, and crop
+Canola, Oats, and Wheat across 12 U.S. states: Colorado,               training-mean residual baselines. Prediction vectors are hashed
+Illinois, Iowa, Kansas, Minnesota, Montana, Nebraska, North            and pairwise maximum absolute differences are retained, so
+Dakota, Oklahoma, South Dakota, Texas, and Washington.                 any nearly coincident baselines are demonstrated rather than
+The observed panel has 40 crop–state series, with available-           assumed. We use 2,000 deterministic year-block bootstrap
+year counts ranging from 10 to 36 (median 36). Yield in                replicates and percentile 95% intervals over the ten locked
+t ha−1 comes from USDA NASS Quick Stats [27]; daily                    year-block units. With only ten locked year-block units, in-
+terval precision and statistical power are necessarily limited.       The selected configuration deteriorates from validation RMSE
+We nevertheless retain year-block paired resampling because it        0.384 in 2012–2015 to locked-test RMSE 0.669 in 2016–2025,
+preserves the cross-sectional dependence shared by crop–state         consistent with the temporal instability summarized below.
+rows within the same calendar year. All 2,000 bootstrap repli-        Table II includes all same-task naive baselines and the selected
+cates were valid and retained. We do not implement the sta-           configuration across feature families. Module B compares Full
+tionary bootstrap itself; we cite it for the dependent-resampling     versus Metadata-only on the same locked rows. Module D is
+motivation and resample complete calendar years as paired             kept only as the outside-path Weather-only versus Metadata-
+blocks [29]. State-year and crop–state cluster schemes are            only representation diagnostic. All comparisons use paired
+reported as pre-specified sensitivity analyses.                       predictions on identical locked rows. Modules A and B do
+                                                                      not pass. Module D is numerically identical to Module A in
+C. Pre-specified Claim Modules                                        this panel because Metadata-only predictions collapse to the
+   Let P ∗ denote the locked target population implied                zero-residual baseline; detailed equality checks remain in the
+by the split, target construction, feature set, and evalua-           machine-readable audit record.
+tion period. Module A estimates θA = RMSEP ∗ (f ∗ ) −
+RMSEP ∗ (f0 ), where f ∗ is the validation-selected model and         B. Event-Detection Diagnostics
+f0 is the zero-residual baseline. Module B estimates θB =
+RMSEP ∗ (fM +W ) − RMSEP ∗ (fM ), the incremental weather                Event detection is evaluated over all 333 locked rows, not
+value beyond metadata. The reported estimates replace P ∗ by          only a tail preselected by the observed outcome. The score is
+the locked empirical rows, use paired year-block resampling,          negative predicted residual and the score threshold is fixed at
+and pass only when the upper 95% interval is below zero.              zero before final evaluation. Event scores retain weak global
+   Module E is invoked only for below-trend event claims.             discrimination: ROC-AUC is 0.641 for the primary z < −1
+Its primary tail is z < −1; z < −1.5 and z < −2 are                   tail and 0.672 for the two severe-tail sensitivities; primary-
+sensitivities because their smaller samples reduce power. The         tail PR-AUC is 0.338 versus prevalence 0.219. This does
+event module requires tail RMSE/MAE improvement, rank                 not contradict the module decision. ROC-AUC summarizes
+recovery with a positive lower bootstrap bound and within-            pairwise ordering over all locked rows, whereas Module E asks
+year permutation p < .05, and top-k recovery above chance             whether the model improves paired error and recovers the pre-
+by lift, hypergeometric probability, permutation p, and year-         specified tail beyond rank and top-k null checks. The available
+block lift interval. Module D is an outside-path Weather-             discrimination is diagnostically positive but insufficient for the
+only versus Metadata-only representation diagnostic. In this          requested observed-event claim.
+crop panel it is numerically identical to Module A because
+Metadata-only predictions collapse to the zero-residual base-         C. Below-Trend Event Module and Robustness
+line; detailed prediction-vector equality checks are retained in         The broad below-trend subset contains 73 locked-test rows.
+the reproducibility record. The fixed claim-eligibility audit is      The audit artifact separates error, rank-null, and chance-
+summarized in Table I.                                                adjusted event-recovery components. The primary z < −1 top-
+                                                                      10 lift is below random expectation and its permutation result
+                         IV. R ESULTS
+                                                                      is not significant; rank uncertainty also crosses zero. Module
+A. Validation and Locked Test                                         E therefore does not pass without relying on a directional-
+   The selected validation configuration is ExtraTrees with           sign statistic. Because Modules A and B do not pass, neither
+Weather-only features. The complete grid, seed-level metrics,         the local nor global explanation outputs can be used to
+tie rule, and locked-test access flag are retained in the selection   support observed-event or weather-specific predictive claims
+record. Module A uses this single overall validation-selected         in the primary analysis. The components of Module E target
+configuration. Module B is a pre-specified fixed-architecture         distinct evidentiary requirements: tail RMSE/MAE test error
+contrast: Full and Metadata-only predictions reuse the Module         magnitude, rank statistics test ordering, and chance-adjusted
+A configuration ID and swap only the feature family. Their            top-k checks test prioritization of the most important events.
+metrics and row/target/prediction hashes are recorded in the          The module is not mechanically impossible to pass: in the
+selection manifest; they are not candidates for replacing Mod-        synthetic benchmark, moderate-signal, strong-signal, and valid
+ule A after the locked period is observed.                            imbalanced-tail regimes pass Module E in 30/30 seeds.
+   The selected weather-only ExtraTrees configuration ranks              For the Barley–Colorado 2016 case, the locked Weather-
+first in 3/5 stochastic validation seeds. Its advantage is small      only model predicts a residual of +0.209 while the observed
+relative to several seed standard deviations, so we retain the        residual is −0.510. The grouped SHAP decomposition is
+pre-specified selection without claiming clear superiority. The       internally coherent: the unrounded weather-family contribu-
+one-standard-error flag and every seed-level score are retained;      tions and remainder reconstruct the fitted prediction from its
+no final-test statistic changes this selection.                       base value. However, the fitted prediction misses the observed
+   On the locked 2016–2025 test, the selected model has               event in both direction and magnitude. Ungated interpretation
+R2 = −0.014 and RMSE 0.669 t ha−1 . Its paired RMSE                   would permit a weather-attribution claim from this coherent
+difference from zero crosses zero, so Module A does not pass.         explanation, whereas the claim-eligibility audit blocks that
+Fig. 1. Sequential claim-eligibility decision path. Module A controls whether interpretation may extend beyond model description, Module B controls
+incremental weather-specific predictive reliance, and Module E is evaluated only when an event-level claim is requested. Module D remains diagnostic only
+and does not affect claim permission.
+
+                                                                  TABLE I
+       F IXED CLAIM - ELIGIBILITY MODULES AND LOCKED CROP - PANEL VERDICTS . M ODULE D (W EATHER - ONLY VERSUS M ETADATA - ONLY ) IS A
+     DESCRIPTIVE REPRESENTATION DIAGNOSTIC OUTSIDE THE PERMISSION PATH AND IS THEREFORE NOT A REQUIRED ROW. F ULL CONFIGURATION
+                                               DETAILS ARE IN THE REPRODUCIBILITY MANIFEST.
+
+
+ Mod.     Question/contrast             Pass rule                Current estimate                      Verdict               Claim consequence
+ A        Selected Weather-only vs      upper paired CI < 0      -0.005 [-0.019, 0.009]                DOES NOT PASS         model description only
+          zero
+ B        Full vs Metadata-only         upper paired CI < 0      -0.012 [-0.029, 0.002]                DOES NOT PASS         no         weather-specific
+                                                                                                                             reliance claim
+ E        Primary tail error + rank +   all checks pass          RMSE -0.043 [-0.074, 0.007]; rank     DOES NOT PASS         no event-recovery claim
+          top-k                                                  0.180; top-10 1/10
+
+
+
+interpretation because Modules A, B, and E do not pass on                     recovery evidence. Figure 4 shows descriptive state-level het-
+locked outcomes.                                                              erogeneity; these subgroup contrasts do not replace the panel-
+   Audit-record sensitivity checks for temporal stage features,               level Module A decision.
+crop, spatial, and target protocol mark stability boundaries
+rather than reversing the central decision.
+
+D. Sensitivity and Traceability Summary
+   Sensitivity checks show where future designs may im-
+prove, not reselect after the locked period. The audit
+record retains History 3, History 5, History 8, History 10,
+Standardized target, Huber detrending, HistGradientBoosting,
+ElasticNet, cluster-resampling, prefix learning, retrospective-
+target, and state-heterogeneity diagnostics for release. Together
+these records cover 11 pre-specified sensitivity categories
+and 51 recorded rows. None changes the primary Module
+A/B/E decision or converts a descriptive diagnostic into event-
+                                                                TABLE II
+L OCKED 2016–2025 SAME - TASK AUDIT. L EARNED - MODEL PREDICTIONS ARE SEED AGGREGATED . ∆RMSE IS MODEL MINUS ZERO - RESIDUAL RMSE
+WITH PAIRED 95% YEAR - BLOCK INTERVALS ; RMSE IS T HA −1 . T HE M ODULE B CONTRAST IS COMPUTED DIRECTLY AS F ULL - MINUS -M ETADATA ; IN
+      THIS PANEL IT MATCHES F ULL - MINUS - ZERO BECAUSE M ETADATA - ONLY PREDICTIONS COINCIDE WITH THE ZERO - RESIDUAL VECTOR TO
+                                                        FLOATING - POINT PRECISION .
+
+
+
+  Model                          Features                 n       Seeds               R2            RMSE        ∆RMSE vs zero [95% CI]
+  Crop train mean                Baseline               333             1          -0.031           0.674       0.000 [0.000, 0.000]
+  Train mean                     Baseline               333             1          -0.031           0.674       0.000 [0.000, 0.000]
+  Zero residual                  Baseline               333             1          -0.031           0.674       0.000 [0.000, 0.000]
+  ExtraTrees                     Full                   333             5           0.006           0.662       -0.012 [-0.029, 0.002]
+  ExtraTrees                     Metadata-only          333             5          -0.031           0.674       0.000 [0.000, 0.000]
+  ExtraTrees                     Weather-only           333             5          -0.014           0.669       -0.005 [-0.019, 0.009]
+
+
+                        A. Coherent explanation, wrong event                                           B. Study-level verdict
+                        observed                                                   prediction
+                         -0.510                                                     +0.209
+
+
+   other/remainder                                                            -0.007
+                                                                                                            Ungated XAI
+                                                                                                            PERMIT                    X
+           radiation                                                              -0.013
+                                                                                                            weather attribution
+         excess rain                                                                         +0.035
+
+
+           frost/cold                                                                      +0.054           Claim-eligibility audit
+                                                                                                            ABSTAIN                A/B/E
+            drought                                                                 +0.060                  claim not eligible
+
+                                                                            +0.081                      A: -0.005 [-0.019, 0.009]
+                heat
+                                                                                                        B: -0.012 [-0.029, 0.002]
+                                                                                                        E: RMSE -0.043; rank 0.180; top-10 1/10
+
+                                                              base +0.000
+
+                          −0.5     −0.4   −0.3   −0.2    −0.1     0.0       0.1       0.2
+                                                                −1
+                                            raw residual t ha
+
+
+Fig. 2. Corrected agricultural explanation diagnostic for the locked Weather-only Barley–Colorado 2016 row. The local grouped SHAP decomposition is
+shown on the same residual scale as the observed outcome: exact SHAP base value rounds to +0.000, prediction +0.209, and observed residual −0.510 t
+ha−1 . The unrounded SHAP terms reconstruct the fitted prediction; displayed values are rounded to three decimals. Because Modules A, B, and E do not
+pass on locked outcomes, the explanation is a fitted-function diagnostic rather than evidence about the observed loss.
+
+
+
+          V. C ALIBRATION AND E XTERNAL C ASES                               are never inputs to Modules A, B, or E. Ungated explana-
+A. Synthetic Benchmark                                                       tions falsely permit 240 of 240 invalid runs (100.0%, 95%
+                                                                             CI [98.4,100.0]); the observable A+B+E rule falsely permits
+   The claim-eligibility audit is also evaluated where the
+                                                                             171/240 invalid runs (71.2%, 95% CI [65.2,76.6]) while falsely
+mechanism and evaluation label are known before scoring.
+                                                                             abstaining on 20/180 valid runs (11.1%, 95% CI [7.3,16.5]).
+A repeated synthetic temporal benchmark covers 14 regimes
+                                                                             Its permission rate is 78.8%, sensitivity 88.9%, and specificity
+over 30 seeds each, including correlated features, omitted
+                                                                             28.7%.
+confounding, temporal and geographic shift, and leakage. A
+                                                                                The observable modules cannot reliably identify all struc-
+regime is labeled permissible when the requested feature-
+                                                                             turally invalid regimes: omitted confounding, geographic shift,
+group or event claim is present in the data-generating process
+                                                                             leakage, and correlated features are permitted in 30/30 seeds,
+and remains conceptually valid, even if estimation is difficult
+                                                                             and temporal drift in 29/30. These are false permissions, not
+because of limited sample size or representation mismatch. A
+                                                                             successful abstentions.
+regime is labeled impermissible when the requested signal is
+absent or when the data-generating or study-design mechanism
+makes that interpretation structurally invalid. These ground-
+truth labels are used only to score the observable audit and
+                    Synthetic invalid regimes
+       Leakage
+
+  Omitted conf.
+
+      Corr. feat.
+
+      Geo. shift
+
+  Temporal drift
+
+    Meas. error
+
+    Weak signal                                                                  State-level locked Delta RMSE: Weather-only minus zero residual
+                                                                     Ungated
+      No signal                                                      Audit
+                                                                                            WA
+                                                                                            33
+                    0       20             40          60       80        100                             MT
+                                                                                                                            ND
+                                                                                                          40
+                                                                                                                            40               MN
+                                 false-permission rate (%)                                                                                   40
+                                                                                                                            SD
+                                                                                                                            28
+                                                                                                                                              IA
+                                                                                                                            NE
+Fig. 3. Synthetic calibration of ungated explanation permission versus the                                                  20
+                                                                                                                                              13
+                                                                                                                                                     IL
+observable A+B+E audit rule across structurally invalid regimes. GT labels                                     CO                                    20
+                                                                                                               23                KS
+are used only for evaluation, not as inputs to the audit decision.                                                               28
+                                                                                                                                  OK
+                                                                                                                                  28
+
+
+
+                                                                                                                            TX
+                                                                                                                            20
+
+
+
+
+                                                                                                       −0.04        −0.02             0.00         0.02   0.04
+                                                                                                      Delta RMSE t ha−1 (negative favors Weather-only)
+
+
+
+                                                                                 Fig. 4. State-level heterogeneity on the locked 2016–2025 crop panel.
+                                                                                 Colors show Weather-only minus zero-residual ∆RMSE; negative values favor
+                                 TABLE III                                       Weather-only. Labels report state abbreviation and locked-row count. Gray
+ S YNTHETIC SCENARIO - LEVEL CALIBRATION . GT IS EVALUATION - ONLY;              states are outside the study panel. Subgroup estimates are descriptive and not
+ THE RULE USES ONLY OBSERVABLE M ODULES A, B, AND E ACROSS 30                    separate module decisions.
+                              SEEDS .
+
+
+Scenario                  GT      Claim          A          B        E    Rule
+Corr. feat.               no       event        100%    100%    100%      100%
+Geo. shift                no       event        100%    100%    100%      100%
+Imbalanced tail           yes      event        100%    100%    100%      100%
+Leakage                   no       event        100%    100%    100%      100%
+Meas. error               no       event        70%     100%    83%        67%
+Moderate signal           yes      event        100%    100%    100%      100%
+No signal                 no       event         0%      47%     10%        0%
+Omitted conf.             no       event        100%    100%    100%      100%
+Small sample              yes      event         93%     97%     97%       93%
+Spatial mismatch          yes      event         43%    100%     80%       40%
+Strong signal             yes      event        100%    100%    100%      100%
+Temporal drift            no       event         97%    100%    100%       97%
+Train-only detr.          yes      event        100%    100%    100%      100%
+Weak signal               no       event         10%     80%     53%        7%
+B. Agricultural External-Resolution Check                          regimes such as leakage, omitted confounding, correlated
+   We also implemented a separate county-level winter-wheat        features, and geographic or temporal shift, which may preserve
+check rather than assuming that a finer panel would rescue the     or even improve predictive performance. Predictive auditing
+state-level result. The locked pre-model population contains       should therefore be interpreted as a necessary claim-discipline
+574 counties with at least ten training-period observations        layer, not as a detector of structural validity; design-stage leak-
+from 2000–2025, official county yields, static county interior     age, confounding, measurement, and distribution-shift checks
+points, and annual NASA POWER weather aggregates. Vali-            remain independently required.
+dation selected a weather-only ExtraTrees residual model from         Several analyses are locally favorable. The eight- and ten-
+Ridge and ExtraTrees metadata, weather, and full-feature can-      year history filters improve paired error on a smaller 313-
+didates. On the untouched 2022–2025 holdout, its RMSE was          row population; the 2013–2015 rolling fold passes, whereas
+13.47 versus 13.78 bushels per acre for the zero-residual base-    the 2007–2009 fold significantly favors the baseline; severe
+line, but the paired year-block 95% CI for the difference was      tails improve RMSE and MAE but do not pass rank and
+[−0.67, 0.26]. Module B, which compares Full with Metadata-        top-k recovery; and the county analysis passes Module B
+only, passes (∆RMSE = −0.71, 95% CI [−1.23, −0.34]), but           while Module A does not pass. These results identify design
+Module A does not pass under the prespecified upper-CI rule.       conditions under which predictive signal may be stronger,
+The county analysis therefore reaches a model-descriptive-         but they either change the population, represent non-primary
+only outcome and serves as a robustness case rather than           temporal folds, or do not pass another required module. We
+evidence of predictive success or cross-resolution transfer.       therefore use them to motivate future study design rather than
+                                                                   to replace the primary locked test.
+C. Cross-Domain Sanity-Check Permission Case                          The audit separates primary decisions from descriptive mea-
+   Absolute RMSE values are reported in domain-specific            surements before the locked period is examined. Module A,
+units—t ha−1 for the state crop panel, bushels per acre for        primary Module B, and the primary z < −1 Module E define
+the county case, and MWh for PJM—and are not directly              the below-trend event permission rule; more severe tails, al-
+comparable across domains. The cross-domain comparison             ternative histories, detrending choices, resampling units, stage
+therefore concerns pass/does-not-pass verdicts under the same      proxies, crop/state diagnostics, and expanded model families
+audit logic.                                                       are sensitivity or diagnostic evidence. They clarify robustness
+   The PJM analysis is a cross-domain sanity-check permis-         and design trade-offs but are not extra chances to declare the
+sion case for the core two-stage audit rather than a transfer      primary claim successful.
+claim. Its target is continuous electricity demand, so the crop-
+specific extreme-event module is not invoked. Public daily         B. Reproducibility and Traceability
+PJM electricity-demand and day-ahead forecast records from            The reproducibility record contains input hashes, target con-
+EIA Form EIA-930 [30] are fit with Calendar-only ExtraTrees        struction, feature availability, forbidden-column checks, locked
+features on January–September 2024 and evaluated on locked         configuration, seeds, row IDs, predictions, bootstrap draws,
+October–December records; Full adds the day-ahead demand           and table inputs, so paired comparisons can be recomputed on
+forecast. Module A compares Full with a pre-specified train-       identical locked rows.
+period mean-demand naive baseline and passes: locked RMSE
+is 77,521 versus 335,037 MWh, with paired bootstrap ∆RMSE          C. Limitations and External Validity
+95% CI [−296.7, −221.8] × 103 MWh. Module B compares                  State-representative weather can miss within-state exposure,
+Full with Calendar-only and also passes: Calendar-only RMSE        weather covariates are correlated, and the panel lacks soil,
+is 227,417 MWh and the Full-minus-Calendar paired 95%              irrigation, cultivar, management, and phenology data. The pri-
+CI is [−186.0, −119.3] × 103 MWh. Because both pass,               mary interval resamples only ten locked year-block units, and
+permutation importance is reported for locked PJM rows.            cluster sensitivities encode different dependence assumptions
+The XAI manifest binds row IDs, hashes, seed handling,             without removing that limitation. This negative result limits the
+and output scale; agricultural XAI outputs remain descriptive      present target, resolution, features, and model family; it does
+because the required agricultural modules do not pass. These       not establish that weather lacks scientific relevance for yield
+are predictive-reliance interpretations, not causal or transfer    or that a stronger model cannot exist. The corrected synthetic
+claims. This intentionally easy positive case checks that the      benchmark also shows that predictive adequacy and feature-
+audit is not always-abstaining; synthetic regimes define the       group value cannot identify omitted confounding, leakage,
+decision-rule boundary.                                            correlated-feature structures, or unobserved distributional vio-
+                                                                   lations by themselves. GT labels are used only for evaluation,
+                      VI. D ISCUSSION
+                                                                   not for audit decisions. The audit asks whether the validation-
+A. Claim Scope and Multiplicity                                    selected fitted model has sufficient locked evidence to support
+   The synthetic benchmark clarifies the scope of the proposed     the requested claim. The separately locked county check shows
+audit. Relative to ungated explanation, the observable A+B+E       that finer resolution does not automatically rescue overall
+rule reduces false permission from 240/240 to 171/240 invalid      adequacy, while the PJM permission case demonstrates that
+runs. The remaining false permissions are concentrated in          the audit does not always abstain when signal is strong. Future
+work needs prospectively versioned inputs, finer exposure                         [14] C.-K. Yeh, C.-Y. Hsieh, A. S. Suggala, D. I. Inouye, and
+measurements, design-stage validity checks, and an indepen-                            P. K. Ravikumar, “On the (in)fidelity and sensitivity of
+                                                                                       explanations,” in Advances in Neural Information Processing Systems,
+dent future test interval.                                                             vol. 32, 2019. [Online]. Available: https://papers.neurips.cc/paper/
+                                                                                       9278-on-the-infidelity-and-sensitivity-of-explanations
+                          VII. C ONCLUSION                                        [15] D. Slack, S. Hilgard, E. Jia, S. Singh, and H. Lakkaraju, “Fooling LIME
+                                                                                       and SHAP: Adversarial attacks on post hoc explanation methods,” in
+                                                                                       Proceedings of the AAAI/ACM Conference on AI, Ethics, and Society,
+   The agricultural audit supports model description only:                             2020, pp. 180–186.
+Modules A, B, and E do not pass on the locked state panel, and                    [16] D. Janzing, L. Minorics, and P. Blöbaum, “Feature relevance
+the separately locked county check does not pass Module A                              quantification in explainable AI: A causal problem,” in Proceedings
+                                                                                       of the Twenty Third International Conference on Artificial Intelligence
+under the prespecified rule. More generally, the audit reduces                         and Statistics, ser. Proceedings of Machine Learning Research,
+unsupported permission relative to ungated explanation but                             vol. 108. PMLR, 2020, pp. 2907–2916. [Online]. Available:
+does not establish structural validity. The synthetic reduction                        https://proceedings.mlr.press/v108/janzing20a.html
+                                                                                  [17] I. Covert, S. Lundberg, and S.-I. Lee, “Explaining by removing:
+from 240/240 to 171/240 false permissions demonstrates prac-                           A unified framework for model explanation,” Journal of Machine
+tical claim discipline, while the remaining false permissions                          Learning Research, vol. 22, no. 209, pp. 1–90, 2021. [Online].
+show why leakage, omitted confounding, measurement valid-                              Available: https://jmlr.org/papers/v22/20-1316.html
+                                                                                  [18] M. T. Keane, E. M. Kenny, E. Delaney, and B. Smyth, “If only we
+ity, and distribution-shift checks must be enforced at the design                      had better counterfactual explanations: Five key deficits to rectify in
+stage.                                                                                 the evaluation of counterfactual XAI techniques,” in Proceedings of the
+                                                                                       Thirtieth International Joint Conference on Artificial Intelligence, 2021,
+                                                                                       pp. 4466–4474.
+                              R EFERENCES                                         [19] C. Agarwal, S. Krishna, E. Saxena, M. Pawelczyk, N. Johnson,
+                                                                                       I. Puri, M. Zitnik, and H. Lakkaraju, “OpenXAI: Towards a transparent
+ [1] J. Lu, G. J. Carbone, and P. Gao, “Detrending crop yield data for                 evaluation of model explanations,” in Thirty-sixth Conference on Neural
+     spatial visualization of drought impacts in the United States, 1895–              Information Processing Systems Datasets and Benchmarks Track, 2022.
+     2014,” Agricultural and Forest Meteorology, vol. 237–238, pp. 196–208,            [Online]. Available: https://openreview.net/forum?id=MU2495w47rz
+     2017.                                                                        [20] M. Nauta, J. Trienes, S. Pathak, E. Nguyen, M. Peters, Y. Schmitt,
+ [2] H. Meng and L. Qian, “Performances of different yield-detrending                  J. Schlötterer, M. van Keulen, and C. Seifert, “From anecdotal evidence
+     methods in assessing the impacts of agricultural drought and flooding: A          to quantitative evaluation methods: A systematic review on evaluating
+     case study in the middle-and-lower reach of the Yangtze River, China,”            explainable AI,” ACM Computing Surveys, vol. 55, no. 13s, pp. 295:1–
+     Agricultural Water Management, vol. 296, p. 108812, 2024.                         295:42, 2023.
+ [3] A. E. Hoerl and R. W. Kennard, “Ridge regression: Biased estimation          [21] A. Hedström, L. Weber, D. Krakowczyk, D. Bareeva, F. Motzkus,
+     for nonorthogonal problems,” Technometrics, vol. 12, pp. 55–67, 1970.             W. Samek, S. Lapuschkin, and M. M.-C. Höhne, “Quantus:
+ [4] L. Breiman, “Random forests,” Machine Learning, vol. 45, pp. 5–32,                An explainable AI toolkit for responsible evaluation of neural
+     2001.                                                                             network explanations and beyond,” Journal of Machine Learning
+ [5] P. Geurts, D. Ernst, and L. Wehenkel, “Extremely randomized trees,”               Research, vol. 24, no. 34, pp. 1–11, 2023. [Online]. Available:
+     Machine Learning, vol. 63, pp. 3–42, 2006.                                        https://jmlr.org/papers/v24/22-0142.html
+ [6] F. Pedregosa, G. Varoquaux, A. Gramfort, V. Michel, B. Thirion,              [22] R. El-Yaniv and Y. Wiener, “On the foundations of noise-free
+     O. Grisel, M. Blondel, P. Prettenhofer, R. Weiss, V. Dubourg,                     selective classification,” Journal of Machine Learning Research,
+     J. Vanderplas, A. Passos, D. Cournapeau, M. Brucher, M. Perrot, and               vol. 11, no. 53, pp. 1605–1641, 2010. [Online]. Available: https:
+     É. Duchesnay, “Scikit-learn: Machine learning in Python,” Journal of             //jmlr.org/papers/v11/el-yaniv10a.html
+     Machine Learning Research, vol. 12, no. 85, pp. 2825–2830, 2011.             [23] Y. Geifman and R. El-Yaniv, “Selective classification for deep neural
+     [Online]. Available: https://jmlr.org/papers/v12/pedregosa11a.html                networks,” in Advances in Neural Information Processing Systems,
+ [7] S. M. Lundberg and S.-I. Lee, “A unified approach to interpreting model           vol. 30, 2017. [Online]. Available: https://papers.neurips.cc/paper/
+     predictions,” in Advances in Neural Information Processing Systems,               7073-selective-classification-for-deep-neural-networks
+     2017. [Online]. Available: https://proceedings.neurips.cc/paper files/       [24] D. R. Roberts, V. Bahn, S. Ciuti, M. S. Boyce, J. Elith, G. Guillera-
+     paper/2017/hash/8a20a8621978632d76c43dfd28b67767-Abstract.html                    Arroita, S. Hauenstein, J. J. Lahoz-Monfort, B. Schröder, W. Thuiller,
+ [8] M. T. Ribeiro, S. Singh, and C. Guestrin, “Why Should I Trust You?                D. I. Warton, B. A. Wintle, F. Hartig, and C. F. Dormann, “Cross-
+     Explaining the Predictions of Any Classifier,” in Proceedings of the              validation strategies for data with temporal, spatial, hierarchical, or
+     ACM SIGKDD International Conference on Knowledge Discovery and                    phylogenetic structure,” Ecography, vol. 40, pp. 913–929, 2017.
+     Data Mining, 2016.                                                           [25] S. Kapoor and A. Narayanan, “Leakage and the reproducibility crisis in
+ [9] A. Fisher, C. Rudin, and F. Dominici, “All models are wrong, but many             machine-learning-based science,” Patterns, vol. 4, p. 100804, 2023.
+     are useful: Learning a variable’s importance by studying an entire class     [26] J. Pineau, P. Vincent-Lamarre, K. Sinha, V. Larivière, A. Beygelzimer,
+     of prediction models simultaneously,” Journal of Machine Learning                 F. d’Alché Buc, E. Fox, and H. Larochelle, “Improving reproducibility
+     Research, vol. 20, no. 177, pp. 1–81, 2019. [Online]. Available:                  in machine learning research: A report from the NeurIPS 2019
+     https://jmlr.org/papers/v20/18-760.html                                           reproducibility program,” Journal of Machine Learning Research,
+[10] D. W. Apley and J. Zhu, “Visualizing the effects of predictor variables in        vol. 22, no. 164, pp. 1–20, 2021. [Online]. Available: https:
+     black box supervised learning models,” Journal of the Royal Statistical           //jmlr.org/papers/v22/20-303.html
+     Society: Series B, vol. 82, pp. 1059–1086, 2020.                             [27] USDA National Agricultural Statistics Service, “Quick stats database,”
+[11] C. Strobl, A.-L. Boulesteix, A. Zeileis, and T. Hothorn, “Bias in                 2026, accessed 2026-07-18. [Online]. Available: https://quickstats.nass.
+     random forest variable importance measures: Illustrations, sources and            usda.gov/
+     a solution,” BMC Bioinformatics, vol. 9, p. 307, 2008.                       [28] NASA Prediction Of Worldwide Energy Resources Project, “POWER
+[12] J. Adebayo, J. Gilmer, M. Muelly, I. Goodfellow, M. Hardt, and                    data access viewer and API,” 2026, accessed 2026-07-18. [Online].
+     B. Kim, “Sanity checks for saliency maps,” in Advances in Neural                  Available: https://power.larc.nasa.gov/
+     Information Processing Systems, vol. 31, 2018. [Online]. Available:          [29] D. N. Politis and J. P. Romano, “The stationary bootstrap,” Journal of
+     https://papers.nips.cc/paper/8160-sanity-checks-for-saliency-maps                 the American Statistical Association, vol. 89, no. 428, pp. 1303–1313,
+[13] S. Hooker, D. Erhan, P.-J. Kindermans, and B. Kim, “A                             1994.
+     benchmark for interpretability methods in deep neural networks,”             [30] U.S. Energy Information Administration, “EIA-930, hourly electric
+     in Advances in Neural Information Processing Systems, vol. 32,                    grid monitor,” 2026, accessed 2026-07-19. [Online]. Available:
+     2019. [Online]. Available: https://proceedings.neurips.cc/paper/2019/             https://www.eia.gov/electricity/gridmonitor/about
+     hash/fe4b8556000d0f0cae99daa5c5c5a410-Abstract.html
+

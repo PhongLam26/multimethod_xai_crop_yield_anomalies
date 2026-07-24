@@ -1,0 +1,361 @@
+KẾ HOẠCH SỬA VÒNG CUỐI
+ictai2026_fidelity_gated_xai_pjm_ci_fixed.pdf
+Tổng hợp đánh giá paper hiện tại, góp ý của giảng viên và yêu cầu triển khai cho Codex
+Phán quyết hiện tại
+Paper đã gần đạt để nộp và đã xử lý tốt phần lớn vấn đề lớn: contribution rõ hơn, module logic tách biệt, workflow có nhánh, bảng quyết định có số, XAI figure thật, bản đồ Hoa Kỳ có kết quả, local PASS được công khai, faithfulness references và PJM citation đã bổ sung. Tuy nhiên chưa nên chốt trước khi sửa lỗi synthetic GT labels và các lỗi nhất quán còn lại.
+Mức đánh giá hiện tại: khoảng 9/10. Sau khi hoàn thành toàn bộ mục P0 và kiểm tra lại artifact, có thể đạt khoảng 9.3/10 và đủ an toàn hơn để nộp.
+0. Prompt tổng hợp để gửi Codex
+Bạn đang sửa vòng cuối paper ICTAI 2026 “Auditing Weather-Feature Reliance in Detrended Crop-Yield Models”. Hãy đọc toàn bộ PDF hiện tại, source LaTeX, scripts sinh bảng/hình, artifact manifests, synthetic benchmark outputs, map manifest và bibliography. Không chỉnh tay số liệu.
+
+Paper hiện gần hoàn thiện nhưng còn một lỗi blocker: bảng synthetic đang hiển thị GT=yes cho tất cả 14 regimes, trong khi narrative nói chỉ có 6 permissible regimes, tương ứng 180 valid runs và 240 invalid runs. Hãy audit artifact labels, regenerate bảng, và thêm assertion đảm bảo 6 yes, 8 no, 180 valid và 240 invalid. Không được sửa thủ công chỉ ở LaTeX.
+
+Sau đó chuẩn hóa toàn văn sang Module A/B/E/D, sửa Module D thành diagnostic outcome thay vì FAIL, làm workflow tuần tự hơn để thể hiện rõ claim level, sửa caption map và Fig. 2, kiểm tra feature-definition supplement, rà lại synthetic policy explanation, rồi build lại PDF. Mọi số phải sinh từ artifact. Chỉ dừng khi checklist cuối tài liệu đều PASS. Nếu phát hiện mâu thuẫn mới, phải sửa source generator và assertion thay vì che bằng câu chữ.
+1. Paper hiện đã làm được gì
+Hạng mục
+Trạng thái
+Nhận xét
+Abstract công khai Module A và B
+Đã làm tốt
+Đã in ΔRMSE và CI, đồng thời thừa nhận longer-history, rolling fold và severe-tail error cục bộ thuận lợi.
+Contribution
+Đã làm tốt
+Tách Module A, B, E, D; nêu simulation, empirical cases và audit trail.
+Workflow
+Đã có
+Đã có nhánh và Algorithm 1 rõ; cần chỉnh thêm logic tuần tự.
+Primary module table
+Đã làm tốt
+Table VI có A/B/E/D, số, CI, status và decision role.
+Metadata-only gần zero
+Đã làm rất tốt
+Có giải thích cấu trúc và maximum absolute differences.
+Validation/test shift
+Đã làm
+Đã nối RMSE 0.384 lên 0.669 với temporal instability.
+ROC/PR-AUC
+Đã làm
+Đã giải thích discrimination dương yếu không đủ cho Module E.
+Ridge P(rank=1)
+Đã sửa
+Đã chuyển deterministic Ridge sang N/A.
+Local PASS
+Đã làm
+Abstract và Discussion đã thừa nhận History 8/10, rolling fold 4, severe-tail errors và county B pass.
+XAI figure
+Đã làm
+Có global SHAP share, local decomposition, module intervals.
+Bản đồ Hoa Kỳ
+Đã làm
+Có 12 bang, diverging scale, ΔRMSE, state abbreviations và outside-panel gray.
+Faithfulness references
+Đã làm
+Đã thêm Adebayo, Hooker, Yeh.
+PJM source
+Đã làm
+Đã thêm EIA-930 và định vị là intentionally easy sanity check.
+Page limit
+Đạt
+PDF hiện đủ 8 trang, layout nhìn chung sạch.
+2. P0 - Lỗi bắt buộc sửa trước khi nộp
+2.1. Synthetic table: cột GT đang sai toàn bộ
+BLOCKER
+Narrative nói 14 regimes gồm 6 permissible và 8 invalid, tương ứng 180 valid runs và 240 invalid runs. Nhưng bảng hiện ghi GT=yes cho cả 14 regimes, kể cả No signal, Leakage, Omitted confounding, Temporal drift, Weak signal và Geographic shift. Đây là mâu thuẫn trực tiếp có thể làm reviewer mất niềm tin vào toàn bộ benchmark.
+Mở artifact gốc chứa scenario admissibility labels.
+Xác định chính xác 6 valid regimes và 8 invalid regimes theo protocol đã pre-specify.
+Regenerate bảng synthetic từ artifact, không chỉnh thủ công.
+Kiểm tra aggregate metrics sau khi regenerate; nếu thay đổi, cập nhật abstract/results/discussion tự động.
+Thêm unit test và build assertion.
+Required assertions:
+assert n_scenarios == 14
+assert n_gt_yes == 6
+assert n_gt_no == 8
+assert n_valid_runs == 6 * 30 == 180
+assert n_invalid_runs == 8 * 30 == 240
+
+The manuscript build must fail if the displayed GT labels, aggregate counts,
+false-permission count, false-abstention count, sensitivity, or specificity
+do not match the machine-readable synthetic artifact.
+Sau khi sửa, kiểm tra lại từng scenario. Không được tự suy nhãn từ tên scenario nếu artifact/DGP policy định nghĩa khác; phải lấy từ source-of-truth.
+2.2. Chuẩn hóa thuật ngữ Gate/Module
+Paper đã chuyển sang Module A/B/E/D nhưng county section và Conclusion vẫn dùng Gate A hoặc Gate B1. Phải chọn một hệ duy nhất.
+Hiện tại
+Sửa thành
+Gate A
+Module A
+Gate B1
+Module B
+Gate B2
+Module D
+agricultural gates fail
+required agricultural modules fail
+Module B (Gate B1)
+Module B
+Gate A remains inconclusive
+Module A remains inconclusive
+Không nhắc lịch sử tên gate trong anonymous paper.
+Search toàn repository và PDF text sau build để bảo đảm không còn `Gate A`, `Gate B1`, `Gate B2`, trừ khi bibliography hoặc artifact legacy note thật sự cần.
+Algorithm, tables, captions, county/PJM case và Conclusion đều dùng cùng thuật ngữ.
+2.3. Module D không nên có trạng thái FAIL
+Module D được định nghĩa là diagnostic-only và không có pass condition dùng để cấp phép. Vì vậy ghi FAIL khiến nó trông như một gate bắt buộc.
+Vị trí
+Sửa
+Table VI Status
+Dùng `NO CLEAR DIFFERENCE`, `INCONCLUSIVE`, hoặc `DESCRIPTIVE ONLY`.
+Narrative `Modules A, B, and D all fail`
+Đổi thành `Modules A and B fail; Module D shows no clear difference and remains diagnostic.`
+Figure labels
+Không gắn D là FAIL; nếu hiển thị, ghi `diagnostic CI crosses zero`.
+Conclusion
+Không liệt kê D trong required modules.
+2.4. Làm workflow tuần tự và đúng claim-level hơn
+Workflow hiện đã có nhánh nhưng các đường A/B/E còn khiến người đọc phải tự suy logic. Vẽ lại theo decision sequence, trong đó failure chỉ abstain khỏi claim level tương ứng.
+Recommended logic:
+
+Locked predictions
+   |
+   v
+Module A pass?
+   |-- NO --> MODEL-DESCRIPTIVE ONLY
+   |
+   YES
+   v
+Weather-specific claim requested?
+   |-- NO --> OVERALL PREDICTIVE CLAIM
+   |
+   YES
+   v
+Module B pass?
+   |-- NO --> OVERALL PREDICTIVE CLAIM ONLY
+   |
+   YES
+   v
+Event-level claim requested?
+   |-- NO --> WEATHER-SPECIFIC PREDICTIVE RELIANCE
+   |
+   YES
+   v
+Module E pass?
+   |-- NO --> WEATHER-SPECIFIC PREDICTIVE RELIANCE ONLY
+   |
+   YES
+   v
+BELOW-TREND EVENT-RECOVERY CLAIM
+
+Module D sits outside the permission path with a dashed arrow and
+is labeled diagnostic only.
+Dùng decision diamonds cho câu hỏi PASS/FAIL hoặc claim requested.
+Dùng solid arrows cho permission path, dashed arrow cho Module D.
+Không để A và B trông như parallel modules nếu policy thực tế có claim hierarchy.
+Caption phải nói rõ: Module E fail không hủy weather-reliance claim nếu A và B pass; nó chỉ chặn event-level claim.
+Algorithm 1 phải khớp 1:1 với hình.
+3. P1 - Sửa hình và bản đồ
+3.1. Figure 2: XAI under abstention
+Giữ ba panel vì hiện đã kể câu chuyện tốt: global fitted-function share, local decomposition, required modules.
+Tổng SHAP shares hiện hiển thị 87.3 + 7.3 + 4.0 + 1.5 = 100.1%. Sửa rounding để tổng hiển thị 100.0 hoặc ghi rõ may not sum due to rounding.
+Panel C chỉ vẽ ΔRMSE của E, nhưng Module E còn rank và top-k. Thêm dòng nhỏ: `Primary-tail RMSE shown; Module E also fails rank and top-k checks.`
+Nếu label B1 còn xuất hiện ở panel C, đổi thành B.
+Không dùng chữ causal trong title/caption; giữ `fitted-function diagnostics` và `not event-recovery evidence`.
+Kiểm tra local case: predicted 0.209, observed -0.510 và signed group contributions phải khớp artifact.
+3.2. Figure 3: bản đồ Hoa Kỳ
+Map đã đạt yêu cầu chính và nên giữ. Chỉ cần làm caption và labels hoàn chỉnh hơn.
+Định nghĩa số dưới state abbreviation: `Labels report the state abbreviation and the number of locked test rows.`
+Nêu rõ color is state-level descriptive ΔRMSE: Weather-only minus zero residual.
+Giữ diverging scale centered at 0; âm là Weather-only tốt hơn.
+Bang ngoài panel màu xám.
+Không biến state results thành 12 gate decisions.
+Nếu state có ít row, cân nhắc supplement forest plot với CI hoặc n; main map chỉ là heterogeneity visualization.
+Sửa câu provenance.
+Suggested caption:
+
+State-level heterogeneity on the locked 2016–2025 crop panel. Colors show
+the descriptive difference in RMSE between the validation-selected
+Weather-only model and the zero-residual baseline within each state;
+negative values favor the model. Labels report the state abbreviation and
+the number of locked test rows. Gray states are outside the study panel.
+These subgroup estimates illustrate spatial heterogeneity and are not
+separate module decisions. State geometry is obtained from the U.S. Census
+Bureau [34]; processing settings and hashes are recorded in the map manifest.
+4. P1 - Synthetic benchmark sau khi sửa GT
+Ngoài lỗi GT labels, phần synthetic vẫn cần được kiểm tra để reviewer hiểu Final permission khác với pass từng module.
+Bảng phải có cột: Scenario, GT permit, A, B, E, Final.
+Định nghĩa `Final` ngay trong caption: tỷ lệ run mà tất cả required modules cho claim của scenario đều pass.
+Giải thích tại sao A/B/E có thể pass nhưng Final=0 ở scenario invalid. Nếu Final còn thêm eligibility/claim-label rule ngoài A/B/E, phải viết rõ.
+Kiểm tra những hàng như Omitted confounding hoặc Temporal drift; nếu A=B=E=100% nhưng Final=0, reviewer cần biết exact final rule.
+Nếu GT=no, Final=0 có thể là correct abstention; nhưng bảng cần phân biệt module performance với admissibility policy.
+Giữ PJM là intentionally easy positive case và nói boundary sensitivity do synthetic regimes đánh giá.
+Cân nhắc thêm policy-ablation summary vào supplement: validation-only, A-only, A+B, A+E, full policy.
+Suggested synthetic caption extension:
+
+GT permit is the prespecified scenario-level admissibility label derived
+from the known data-generating mechanism. A, B, and E report module pass
+rates across 30 seeds. Final reports the proportion of runs in which the
+claim-specific required modules and the prespecified admissibility policy
+jointly permit interpretation.
+5. P1 - Sửa narrative và tính nhất quán
+5.1. County case
+Replace:
+
+Module B (Gate B1), full versus metadata-only, is reported separately and
+passes ..., but Gate A remains inconclusive ...
+
+With:
+
+Module B, which compares Full with Metadata-only, passes ..., but Module A
+remains inconclusive. The county analysis therefore reaches a
+model-descriptive-only outcome and serves as a robustness case rather than
+evidence of predictive success or cross-resolution transfer.
+Không dùng `additional reproducible agricultural abstention case` nếu làm câu quá phòng thủ.
+Nhấn county B pass là local evidence nhưng claim hierarchy vẫn bị Module A chặn.
+5.2. Discussion local PASS
+Đoạn hiện tại đã đúng hướng. Giữ nội dung nhưng làm câu gọn hơn và dùng Module nhất quán.
+Several prespecified analyses are locally favorable. The eight- and
+ten-year history filters improve paired error on a smaller 313-row
+population; the 2013–2015 rolling fold passes, whereas the 2007–2009 fold
+significantly favors the baseline; severe tails improve RMSE and MAE but
+fail rank and top-k recovery; and the county analysis passes Module B while
+Module A remains inconclusive. These results identify design conditions
+under which predictive signal may be stronger, but they either change the
+population, represent non-primary temporal folds, or fail another required
+module. We therefore use them to motivate future study design rather than
+to replace the primary locked test.
+5.3. Conclusion
+Dùng Module A/B/E hoàn toàn; bỏ Gate A.
+Không lặp dài về artifact.
+Giữ conclusion procedural và scoped.
+Suggested ending:
+
+Modules A, B, and E fail for the state panel. The separately locked
+county-level analysis also remains inconclusive under Module A despite a
+favorable point estimate. The fitted agricultural models may therefore be
+described, but their explanations do not support observed-event or
+weather-specific predictive-reliance claims in these locked populations.
+The broader lesson is to define claim scope in advance, lock selection
+before evaluation, compare paired predictions on the same rows, and stop
+at the highest claim level supported by the required modules.
+6. P1 - Reproducibility còn thiếu
+6.1. Bảng định nghĩa 35 weather features
+Main paper vẫn chỉ nói có 35 full-season weather features. Supplement phải có bảng đầy đủ, không chỉ artifact path.
+Cột tối thiểu
+Nội dung
+Feature name
+Tên dùng trong model/XAI.
+NASA POWER variable
+T2M_MAX, T2M_MIN, PRECTOTCORR, ALLSKY_SFC_SW_DWN hoặc tên chính xác.
+Aggregation
+Mean, sum, max, min, count-above-threshold, degree days, v.v.
+Window
+Full season hoặc early/middle/late; ngày bắt đầu/kết thúc.
+Unit
+°C, mm, MJ m−2 day−1, v.v.
+Spatial rule
+State representative coordinate hoặc cách aggregate.
+Missing handling
+Imputation/filter rule.
+Availability
+Post-season only hay available earlier.
+Main text trỏ tới `Supplementary Table S2`, không raw repository path.
+Feature names trong Fig. 2 phải map rõ tới feature-family definitions.
+6.2. Raw snapshots và references
+Giữ Census [34] và EIA-930 [35].
+Kiểm tra access date, official title và URL formatting IEEE.
+Đảm bảo NASS/NASA/PJM raw snapshot hashes có trong manifest.
+Rà bibliography không có reference giả hoặc metadata sai.
+7. P2 - Văn phong và trình bày
+Giảm các câu `cannot replace`, `never grants`, `not evidence` sau khi policy đã định nghĩa trong Table II.
+Không dùng CHECKED theo nghĩa dễ hiểu nhầm là external audit; có thể đổi thành `regenerated and matched` trong manifest, main text chỉ nói một lần.
+Không nêu raw file paths trong narrative.
+Caption không thay thế Methods.
+Dùng `predictive adequacy` nhất quán, tránh đổi qua lại `fidelity` nếu không cần.
+Định nghĩa `claim-eligibility` một lần, sau đó dùng claim level cụ thể.
+Giữ abstract hiện tại sau khi sửa GT; nếu synthetic aggregate đổi, regenerate con số tự động.
+8. Quy trình chạy lại và kiểm tra
+Audit source-of-truth cho synthetic labels và regenerate toàn bộ synthetic table/metrics.
+Chạy unit tests 6 yes / 8 no / 180 valid / 240 invalid.
+Search toàn source/PDF cho Gate A/B1/B2; chuẩn hóa sang Module.
+Sửa Module D status và narrative.
+Vẽ lại workflow; kiểm tra Algorithm 1 khớp.
+Sửa Fig. 2 rounding và Module E note.
+Sửa map caption và row-count definition.
+Kiểm tra county, PJM, Discussion, Conclusion.
+Kiểm tra Supplementary Table S2 về 35 weather features.
+Regenerate all tables/figures from scripts.
+Build clean PDF; kiểm tra đúng 8 trang, không overflow.
+Render từng trang và kiểm tra hình, font, caption, table width.
+Cross-check abstract, Tables IV-VI, synthetic table, figures và Conclusion với artifacts.
+Chạy bibliography/citation verification.
+Xuất acceptance report ghi rõ mọi mục PASS/FAIL.
+9. Checklist nghiệm thu cuối
+Mức
+Tiêu chí
+Đạt
+P0
+Synthetic GT table có đúng 6 yes và 8 no.
+□
+P0
+Aggregate valid/invalid runs là 180/240 và khớp narrative.
+□
+P0
+False permission/abstention, sensitivity, specificity khớp artifact.
+□
+P0
+Không còn Gate A/B1/B2 trong manuscript.
+□
+P0
+Module D không còn trạng thái FAIL.
+□
+P0
+Workflow thể hiện claim hierarchy và Module D dashed diagnostic.
+□
+P0
+Algorithm 1 khớp workflow.
+□
+P1
+Fig. 2 shares rounding được xử lý.
+□
+P1
+Fig. 2 ghi E còn fail rank/top-k.
+□
+P1
+Map định nghĩa số locked rows và provenance đúng.
+□
+P1
+Synthetic Final rule được định nghĩa rõ.
+□
+P1
+County/PJM/Discussion/Conclusion dùng Module nhất quán.
+□
+P1
+Supplement có bảng 35 weather features.
+□
+P1
+References [34], [35] và toàn bibliography được xác minh.
+□
+P2
+Không còn raw repository paths trong narrative.
+□
+P2
+Văn phong bớt defensive/rebuttal-like.
+□
+QA
+Mọi số sinh từ artifact, không chỉnh tay.
+□
+QA
+PDF đúng 8 trang và layout sạch.
+□
+QA
+Anonymous artifacts không lộ danh tính.
+□
+10. Báo cáo Codex phải trả lại
+1. Files changed
+2. Synthetic label source-of-truth and corrected 14-row table
+3. Assertions added and test outputs
+4. Module terminology changes
+5. Workflow and Algorithm 1 changes
+6. Figure 2 and map changes
+7. Supplementary feature table status
+8. Regenerated primary numbers
+9. Citation verification
+10. Final PDF page count and render QA
+11. Remaining limitations, if any
+Điều kiện chốt nộp
+Chỉ chốt nộp khi lỗi synthetic GT được sửa từ source generator, không còn mâu thuẫn giữa module pass rates và Final permission, thuật ngữ Module thống nhất, workflow đúng claim hierarchy, và PDF đã được build/render kiểm tra toàn bộ.

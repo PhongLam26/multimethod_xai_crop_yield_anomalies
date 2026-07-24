@@ -1,0 +1,107 @@
+{
+  "created_utc": "2026-07-21T18:49:02.910338+00:00",
+  "package": "claim_eligibility_v5_2_blind_package",
+  "files": [
+    {
+      "source": "paper/final/ictai2026_claim_eligibility_audit_v5_2_final.pdf",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/paper/final/ictai2026_claim_eligibility_audit_v5_2_final.pdf",
+      "sha256": "737de0031b593031948f43d200fec39f8483e1aaa69df9a210e736be9b325965"
+    },
+    {
+      "source": "paper/final/ictai2026_claim_eligibility_audit_v5_2_final.sha256",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/paper/final/ictai2026_claim_eligibility_audit_v5_2_final.sha256",
+      "sha256": "d71e0ea1f59fd4d263049993a364ad432af18f0e30d18ed98d6e1d899ca11eaf"
+    },
+    {
+      "source": "paper_versions/v5_claim_eligibility_audit/source/fidelity_gated_xai_method_benchmark_v3.tex",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/paper_versions/v5_claim_eligibility_audit/source/fidelity_gated_xai_method_benchmark_v3.tex",
+      "sha256": "95f5f4d845e750b9267acc2f01866ad6e88d0e3976082bc66d6ed60ee153fb8d"
+    },
+    {
+      "source": "paper_versions/v5_claim_eligibility_audit/source/references.bib",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/paper_versions/v5_claim_eligibility_audit/source/references.bib",
+      "sha256": "d82917126deec695d3caeaafd626db618bbcc412b334b4eb13fc14bf64c3c675"
+    },
+    {
+      "source": "paper_versions/v5_claim_eligibility_audit/source/IEEEtran.cls",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/paper_versions/v5_claim_eligibility_audit/source/IEEEtran.cls",
+      "sha256": "c972aca108fda004c3514d63658e02816da2e54d9a1451e870b9bd970e003f55"
+    },
+    {
+      "source": "paper_versions/v5_claim_eligibility_audit/source/IEEEtran.bst",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/paper_versions/v5_claim_eligibility_audit/source/IEEEtran.bst",
+      "sha256": "d83aa3c9b47fc120bb3d9d8e476216cb889c738f72ec950beeac3661c45ded24"
+    },
+    {
+      "source": "paper_versions/v5_claim_eligibility_audit/source/ot1ptm.fd",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/paper_versions/v5_claim_eligibility_audit/source/ot1ptm.fd",
+      "sha256": "5285cba58569a01b8353719a26ddf30ce3f67687dfab8df9afa7320eb3a1194e"
+    },
+    {
+      "source": "paper_versions/v5_claim_eligibility_audit/source/generated/audit_numbers_v4.tex",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/paper_versions/v5_claim_eligibility_audit/source/generated/audit_numbers_v4.tex",
+      "sha256": "fa2b9035b46e337b15ec1125fe8130d252f41433e53c0e6f39fced0f5178abad"
+    },
+    {
+      "source": "paper_versions/v5_claim_eligibility_audit/source/generated/table_final_baselines_v4.tex",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/paper_versions/v5_claim_eligibility_audit/source/generated/table_final_baselines_v4.tex",
+      "sha256": "eb498eb008d71cb57eaa3dc44ebf2611b6215b85e50acdca8b67c5d2c7f5d16a"
+    },
+    {
+      "source": "paper_versions/v5_claim_eligibility_audit/source/figures/claim_eligibility_workflow.png",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/paper_versions/v5_claim_eligibility_audit/source/figures/claim_eligibility_workflow.png",
+      "sha256": "254d06c1b30d322f339e5194dda1853f9abb3944db32695835ab718d64c0a454"
+    },
+    {
+      "source": "paper/generated/figure_xai_claim_eligibility_v5_1.pdf",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/paper/generated/figure_xai_claim_eligibility_v5_1.pdf",
+      "sha256": "b8d9746a659300c30c78e90a96f746267b10f45257c9bdefd1b184d1dd45c4e6"
+    },
+    {
+      "source": "paper/generated/figure_xai_claim_eligibility_v5_1.png",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/paper/generated/figure_xai_claim_eligibility_v5_1.png",
+      "sha256": "de67d8e42dbc2660741926e545a7f4cf19f7449f720a21b82e55c0aeebe477fd"
+    },
+    {
+      "source": "paper/generated/figure_synthetic_dumbbell_v5_1.pdf",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/paper/generated/figure_synthetic_dumbbell_v5_1.pdf",
+      "sha256": "6aad4aece59d09d6c8ad60a00f303f21f548c703cf256d005ebddade653f5244"
+    },
+    {
+      "source": "paper/generated/figure_synthetic_dumbbell_v5_1.png",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/paper/generated/figure_synthetic_dumbbell_v5_1.png",
+      "sha256": "1c404ad45fff5d6d00df72c61c3a65c66abd79b62d903cb1033b83ee11e81c87"
+    },
+    {
+      "source": "paper/generated/figure_state_delta_rmse_map.pdf",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/paper/generated/figure_state_delta_rmse_map.pdf",
+      "sha256": "d3986159271d661f3383156c03d2938d4fa81a65417b8fba0c81d1417786f289"
+    },
+    {
+      "source": "paper/generated/table_claim_eligibility_modules_v5_1.tex",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/paper/generated/table_claim_eligibility_modules_v5_1.tex",
+      "sha256": "6e2ff5e46d762f5444b5e4a40176757028b9867eb39af01606dd657bee4cf627"
+    },
+    {
+      "source": "paper/generated/table_synthetic_scenario_decisions_v5_1.tex",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/paper/generated/table_synthetic_scenario_decisions_v5_1.tex",
+      "sha256": "1a0a702294a3d045426adfc1a6f17147ffbfd8c6eb6596a7b9dd0000ee043d57"
+    },
+    {
+      "source": "reports/claim_eligibility_v5_2/v5_2_provenance.json",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/reports/claim_eligibility_v5_2/v5_2_provenance.json",
+      "sha256": "ebd716664ff3dab69d7888b7bc12b4de023c61fa4f6d7a3ece47722b90617884"
+    },
+    {
+      "source": "scripts/build_claim_eligibility_v5_2_provenance.py",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/scripts/build_claim_eligibility_v5_2_provenance.py",
+      "sha256": "0c3ed7b7945f4f6878d52d3ba1a8798eed28d8c61b46293e1094dfd4af669bd0"
+    },
+    {
+      "source": "reports/claim_eligibility_v5_2/clean_build_001/fidelity_gated_xai_method_benchmark_v3.log",
+      "package_path": "submission/claim_eligibility_v5_2_blind_package/build_logs/fidelity_gated_xai_method_benchmark_v3_sanitized.log",
+      "sha256": "07c1ddcee836315bb13641b9a6a28d09221394b3ed3dd3ab448420ce5984acb2"
+    }
+  ],
+  "missing": []
+}

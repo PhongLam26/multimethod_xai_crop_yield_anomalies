@@ -1,0 +1,13 @@
+flowchart TD
+  A[Create project] --> B[Upload files]
+  B --> C[Map columns]
+  C --> D[Validate schema and rows]
+  D -->|blocking errors| E[Fix mapping or upload corrected file]
+  E --> D
+  D -->|ready| F[Configure audit]
+  F --> G[Start run]
+  G --> H[Review results]
+  H --> I[Explore evidence]
+  H --> J[Audit trail]
+  H --> K[Export report and JSON CSV]
+

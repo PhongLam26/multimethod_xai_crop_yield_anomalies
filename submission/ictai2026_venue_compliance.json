@@ -1,0 +1,32 @@
+{
+  "status": "PASS_PUBLIC_GUIDELINES",
+  "portal_preview_status": "NOT_ACCESSED_ACCOUNT_SPECIFIC_EASYCHAIR_FORM",
+  "official_sources": {
+    "ictai2026_page": "https://ictai.computer.org/2026/",
+    "easychair_cfp": "https://easychair.org/cfp/ICTAI2026",
+    "submission_link": "https://easychair.org/conferences/?conf=ictai2026",
+    "public_requirements": [
+      "double-blind review; author names and affiliations absent from submitted paper",
+      "PDF format through EasyChair",
+      "IEEE single-spaced, double-column, 10-point format",
+      "up to 8 pages including/counting everything for submitted paper"
+    ],
+    "deadline_public": "2026-07-21 AoE final on official ICTAI page; EasyChair CFP lists July 22, 2026"
+  },
+  "pdf": "paper_versions/v3_method_benchmark/source/fidelity_gated_xai_method_benchmark_v3.pdf",
+  "pages": 8,
+  "file_size_bytes": 2035361,
+  "pdfinfo_page_size": "612 x 792 pts (letter)",
+  "checks": {
+    "pdf_exists": true,
+    "pdf_format": true,
+    "eight_pages_including_references": true,
+    "letter_paper": true,
+    "ieee_conference_template_source": true,
+    "anonymous_author_block": true,
+    "pdf_author_metadata_empty": true,
+    "identity_patterns_absent": true,
+    "current_date_before_public_deadline": true
+  },
+  "identity_pattern_hits": []
+}

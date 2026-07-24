@@ -1,0 +1,754 @@
+{
+  "created_utc": "2026-07-21T15:30:16.026910+00:00",
+  "pdf": "paper_versions/v4_ictai2026_revision/source/fidelity_gated_xai_method_benchmark_v3.pdf",
+  "pdf_sha256": "3795c026b63b86deb69065ed2f81ad8f2e85d52f925c32a92b91d9c7d0cf6b7e",
+  "status": "PASS",
+  "claims": [
+    {
+      "claim": "raw rows",
+      "pdf_location": "p. 2 (1,291)",
+      "displayed_value": "1,291",
+      "artifact_path": "data/raw/us_yield_1989_2025_tha.csv",
+      "artifact_value": 1291,
+      "expected_value": 1291,
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "processed rows",
+      "pdf_location": "p. 2 (1,257)",
+      "displayed_value": "1,257",
+      "artifact_path": "data/processed/us_model_frame_hemisphere_aware_1990_2025.csv",
+      "artifact_value": 1257,
+      "expected_value": 1257,
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "validation eligible rows",
+      "pdf_location": "p. 4 (Validation selection)",
+      "displayed_value": "140",
+      "artifact_path": "artifacts/audit/selection/selected_config.json",
+      "artifact_value": 140,
+      "expected_value": 140,
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "locked rows",
+      "pdf_location": "p. 3 (Locked 2016-2025)",
+      "displayed_value": "333",
+      "artifact_path": "artifacts/audit/final_test/seed_aggregated_predictions.csv",
+      "artifact_value": 333,
+      "expected_value": 333,
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "primary z<-1 events",
+      "pdf_location": "p. 4 (broad below-trend subset contains 73)",
+      "displayed_value": "73",
+      "artifact_path": "artifacts/audit/tail/tail_metrics_by_threshold.csv",
+      "artifact_value": 73,
+      "expected_value": 73,
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "selected configuration",
+      "pdf_location": "p. 1 (ExtraTrees)",
+      "displayed_value": "ExtraTrees, leaf=1, Weather only",
+      "artifact_path": "artifacts/audit/selection/selected_config.json",
+      "artifact_value": [
+        "ExtraTrees",
+        "extra_trees_leaf_1",
+        "weather_only"
+      ],
+      "expected_value": [
+        "ExtraTrees",
+        "extra_trees_leaf_1",
+        "weather_only"
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "fixed validation seeds",
+      "pdf_location": "p. 2 (Seeds)",
+      "displayed_value": "7, 17, 27, 37, 47",
+      "artifact_path": "artifacts/audit/selection/selected_config.json",
+      "artifact_value": [
+        7,
+        17,
+        27,
+        37,
+        47
+      ],
+      "expected_value": [
+        7,
+        17,
+        27,
+        37,
+        47
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "validation-only selection",
+      "pdf_location": "p. 3 (2012-2015)",
+      "displayed_value": "2012-2015 validation",
+      "artifact_path": "artifacts/audit/selection/selected_config.json",
+      "artifact_value": [
+        "2012-2015",
+        false
+      ],
+      "expected_value": [
+        "2012-2015",
+        false
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "locked R2",
+      "pdf_location": "p. 3 (R2)",
+      "displayed_value": "-0.014",
+      "artifact_path": "artifacts/audit/final_test/seed_aggregated_predictions.csv",
+      "artifact_value": -0.014,
+      "expected_value": -0.014,
+      "tolerance": 0.0005,
+      "status": "PASS"
+    },
+    {
+      "claim": "locked RMSE",
+      "pdf_location": "p. 3 (0.669)",
+      "displayed_value": "0.669",
+      "artifact_path": "artifacts/audit/final_test/seed_aggregated_predictions.csv",
+      "artifact_value": 0.669,
+      "expected_value": 0.669,
+      "tolerance": 0.0005,
+      "status": "PASS"
+    },
+    {
+      "claim": "Module A paired delta RMSE",
+      "pdf_location": "p. 4 (Modules A and B fail)",
+      "displayed_value": "-0.005",
+      "artifact_path": "artifacts/audit_records/paired_comparisons.csv",
+      "artifact_value": -0.005,
+      "expected_value": -0.005,
+      "tolerance": 0.0005,
+      "status": "PASS"
+    },
+    {
+      "claim": "Module A paired CI low",
+      "pdf_location": "p. 4 (Modules A and B fail)",
+      "displayed_value": "-0.019",
+      "artifact_path": "artifacts/audit_records/paired_comparisons.csv",
+      "artifact_value": -0.019,
+      "expected_value": -0.019,
+      "tolerance": 0.0005,
+      "status": "PASS"
+    },
+    {
+      "claim": "Module A paired CI high",
+      "pdf_location": "p. 4 (Modules A and B fail)",
+      "displayed_value": "0.009",
+      "artifact_path": "artifacts/audit_records/paired_comparisons.csv",
+      "artifact_value": 0.009,
+      "expected_value": 0.009,
+      "tolerance": 0.0005,
+      "status": "PASS"
+    },
+    {
+      "claim": "Figure 2 module comparisons and roles",
+      "pdf_location": "p. 4 (Modules A and B fail)",
+      "displayed_value": "A / B / D diagnostic",
+      "artifact_path": "artifacts/gates/figure2_three_comparisons.json",
+      "artifact_value": [
+        [
+          "Gate A",
+          "primary",
+          "extra_trees_leaf_1_weather_only_vs_zero"
+        ],
+        [
+          "Gate B1 PRIMARY",
+          "primary",
+          "extra_trees_leaf_1_full_vs_metadata_only"
+        ],
+        [
+          "Gate B2 DIAGNOSTIC",
+          "diagnostic",
+          "extra_trees_leaf_1_weather_only_vs_metadata_only"
+        ]
+      ],
+      "expected_value": [
+        [
+          "Gate A",
+          "primary",
+          "extra_trees_leaf_1_weather_only_vs_zero"
+        ],
+        [
+          "Gate B1 PRIMARY",
+          "primary",
+          "extra_trees_leaf_1_full_vs_metadata_only"
+        ],
+        [
+          "Gate B2 DIAGNOSTIC",
+          "diagnostic",
+          "extra_trees_leaf_1_weather_only_vs_metadata_only"
+        ]
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "Figure 2 paired row alignment",
+      "pdf_location": "p. 4 (identical locked rows)",
+      "displayed_value": "paired locked rows",
+      "artifact_path": "artifacts/gates/figure2_three_comparisons.json",
+      "artifact_value": [
+        1,
+        1,
+        [
+          333,
+          333,
+          333
+        ]
+      ],
+      "expected_value": [
+        1,
+        1,
+        [
+          333,
+          333,
+          333
+        ]
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "Figure 2 calendar-year bootstrap",
+      "pdf_location": "p. 2 (year-block bootstrap replicates)",
+      "displayed_value": "year-block 95% CI",
+      "artifact_path": "artifacts/gates/figure2_three_comparisons.json",
+      "artifact_value": [
+        [
+          2000,
+          "year_block"
+        ],
+        [
+          2000,
+          "year_block"
+        ],
+        [
+          2000,
+          "year_block"
+        ]
+      ],
+      "expected_value": [
+        [
+          2000,
+          "year_block"
+        ],
+        [
+          2000,
+          "year_block"
+        ],
+        [
+          2000,
+          "year_block"
+        ]
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "Module D diagnostic constraint",
+      "pdf_location": "p. 4 (exploratory representation diagnostic)",
+      "displayed_value": "D is diagnostic only",
+      "artifact_path": "artifacts/gates/gate_b_decision.json",
+      "artifact_value": "diagnostic",
+      "expected_value": "diagnostic",
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "primary-tail delta RMSE",
+      "pdf_location": "p. 5 (Panel A)",
+      "displayed_value": "-0.043",
+      "artifact_path": "artifacts/audit/tail/tail_metrics_by_threshold.csv",
+      "artifact_value": -0.043,
+      "expected_value": -0.043,
+      "tolerance": 0.0005,
+      "status": "PASS"
+    },
+    {
+      "claim": "primary-tail delta MAE",
+      "pdf_location": "p. 5 (Panel A)",
+      "displayed_value": "-0.054",
+      "artifact_path": "artifacts/audit/tail/tail_metrics_by_threshold.csv",
+      "artifact_value": -0.054,
+      "expected_value": -0.054,
+      "tolerance": 0.0005,
+      "status": "PASS"
+    },
+    {
+      "claim": "primary-tail rank rho",
+      "pdf_location": "p. 3 (Rank)",
+      "displayed_value": "0.180",
+      "artifact_path": "artifacts/audit_records/rank_null_audit.csv",
+      "artifact_value": 0.18,
+      "expected_value": 0.18,
+      "tolerance": 0.0005,
+      "status": "PASS"
+    },
+    {
+      "claim": "primary-tail rank permutation p",
+      "pdf_location": "p. 5 (Perm.)",
+      "displayed_value": "0.362",
+      "artifact_path": "artifacts/audit_records/rank_null_audit.csv",
+      "artifact_value": 0.362,
+      "expected_value": 0.362,
+      "tolerance": 0.0005,
+      "status": "PASS"
+    },
+    {
+      "claim": "primary-tail top-10 overlap",
+      "pdf_location": "p. 4 (Top-10)",
+      "displayed_value": "1/10",
+      "artifact_path": "artifacts/audit_records/topk_null_audit.csv",
+      "artifact_value": "1/10",
+      "expected_value": "1/10",
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "primary-tail expected top-10 overlap",
+      "pdf_location": "p. 5 (Expected)",
+      "displayed_value": "1.37",
+      "artifact_path": "artifacts/audit_records/topk_null_audit.csv",
+      "artifact_value": 1.37,
+      "expected_value": 1.37,
+      "tolerance": 0.005,
+      "status": "PASS"
+    },
+    {
+      "claim": "primary-tail lift",
+      "pdf_location": "p. 3 (Lift)",
+      "displayed_value": "0.73",
+      "artifact_path": "artifacts/audit_records/topk_null_audit.csv",
+      "artifact_value": 0.73,
+      "expected_value": 0.73,
+      "tolerance": 0.005,
+      "status": "PASS"
+    },
+    {
+      "claim": "primary-tail hypergeometric p",
+      "pdf_location": "p. 5 (H p)",
+      "displayed_value": "0.794",
+      "artifact_path": "artifacts/audit_records/topk_null_audit.csv",
+      "artifact_value": 0.794,
+      "expected_value": 0.794,
+      "tolerance": 0.0005,
+      "status": "PASS"
+    },
+    {
+      "claim": "primary-tail within-year permutation p",
+      "pdf_location": "p. 5 (P p)",
+      "displayed_value": "0.793",
+      "artifact_path": "artifacts/audit_records/topk_null_audit.csv",
+      "artifact_value": 0.793,
+      "expected_value": 0.793,
+      "tolerance": 0.0005,
+      "status": "PASS"
+    },
+    {
+      "claim": "history sensitivity rows",
+      "pdf_location": "p. 4 (History 3)",
+      "displayed_value": "3, 5, 8, 10",
+      "artifact_path": "artifacts/audit_records/min_history_sensitivity.csv",
+      "artifact_value": [
+        3,
+        5,
+        8,
+        10
+      ],
+      "expected_value": [
+        3,
+        5,
+        8,
+        10
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "standardized target sensitivity",
+      "pdf_location": "p. 5 (Standardized target)",
+      "displayed_value": "Standardized target",
+      "artifact_path": "artifacts/audit_records/target_scale_sensitivity.csv",
+      "artifact_value": true,
+      "expected_value": true,
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "Huber detrending sensitivity",
+      "pdf_location": "p. 5 (Huber detrending)",
+      "displayed_value": "Huber detrending",
+      "artifact_path": "artifacts/audit_records/alternative_detrending_sensitivity.csv",
+      "artifact_value": true,
+      "expected_value": true,
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "expanded-model sensitivities",
+      "pdf_location": "p. 5 (HistGradientBoosting)",
+      "displayed_value": "HistGradientBoosting; ElasticNet",
+      "artifact_path": "artifacts/audit_records/expanded_model_baselines.csv",
+      "artifact_value": true,
+      "expected_value": true,
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "cluster-resampling sensitivities",
+      "pdf_location": "p. 2 (Resampling)",
+      "displayed_value": "year/state-year/crop-state",
+      "artifact_path": "artifacts/audit_records/bootstrap_scheme_comparison.csv",
+      "artifact_value": true,
+      "expected_value": true,
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "temporal sensitivities",
+      "pdf_location": "p. 5 (prefix learning)",
+      "displayed_value": "four rolling folds; four prefixes",
+      "artifact_path": "artifacts/audit_records/temporal_and_capacity_audits.csv",
+      "artifact_value": [
+        4,
+        4
+      ],
+      "expected_value": [
+        4,
+        4
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "history 8/10 vector consistency",
+      "pdf_location": "p. 4 (History 8)",
+      "displayed_value": "same rows/targets; floating-point prediction difference <= 2.5e-16",
+      "artifact_path": "artifacts/sensitivity/history_8_vs_10_hash_audit.json",
+      "artifact_value": [
+        true,
+        true,
+        true
+      ],
+      "expected_value": [
+        true,
+        true,
+        true
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "post-season feature availability",
+      "pdf_location": "p. 2 (post-season scientific audit)",
+      "displayed_value": "post-season audit; not pre-harvest",
+      "artifact_path": "artifacts/data/feature_availability.csv",
+      "artifact_value": [
+        35,
+        "post-season scientific audit of train-only detrended yield residuals"
+      ],
+      "expected_value": [
+        35,
+        "post-season scientific audit of train-only detrended yield residuals"
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "target residual formula",
+      "pdf_location": "p. 2 (raw train-only residual)",
+      "displayed_value": "raw train-only residual target",
+      "artifact_path": "artifacts/targets/target_spec.md",
+      "artifact_value": "trend_residual_t_ha",
+      "expected_value": "trend_residual_t_ha",
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "no shortcut feature matrix",
+      "pdf_location": "p. 2 (model matrices exclude year)",
+      "displayed_value": "forbidden target/year/history columns excluded",
+      "artifact_path": "artifacts/audit_records/no_shortcut_ablation.csv",
+      "artifact_value": [
+        "PASS"
+      ],
+      "expected_value": [
+        "PASS"
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "synthetic benchmark design",
+      "pdf_location": "p. 6 (14 regimes over 30)",
+      "displayed_value": "14 regimes; 30 seeds; 420 runs",
+      "artifact_path": "artifacts/experiments/synthetic-gate-benchmark/summary.json",
+      "artifact_value": [
+        14,
+        30,
+        420
+      ],
+      "expected_value": [
+        14,
+        30,
+        420
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "synthetic denominators",
+      "pdf_location": "p. 6 (240 invalid runs)",
+      "displayed_value": "240 invalid; 180 valid",
+      "artifact_path": "artifacts/experiments/synthetic-gate-benchmark/summary.json",
+      "artifact_value": [
+        240,
+        180
+      ],
+      "expected_value": [
+        240,
+        180
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "synthetic ungated false permission",
+      "pdf_location": "p. 6 (100.0)",
+      "displayed_value": "100.0%; 95% CI [98.4,100.0]",
+      "artifact_path": "artifacts/experiments/synthetic-gate-benchmark/summary.json",
+      "artifact_value": [
+        100.0,
+        98.4,
+        100.0
+      ],
+      "expected_value": [
+        100.0,
+        98.4,
+        100.0
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "synthetic observable-policy confusion matrix",
+      "pdf_location": "p. 1 (171/240)",
+      "displayed_value": "TP=160; FP=171; TN=69; FN=20",
+      "artifact_path": "artifacts/experiments/synthetic-gate-benchmark/summary.json",
+      "artifact_value": [
+        160,
+        171,
+        69,
+        20
+      ],
+      "expected_value": [
+        160,
+        171,
+        69,
+        20
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "synthetic observable false permission",
+      "pdf_location": "p. 1 (171/240)",
+      "displayed_value": "171/240; 71.2%; 95% CI [65.2,76.6]",
+      "artifact_path": "artifacts/experiments/synthetic-gate-benchmark/summary.json",
+      "artifact_value": [
+        71.2,
+        65.2,
+        76.6
+      ],
+      "expected_value": [
+        71.2,
+        65.2,
+        76.6
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "synthetic observable false abstention",
+      "pdf_location": "p. 6 (20/180)",
+      "displayed_value": "20/180; 11.1%; 95% CI [7.3,16.5]",
+      "artifact_path": "artifacts/experiments/synthetic-gate-benchmark/summary.json",
+      "artifact_value": [
+        20,
+        11.1,
+        7.3,
+        16.5
+      ],
+      "expected_value": [
+        20,
+        11.1,
+        7.3,
+        16.5
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "synthetic observable permission tradeoff",
+      "pdf_location": "p. 6 (permission rate is 78.8)",
+      "displayed_value": "permission 78.8%; sensitivity 88.9%; specificity 28.7%",
+      "artifact_path": "artifacts/experiments/synthetic-gate-benchmark/summary.json",
+      "artifact_value": [
+        78.8,
+        88.9,
+        28.7
+      ],
+      "expected_value": [
+        78.8,
+        88.9,
+        28.7
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "county external-resolution rows",
+      "pdf_location": "p. 6 (574 counties)",
+      "displayed_value": "574 counties; 2022-2025 holdout",
+      "artifact_path": "reports/experiments/county-v2-weather-models.json",
+      "artifact_value": [
+        1024,
+        [
+          2022,
+          2023,
+          2024,
+          2025
+        ]
+      ],
+      "expected_value": [
+        1024,
+        [
+          2022,
+          2023,
+          2024,
+          2025
+        ]
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "county Module A remains inconclusive",
+      "pdf_location": "p. 7 (Module A remains inconclusive)",
+      "displayed_value": "Module A CI high 0.26",
+      "artifact_path": "reports/experiments/county-v2-weather-models.json",
+      "artifact_value": 0.26,
+      "expected_value": 0.26,
+      "tolerance": 0.005,
+      "status": "PASS"
+    },
+    {
+      "claim": "county Module B feature-group value",
+      "pdf_location": "p. 6 (Module B, which compares Full)",
+      "displayed_value": "delta -0.71; CI [-1.23,-0.34]",
+      "artifact_path": "reports/experiments/county-v2-weather-models.json",
+      "artifact_value": [
+        -0.71,
+        -1.23,
+        -0.34
+      ],
+      "expected_value": [
+        -0.71,
+        -1.23,
+        -0.34
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "PJM Module A predictive adequacy",
+      "pdf_location": "p. 7 (mean-demand naive baseline)",
+      "displayed_value": "Full 77,521 vs naive 335,037; CI [-296.7, -221.8] x 10^3 MWh",
+      "artifact_path": "reports/experiments/external-domain-eia.json",
+      "artifact_value": [
+        77521,
+        335037,
+        [
+          -296661,
+          -221790
+        ],
+        "PASS"
+      ],
+      "expected_value": [
+        77521,
+        335037,
+        [
+          -296661,
+          -221790
+        ],
+        "PASS"
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "PJM Module B feature-group value",
+      "pdf_location": "p. 7 (Calendar-only RMSE is 227,417 MWh)",
+      "displayed_value": "Calendar 227,417 vs Full 77,521; CI [-186.0, -119.3] x 10^3 MWh",
+      "artifact_path": "reports/experiments/external-domain-eia.json",
+      "artifact_value": [
+        227417,
+        77521,
+        [
+          -186037,
+          -119309
+        ],
+        "PASS"
+      ],
+      "expected_value": [
+        227417,
+        77521,
+        [
+          -186037,
+          -119309
+        ],
+        "PASS"
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    },
+    {
+      "claim": "XAI provenance output-scale binding",
+      "pdf_location": "p. 7 (XAI manifest binds)",
+      "displayed_value": "row IDs, hashes, seed handling, output scale",
+      "artifact_path": "artifacts/xai/xai_manifest.csv",
+      "artifact_value": [
+        true,
+        true,
+        true
+      ],
+      "expected_value": [
+        true,
+        true,
+        true
+      ],
+      "tolerance": 0.0,
+      "status": "PASS"
+    }
+  ]
+}

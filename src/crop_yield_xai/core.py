@@ -205,6 +205,83 @@ def detrend_and_score(frame: pd.DataFrame, threshold: float = ANOMALY_Z_THRESHOL
     return scored, anomalies
 
 
+def detrend_train_test(
+    train: pd.DataFrame,
+    evaluation: pd.DataFrame,
+    threshold: float = ANOMALY_Z_THRESHOLD,
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Construct residual targets without reading evaluation-year yields.
+
+    A separate linear trend and residual scale are fitted for every crop--state
+    series using *only* rows supplied in ``train``.  The fitted trend is then
+    extrapolated to ``evaluation`` years.  This is deliberately separate from
+    ``detrend_and_score``, which is useful only for retrospective descriptions.
+    """
+    required = {"crop", "region", "year", TARGET}
+    missing = required - set(train.columns) | required - set(evaluation.columns)
+    if missing:
+        raise KeyError(f"Missing columns for train-only detrending: {sorted(missing)}")
+
+    train_parts: list[pd.DataFrame] = []
+    evaluation_parts: list[pd.DataFrame] = []
+    audit_rows: list[dict[str, object]] = []
+    group_columns = ["crop", "region"]
+    train_groups = {key: group.sort_values("year").copy() for key, group in train.groupby(group_columns, sort=True)}
+
+    for key, eval_group in evaluation.groupby(group_columns, sort=True):
+        if key not in train_groups:
+            raise AssertionError(f"Evaluation series {key} has no training history")
+        train_group = train_groups[key]
+        if train_group["year"].max() >= eval_group["year"].min():
+            raise AssertionError(f"Train/evaluation years overlap for series {key}")
+        if len(train_group) < 3:
+            raise AssertionError(f"Insufficient training history for series {key}")
+
+        x_train = train_group["year"].to_numpy(dtype=float)
+        y_train = train_group[TARGET].to_numpy(dtype=float)
+        slope, intercept = np.polyfit(x_train, y_train, 1)
+        train_residual = y_train - (slope * x_train + intercept)
+        scale = float(np.std(train_residual, ddof=ANOMALY_STD_DDOF))
+        if not np.isfinite(scale) or scale <= 0:
+            raise AssertionError(f"Invalid training residual scale for series {key}")
+
+        def score_group(group: pd.DataFrame) -> pd.DataFrame:
+            scored_group = group.copy()
+            x = scored_group["year"].to_numpy(dtype=float)
+            trend = slope * x + intercept
+            residual = scored_group[TARGET].to_numpy(dtype=float) - trend
+            scored_group["trend_yield_t_ha"] = trend
+            scored_group["trend_residual_t_ha"] = residual
+            scored_group["trend_residual_z"] = residual / scale
+            scored_group["is_low_yield_anomaly"] = scored_group["trend_residual_z"] < threshold
+            return scored_group
+
+        train_parts.append(score_group(train_group))
+        evaluation_parts.append(score_group(eval_group.sort_values("year")))
+        audit_rows.append(
+            {
+                "crop": key[0],
+                "region": key[1],
+                "fit_year_min": int(train_group["year"].min()),
+                "fit_year_max": int(train_group["year"].max()),
+                "evaluation_year_min": int(eval_group["year"].min()),
+                "evaluation_year_max": int(eval_group["year"].max()),
+                "n_fit": int(len(train_group)),
+                "n_evaluation": int(len(eval_group)),
+                "trend_slope_t_ha_per_year": float(slope),
+                "residual_scale_t_ha": scale,
+                "future_access": False,
+            }
+        )
+
+    scored_train = pd.concat(train_parts, ignore_index=True).sort_values(["year", "crop", "region"]).reset_index(drop=True)
+    scored_evaluation = (
+        pd.concat(evaluation_parts, ignore_index=True).sort_values(["year", "crop", "region"]).reset_index(drop=True)
+    )
+    audit = pd.DataFrame(audit_rows).sort_values(["crop", "region"]).reset_index(drop=True)
+    return scored_train, scored_evaluation, audit
+
+
 def model_feature_columns(features: list[str]) -> tuple[list[str], list[str]]:
     return ["lat", "lon"] + features, CAT_FEATURES
 

@@ -1,4 +1,4 @@
 model_id,status,selection_basis,holdout_status,claim
 v1_extra_trees_weather_only,SENSITIVITY_ONLY,2012-2015 validation,Gate A FAIL; Gate B1 FAIL,not eligible for explanation or promotion
-synthetic_full_gate,METHOD_EVIDENCE,pre-registered synthetic scenarios,PASS,reduces simulated false permission; not an agricultural predictor
+synthetic_observable_policy,METHOD_EVIDENCE,pre-registered synthetic scenarios,LIMITATION,false permission remains 171/240 after removing oracle inputs; not an agricultural predictor
 v2_extra_trees_weather,INCONCLUSIVE,locked validation RMSE,Gate A CI crosses zero; Gate B1 cannot promote unselected weather-only model,no agricultural predictive or weather-specific explanation claim

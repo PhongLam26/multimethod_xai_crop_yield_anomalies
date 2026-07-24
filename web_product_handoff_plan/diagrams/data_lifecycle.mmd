@@ -1,0 +1,13 @@
+flowchart LR
+  U[Uploaded file] --> C[Canonicalize columns and row order]
+  C --> H[Compute hashes]
+  H --> V[Validate schema pairing and units]
+  V -->|blocking issue| Fix[User fixes input]
+  Fix --> U
+  V -->|ready| Run[Immutable audit run]
+  Run --> Results[Module results and verdict]
+  Results --> Trail[Audit trail]
+  Trail --> Export[Exports]
+  Trail --> Retain[Retention policy]
+  Retain --> Delete[Deletion or archive]
+

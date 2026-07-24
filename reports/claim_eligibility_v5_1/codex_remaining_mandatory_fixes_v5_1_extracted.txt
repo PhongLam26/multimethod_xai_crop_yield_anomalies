@@ -1,0 +1,194 @@
+CODEX — CURRENT V5 IS NOT COMPLETE
+Remaining mandatory fixes and hard completion gates
+Do not report “goal achieved” after compilation. Report it only after every mandatory item below is VERIFIED with evidence.
+1. Why this file exists
+The previous revision fixed many visible items but stopped before completing several difficult requirements. This file contains only the unfinished or insufficiently verified work. The current V5 must be treated as a baseline, not as a completed goal.
+2. Status protocol: Codex may not close the goal early
+☐ Create a completion matrix with one row for every mandatory item in this document.
+☐ Do not mark an item VERIFIED based only on source text; verify the rendered PDF and the relevant machine-readable artifact.
+☐ Do not return `goal achieved`, `done`, `complete`, or equivalent while any P0/P1 item is NOT STARTED, IN PROGRESS, IMPLEMENTED, or BLOCKED.
+☐ If an item is blocked, preserve the last valid build and report the exact blocker instead of silently skipping it.
+3. Create a safe baseline first
+☐ Create a Git commit/tag or full backup named `before_v5_1_remaining_fixes`.
+☐ Record the V5 PDF SHA-256, page count, source path, compiler, build command, and PDF metadata.
+☐ Render all eight V5 pages to images for later visual comparison.
+☐ Do not overwrite or delete `ictai2026_claim_eligibility_audit_v5.pdf`.
+4. Mandatory remaining issues overview
+5. P0 — Rewrite the beginning of the Introduction around the tool
+The title is now tool-centered, but the first two Introduction paragraphs still begin with crop-yield forecasting and ask a crop-specific question. The narrative must begin with the general failure mode: ungated post-hoc interpretation.
+5.1 Required opening logic
+☐ Paragraph 1: explain that post-hoc explanations can be coherent even when the fitted model has not earned the requested outcome claim.
+☐ Paragraph 2: identify the literature gap—faithfulness evaluates explanation-to-model agreement, whereas this work evaluates model-to-claim eligibility.
+☐ Paragraph 3: introduce the reusable claim-eligibility audit and its locked, same-row, paired-uncertainty design.
+☐ Paragraph 4: preview synthetic calibration and the three empirical verdicts; introduce crop as one demonstration case, not the paper’s primary object.
+Suggested opening passage:
+
+Post-hoc explanations are commonly interpreted immediately after model fitting, even when the fitted model has not demonstrated that it can support the requested study-level claim on future or otherwise locked outcomes. A coherent attribution can therefore be faithful to a model yet still be unsuitable as evidence about an observed event.
+
+Existing XAI evaluation primarily asks whether an explanation is faithful, stable, or robust with respect to model behavior. We ask a different question: whether the fitted model is eligible to support the requested interpretation at all. This distinction motivates a claim-eligibility audit that evaluates overall predictive adequacy, incremental feature-group value, and event recovery before substantive interpretation is permitted.
+
+The audit is calibrated on synthetic regimes with known claim labels and demonstrated on three locked empirical cases. The crop-state case abstains, the county case has incremental feature evidence but does not pass overall adequacy, and the PJM case permits predictive-reliance interpretation. These different verdicts under one rule show that the contribution is a reusable audit rather than a crop-specific negative result.
+5.2 Replace four abstract contributions with three concrete deliverables
+Replace the current `The paper makes four contributions` paragraph with:
+
+This paper delivers three artifacts. First, it introduces a reusable claim-eligibility audit that separates overall predictive adequacy, incremental feature-group value, and event recovery under locked, same-row evaluation. Second, it calibrates false permission and false abstention across synthetic regimes with pre-specified ground-truth claim labels, revealing both where predictive auditing reduces unsupported interpretation and where structural-validity checks remain independently necessary. Third, it provides a reproducible audit trail that binds each verdict to target construction, locked rows, prediction vectors, uncertainty estimates, configuration identifiers, and hashes. Crop, county, and PJM cases demonstrate abstention, partial evidence without eligibility, and permission under the same audit.
+☐ Remove the sentence `The paper makes four contributions.`
+☐ Do not describe a new crop-yield forecasting model as a contribution.
+☐ Keep train-only preprocessing as a safeguard, not standalone novelty.
+☐ Confirm the three empirical verdicts appear in the Introduction, not only in later Results.
+6. P0 — Define synthetic permissible and impermissible labels
+The current text says six regimes are permissible but does not define the criterion. This leaves sensitivity and specificity vulnerable to the criticism that GT labels are arbitrary.
+Insert before the synthetic metrics:
+
+A regime is labeled permissible when the requested feature-group or event claim is present in the data-generating process and remains conceptually valid, even if estimation is difficult because of limited sample size or representation mismatch. A regime is labeled impermissible when the requested signal is absent or when the data-generating or study-design mechanism makes that interpretation structurally invalid. These labels are used only to score the observable audit and are never inputs to Modules A, B, or E.
+☐ Verify every one of the 14 regimes against this definition.
+☐ Write a machine-readable GT-label audit file listing regime, label, rationale, and source configuration.
+☐ Specifically document why Small sample and Spatial mismatch are permissible.
+☐ Specifically document why Weak signal and No signal are impermissible.
+☐ If any current label conflicts with the definition, stop and report it; do not rewrite the definition to conceal the conflict.
+7. P0 — Use one verdict vocabulary everywhere
+The policy has a single pass condition. A confidence interval crossing zero means the module does not pass. Do not create an undefined third state called `inconclusive`.
+☐ Search source and extracted PDF for `inconclusive`, `FAIL`, and `fails`.
+☐ Permit `failure mode` or general English only when it is not a policy verdict.
+☐ Ensure Table I, Fig. 1, Results, Discussion, and Conclusion use the same vocabulary.
+8. P0 — Replace the stale SHAP paragraph with the central event argument
+The old sentence `grouped SHAP mass is concentrated in weather features` must be removed. The global share panel no longer exists, and the sentence is trivial for a Weather-only model.
+Replace the current paragraph with:
+
+For the Barley–Colorado 2016 case, the locked Weather-only model predicts a residual of +0.209 while the observed residual is −0.510. The grouped SHAP decomposition is internally coherent: the displayed weather-family contributions reconstruct the fitted prediction from its base value. However, the fitted prediction misses the observed event in both direction and magnitude. Ungated interpretation would permit a weather-attribution claim from this coherent explanation, whereas the claim-eligibility audit blocks that interpretation because Modules A, B, and E do not pass on locked outcomes.
+☐ The +0.209 and −0.510 values must appear in the body, not only in the caption.
+☐ Do not claim SHAP is wrong; state that it correctly explains an ineligible fitted prediction.
+☐ Do not use `weather features dominate` as evidence for an outcome claim.
+9. P0 — Resolve the Figure 2 base-value discrepancy from source
+Current rendered Figure 2 labels the base as `−0.007`, while the caption states approximately `−0.008`. This must be resolved from the exact SHAP artifact, not by manually editing the image.
+☐ Locate the unrounded SHAP base/expected value for the locked Weather-only Barley–Colorado 2016 row.
+☐ Record model/configuration ID, row ID, seed aggregation, SHAP explainer settings, background/reference set, prediction hash, and target hash.
+☐ Recompute or verify that base + grouped contributions equals the unrounded prediction within a declared numerical tolerance.
+☐ Choose one rounding rule and apply it consistently in the figure, caption, body, and provenance record.
+☐ Regenerate the figure programmatically from the verified values.
+☐ Add an automated assertion that the displayed rounded values are consistent with the displayed prediction within rounding tolerance.
+10. P1 — Restore a compact exact 14-regime synthetic table
+The dumbbell figure is useful but does not replace the exact calibration table. Because there is no supplementary submission, the paper should retain a compact table containing valid and invalid regimes and the module/policy rates.
+☐ Load the table values from the same machine-readable source used by the dumbbell figure; do not copy the values from this DOCX by hand.
+☐ Keep the dumbbell figure for visual interpretation and the table for exact calibration.
+☐ Caption must state that GT is evaluation-only and policy uses observable A/B/E outputs.
+☐ If page pressure occurs, first compress Module D and repeated prose; do not delete the table before trying those savings.
+11. P1 — Compress Module D to recover space
+Module D is not a decision module and is numerically identical to A in this panel. The current multi-paragraph explanation and three floating-point differences are disproportionate.
+Preferred concise replacement:
+
+Module D is an outside-path Weather-only versus Metadata-only representation diagnostic. In this crop panel it is numerically identical to Module A because Metadata-only predictions collapse to the zero-residual baseline; detailed prediction-vector equality checks are retained in the reproducibility record.
+☐ Remove the three 1e−13 values from the main paper unless they are needed to rebut a specific reviewer concern.
+☐ Keep the detailed equality evidence in the machine-readable audit/build report.
+☐ Do not restore D as a required row in the main verdict table.
+☐ Use the recovered lines for the GT definition and compact synthetic table.
+12. P1 — Add the cross-domain unit warning
+Add near the county/PJM comparison:
+
+Absolute RMSE values are reported in domain-specific units—t ha−1 for the state crop panel, bushels per acre for the county case, and MWh for PJM—and are not directly comparable across domains.
+☐ Do not normalize or compare RMSE magnitudes across domains.
+☐ Keep the cross-domain evidence focused on pass/does-not-pass verdicts under the same audit logic.
+13. P1 — Fix accented author names in BibTeX and rendered PDF
+The current PDF visibly breaks or detaches diacritics in several names. Fix source data, then clean-build; do not edit the generated `.bbl` as the permanent solution.
+Examples of stable BibTeX forms:
+M{\"u}ller
+Bl{\"o}baum
+Schl{\"o}tterer
+Hedstr{\"o}m
+H{\"o}hne
+Schr{\"o}der
+Larivi{\`e}re
+d'Alch{\'e}-Buc
+☐ Inspect every accented author in the rendered references at 100% zoom.
+☐ Confirm no detached umlaut or missing accent remains.
+☐ Verify author spelling against the authoritative paper or publisher page.
+☐ Clean `.aux`, `.bbl`, and `.blg`, then rebuild from `references.bib`.
+14. P1 — Prove run provenance and complete-package anonymity
+14.1 Scientific provenance record
+Required fields for each reported figure/table/statistic:
+artifact_id
+manuscript_location
+model_family
+feature_family
+configuration_id
+split_id
+row_id_or_population_hash
+seed_or_seed_aggregation
+prediction_hash
+target_hash
+source_metric_file
+generation_script
+expected_unrounded_value
+displayed_value
+rounding_rule
+assertion_status
+☐ Create provenance entries for Fig. 1, Fig. 2, Fig. 3, Fig. 4, Table I, Table II, and the restored synthetic table.
+☐ Fig. 2 must identify the exact Weather-only locked row and SHAP source.
+☐ Dumbbell and exact synthetic table must share the same source hash.
+☐ Fail the build when a rendered value cannot be traced to a source artifact.
+14.2 Full-package double-blind audit
+☐ Search source, scripts, logs, manifests, SVG/PDF metadata, image metadata, build reports, and any source archive—not only the final PDF.
+☐ Search for real names, institution, email, student ID, Git username, Git remote, ORCID, acknowledgments, funding, local Windows/Linux/macOS paths, OneDrive, Dropbox, and personal URLs.
+☐ Remove `.git`, editor settings, machine configuration, and build logs containing local paths from any submission archive.
+☐ Inspect PDF metadata and embedded hyperlinks after the final build.
+☐ Keep `Anonymous Submission`; do not add acknowledgment or funding.
+Example scans (replace placeholders with actual identifying strings):
+rg -ni "REAL_NAME|REAL_EMAIL|INSTITUTION|STUDENT_ID|GIT_USERNAME" <PROJECT>
+rg -ni "C:\\\\Users\\\\|/home/|/Users/|OneDrive|Dropbox" <PROJECT>
+rg -ni "github\.com|gitlab\.com|osf\.io|drive\.google|orcid" <PROJECT>
+pdfinfo <FINAL_PDF>
+exiftool <FINAL_PDF> <ALL_FIGURES>
+15. One-shot eight-page layout plan
+Do not repeatedly patch individual floats. Make the content changes first, establish the final source order, then run a render/inspect loop until all page-layout criteria pass.
+Shorten the crop-centered opening while adding the general audit opening; target a similar or smaller Introduction length.
+Compress Module D before adding the exact synthetic table.
+Keep corrected Fig. 2 compact and do not reintroduce the old global panel.
+Keep the dumbbell figure and place the compact exact table immediately after its explanatory paragraph.
+If space remains tight, simplify state-map row-count labels before deleting the map or synthetic table.
+Remove repeated statements of `necessary but not sufficient`; retain one in Abstract, one in early Discussion, and one in Conclusion.
+Remove unused references and redundant artifact prose.
+☐ Use legal IEEE float placements only.
+☐ Never put a figure/table environment inside an unfinished paragraph.
+☐ Use `\Needspace` before vulnerable headings and `\FloatBarrier` only at logical boundaries.
+☐ Do not use negative vertical spacing, smaller body/reference fonts, narrower margins, or a ninth page.
+☐ Every heading must have at least two lines of body text in the same column.
+☐ No sentence may be interrupted by a float.
+16. Mandatory automated QA loop
+Clean all stale LaTeX build files.
+Regenerate scientific figures/tables from source artifacts.
+Build the new V5.1 PDF.
+Confirm exactly 8 pages.
+Render all pages to images.
+Inspect every page at 100% zoom.
+Extract PDF text and run terminology/search checks.
+Run numerical/provenance assertions.
+Run metadata/link/anonymity scans.
+Compare V5.1 against V5 and verify only intended changes.
+Repeat until all P0/P1 items are VERIFIED.
+17. Automated searches that must pass
+# Old contribution structure / crop-centered leftovers
+rg -n "The paper makes four contributions|does a leakage-safe residual model" <V5_1_SOURCE>
+
+# Undefined verdict terminology
+rg -ni "remains inconclusive|FAIL|failed" <V5_1_SOURCE>
+
+# Stale SHAP statement and inconsistent base labels
+rg -ni "grouped SHAP mass is concentrated|base -0\.007|base value approximately -0\.008" <V5_1_SOURCE> <FIGURE_SOURCE>
+
+# Competing tool names
+rg -ni "stop-gate|fidelity-gated|claim-module policy" <V5_1_SOURCE>
+
+# Missing GT rationale markers
+rg -ni "permissible when|impermissible when|Ground-truth labels" <V5_1_SOURCE>
+
+# Anonymity / paths
+rg -ni "C:\\\\Users\\\\|/home/|/Users/|OneDrive|Dropbox|REAL_NAME|REAL_EMAIL|INSTITUTION" <PACKAGE>
+
+# No supplementary submission
+rg -ni "supplementary|supplemental|Table S|Fig\. S" <V5_1_SOURCE>
+☐ Interpret search results manually; do not delete legitimate cited author names or general English blindly.
+☐ The final extracted PDF must contain no `inconclusive` verdict.
+18. Hard acceptance matrix
+19. Required completion report
+20. Final stop rule
+End of mandatory remaining-fixes plan — V5.1

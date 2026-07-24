@@ -1,0 +1,629 @@
+TABLE IV
+L OCKED 2016–2025 SAME - TASK AUDIT. L EARNED - MODEL PREDICTIONS ARE SEED AGGREGATED . ∆RMSE IS MODEL MINUS ZERO - RESIDUAL RMSE
+WITH PAIRED 95% YEAR - BLOCK INTERVALS ; RMSE IS T HA −1 . T HE M ODULE B CONTRAST IS COMPUTED DIRECTLY AS F ULL - MINUS -M ETADATA ; IN
+THIS PANEL IT MATCHES F ULL - MINUS - ZERO BECAUSE M ETADATA - ONLY PREDICTIONS COINCIDE WITH THE ZERO - RESIDUAL VECTOR TO
+FLOATING - POINT PRECISION .
+
+Model
+
+Features
+
+Crop train mean
+Train mean
+Zero residual
+ExtraTrees
+ExtraTrees
+ExtraTrees
+
+Baseline
+Baseline
+Baseline
+Full
+Metadata-only
+Weather-only
+
+n
+
+Seeds
+
+R2
+
+RMSE
+
+∆RMSE vs zero [95% CI]
+
+333
+333
+333
+333
+333
+333
+
+1
+1
+1
+5
+5
+5
+
+-0.031
+-0.031
+-0.031
+0.006
+-0.031
+-0.014
+
+0.674
+0.674
+0.674
+0.662
+0.674
+0.669
+
+0.000 [0.000, 0.000]
+0.000 [0.000, 0.000]
+0.000 [0.000, 0.000]
+-0.012 [-0.029, 0.002]
+0.000 [0.000, 0.000]
+-0.005 [-0.019, 0.009]
+
+TABLE V
+TAIL COMPONENTS ON TRAIN - ONLY TARGETS . PANEL A REPORTS ERROR AND RANK RECOVERY; PANEL B REPORTS CHANCE - ADJUSTED T OP -10
+RECOVERY. H IS THE HYPERGEOMETRIC PROBABILITY AND P IS THE WITHIN - YEAR PERMUTATION PROBABILITY. T HE T OP -10 COMPONENT PASSES
+ONLY WHEN LIFT > 1, THE LOWER LIFT CI > 1, AND BOTH H AND P ARE < .05. O NLY z < −1 IS PRIMARY; z < −1.5 PASSES ERROR BUT FAILS RANK
+AND TOP - K , WHILE z < −2 FAILS THE COMPLETE EVENT MODULE .
+Panel A: Error and rank recovery
+Role
+
+Tail
+
+n
+
+∆RMSE [95% CI]
+
+∆MAE [95% CI]
+
+Rank ρ [95% CI]
+
+Perm. p
+
+Status
+
+Primary
+Sensitivity
+Sensitivity
+
+z<-1
+z<-1.5
+z<-2
+
+73
+52
+36
+
+-0.043 [-0.074, 0.007]
+-0.056 [-0.083, -0.002]
+-0.056 [-0.090, 0.014]
+
+-0.054 [-0.096, 0.002]
+-0.073 [-0.109, -0.007]
+-0.076 [-0.118, 0.015]
+
+0.180 [-0.035, 0.373]
+0.060 [-0.151, 0.416]
+-0.051 [-0.306, 0.497]
+
+0.362
+0.511
+0.797
+
+FAIL
+FAIL
+FAIL
+
+Panel B: Chance-adjusted Top-10 recovery
+Role
+
+Tail
+
+n
+
+Observed
+
+Expected
+
+Lift [95% CI]
+
+H p
+
+P p
+
+Status
+
+Primary
+Sensitivity
+Sensitivity
+
+z<-1
+z<-1.5
+z<-2
+
+73
+52
+36
+
+1/10
+1/10
+1/10
+
+1.37
+1.92
+2.78
+
+0.73 [0.00, 2.82]
+0.52 [0.37, 2.19]
+0.36 [0.32, 1.68]
+
+0.794
+0.907
+0.979
+
+0.793
+0.935
+0.985
+
+FAIL
+FAIL
+FAIL
+
+TABLE VI
+L OCKED MODULE DECISIONS . M ODULE A IS REQUIRED FOR OVERALL PREDICTIVE CLAIMS , M ODULE B FOR WEATHER - SPECIFIC PREDICTIVE
+RELIANCE , M ODULE E FOR BELOW- TREND EVENT- RECOVERY CLAIMS , AND M ODULE D IS DIAGNOSTIC ONLY.
+Mod.
+
+Role
+
+Contrast/check
+
+Estimate or primary statistic
+
+Status
+
+Decision role
+
+A
+
+Overall predictive adequacy
+
+Selected Weather-only vs. zero residual
+
+-0.005 [-0.019, 0.009]
+
+FAIL
+
+B
+
+Incremental weather value
+
+Full vs. Metadata-only
+
+-0.012 [-0.029, 0.002]
+
+FAIL
+
+E
+
+Event-recovery adequacy
+
+z < −1 tail error, rank, and top-10 null
+checks
+
+RMSE -0.043 [-0.074, 0.007]; rank
+0.180; top-10 1/10
+
+FAIL
+
+D
+
+Representation diagnostic
+
+Weather-only vs. Metadata-only
+
+-0.005 [-0.019, 0.009]
+
+DESCRIPTIVE
+ONLY
+
+Blocks overall and
+higher claim levels
+Blocks weather-specific
+predictive reliance
+Error CI, rank, and top10 checks do not all
+pass
+CI crosses zero; diagnostic only
+
+history-window, standardized-target, Huber, HistGradientBoosting, ElasticNet, target, model-family, cluster-resampling,
+prefix-learning, retrospective-target, and state-heterogeneity
+diagnostics for release. None changes the primary Module
+A/B/E decision or converts a descriptive diagnostic into eventrecovery evidence. Figure 3 shows descriptive state-level heterogeneity; these subgroup contrasts do not replace the panellevel Module A decision.
+
+A. Global fitted-function share
+
+B. Barley-Colorado 2016 local decomposition
+
+C. Required modules fail
+FAIL
+
+A
++0.081
+
+heat
+
+87.2%
+
+weather
+
++0.060
+
+drought
+7.3%
+
+state
+
++0.054
+
+frost cold
+
+FAIL
+
+B
+
+4.0%
+
+crop
+
++0.035
+
+excess rain
+
+1.5%
+
+location
+
+-0.013
+
+radiation
+
+FAIL
+
+E
+0
+
+20
+
+40
+60
+80
+share of |SHAP| (%)
+
+100
+
+−0.5
+
+−0.4 −0.3 −0.2 −0.1
+0.0
+0.1
+0.2
+signed contribution to residual prediction
+
+−0.06
+−0.04
+−0.02
+0.00
+Delta RMSE (left minus right)
+
+predicted 0.209; observed -0.510
+
+E shows primary-tail RMSE; it also fails rank and top-k checks.
+
+Fig. 2. Agricultural explanation output under abstention. SHAP family shares and the local signed group decomposition describe the locked fitted Weather-only
+model, while Modules A, B, and E fail on locked outcomes. These are fitted-function diagnostics, not event-recovery evidence. The displayed grouped SHAP
+contributions sum to 0.217; adding the SHAP base value of approximately −0.008 yields the reported prediction of 0.209. The observed residual is −0.510.
+State-level locked Delta RMSE: Weather-only minus zero residual
+
+TABLE VII
+S YNTHETIC SCENARIO - LEVEL CALIBRATION . GT IS EVALUATION - ONLY;
+POLICY PERMISSION IS COMPUTED SOLELY FROM OBSERVABLE M ODULES
+A, B, AND E ACROSS 30 SEEDS .
+Scenario
+
+GT
+
+Claim
+
+A
+
+B
+
+E
+
+Policy
+
+Corr. feat.
+Geo. shift
+Imbalanced tail
+Leakage
+Meas. error
+Moderate signal
+No signal
+Omitted conf.
+Small sample
+Spatial mismatch
+Strong signal
+Temporal drift
+Train-only detr.
+Weak signal
+
+no
+no
+yes
+no
+no
+yes
+no
+no
+yes
+yes
+yes
+no
+yes
+no
+
+event
+event
+event
+event
+event
+event
+event
+event
+event
+event
+event
+event
+event
+event
+
+100%
+100%
+100%
+100%
+70%
+100%
+0%
+100%
+93%
+43%
+100%
+97%
+100%
+10%
+
+100%
+100%
+100%
+100%
+100%
+100%
+47%
+100%
+97%
+100%
+100%
+100%
+100%
+80%
+
+100%
+100%
+100%
+100%
+83%
+100%
+10%
+100%
+97%
+80%
+100%
+100%
+100%
+53%
+
+100%
+100%
+100%
+100%
+67%
+100%
+0%
+100%
+93%
+40%
+100%
+97%
+100%
+7%
+
+WA
+33
+MT
+40
+
+ND
+40
+
+MN
+40
+
+SD
+28
+IA
+13
+
+NE
+20
+CO
+23
+
+IL
+20
+KS
+28
+OK
+28
+
+TX
+20
+
+−0.04
+
+−0.02
+
+0.00
+
+0.02
+
+0.04
+
+Delta RMSE t ha−1 (negative favors Weather-only)
+
+V. C ALIBRATION AND E XTERNAL C ASES
+A. Synthetic Benchmark
+The claim-module policy is also evaluated where the mechanism and claim label are known before evaluation. A repeated
+synthetic temporal benchmark covers 14 regimes over 30
+seeds each, including correlated features, omitted confounding,
+temporal and geographic shift, and leakage. GT permit labels
+define six permissible regimes and are used only for scoring;
+policy permit is computed from observable Module A, B, and
+E outputs. Ungated explanations falsely permit 240 of 240
+invalid runs (100.0%, 95% CI [98.4,100.0]); the observable
+A+B+E policy falsely permits 171/240 invalid runs (71.2%,
+95% CI [65.2,76.6]) while falsely abstaining on 20/180 valid
+runs (11.1%, 95% CI [7.3,16.5]). Its permission rate is 78.8%,
+sensitivity 88.9%, and specificity 28.7%.
+The observable modules cannot reliably identify all structurally invalid regimes: omitted confounding, geographic shift,
+leakage, and correlated features are permitted in 30/30 seeds,
+and temporal drift in 29/30. These are false permissions, not
+successful abstentions.
+
+Fig. 3. State-level heterogeneity on the locked 2016–2025 crop panel.
+Colors show Weather-only minus zero-residual ∆RMSE; negative values favor
+Weather-only. Labels report state abbreviation and locked-row count. Gray
+states are outside the study panel. Subgroup estimates are descriptive and not
+separate module decisions.
+
+B. Agricultural External-Resolution Check
+We also implemented a separate county-level winter-wheat
+check rather than assuming that a finer panel would rescue the
+state-level result. The locked pre-model population contains
+574 counties with at least ten training-period observations
+from 2000–2025, official county yields, static county interior
+points, and annual NASA POWER weather aggregates. Validation selected a weather-only ExtraTrees residual model from
+Ridge and ExtraTrees metadata, weather, and full-feature candidates. On the untouched 2022–2025 holdout, its RMSE was
+13.47 versus 13.78 bushels per acre for the zero-residual baseline, but the paired year-block 95% CI for the difference was
+[−0.67, 0.26]. Module B, which compares Full with Metadataonly, passes (∆RMSE = −0.71, 95% CI [−1.23, −0.34]), but
+
+Module A remains inconclusive. The county analysis therefore
+reaches a model-descriptive-only outcome and serves as a
+robustness case rather than evidence of predictive success or
+cross-resolution transfer.
+C. Cross-Domain Sanity-Check Permission Case
+The PJM analysis is a cross-domain sanity-check permission
+case for the core two-stage policy rather than a transfer
+claim. Its target is continuous electricity demand, so the cropspecific extreme-event module is not invoked. Public daily
+PJM electricity-demand and day-ahead forecast records from
+EIA Form EIA-930 [39] are fit with Calendar-only ExtraTrees
+features on January–September 2024 and evaluated on locked
+October–December records; Full adds the day-ahead demand
+forecast. Module A compares Full with a pre-specified trainperiod mean-demand naive baseline and passes: locked RMSE
+is 77,521 versus 335,037 MWh, with paired bootstrap ∆RMSE
+95% CI [−296.7, −221.8] × 103 MWh. Module B compares
+Full with Calendar-only and also passes: Calendar-only RMSE
+is 227,417 MWh and the Full-minus-Calendar paired 95%
+CI is [−186.0, −119.3] × 103 MWh. Because both pass,
+permutation importance is reported for locked PJM rows. The
+XAI manifest binds row IDs, hashes, seed handling, and output
+scale; agricultural XAI outputs remain descriptive because
+the required agricultural modules fail. These are predictivereliance interpretations, not causal or transfer claims. This
+intentionally easy positive case checks that the policy is
+not always-abstaining; synthetic regimes define the policy
+boundary.
+VI. D ISCUSSION
+A. Claim Scope and Multiplicity
+The synthetic benchmark clarifies the scope of the proposed
+gate. Relative to ungated explanation, the observable A+B+E
+policy reduces false permission from 240/240 to 171/240
+invalid runs. The remaining false permissions are concentrated
+in regimes such as leakage, omitted confounding, correlated
+features, and geographic or temporal shift, which may preserve
+or even improve predictive performance. Predictive gating
+should therefore be interpreted as a necessary claim-discipline
+layer, not as a detector of structural validity; design-stage leakage, confounding, measurement, and distribution-shift checks
+remain independently required.
+Several analyses are locally favorable. The eight- and tenyear history filters improve paired error on a smaller 313-row
+population; the 2013–2015 rolling fold passes, whereas the
+2007–2009 fold significantly favors the baseline; severe tails
+improve RMSE and MAE but fail rank and top-k recovery;
+and the county analysis passes Module B while Module A
+remains inconclusive. These results identify design conditions
+under which predictive signal may be stronger, but they either
+change the population, represent non-primary temporal folds,
+or fail another required module. We therefore use them to
+motivate future study design rather than to replace the primary
+locked test.
+
+The audit separates primary decisions from descriptive measurements before the locked period is examined. Module A,
+primary Module B, and the primary z < −1 Module E define
+the below-trend event permission rule; more severe tails, alternative histories, detrending choices, resampling units, stage
+proxies, crop/state diagnostics, and expanded model families
+are sensitivity or diagnostic evidence. They clarify robustness
+and design trade-offs but are not extra chances to declare the
+primary claim successful.
+B. Reproducibility and Traceability
+The reproducibility record contains input hashes, target construction, feature availability, forbidden-column checks, locked
+configuration, seeds, row IDs, predictions, bootstrap draws,
+and table inputs, so paired comparisons can be recomputed on
+identical locked rows.
+C. Limitations and External Validity
+State-representative weather can miss within-state exposure,
+weather covariates are correlated, and the panel lacks soil,
+irrigation, cultivar, management, and phenology data. The primary interval resamples only ten locked year-block units, and
+cluster sensitivities encode different dependence assumptions
+without removing that limitation. This negative result limits the
+present target, resolution, features, and model family; it does
+not establish that weather lacks scientific relevance for yield
+or that a stronger model cannot exist. The corrected synthetic
+benchmark also shows that predictive adequacy and featuregroup value cannot identify omitted confounding, leakage,
+correlated-feature structures, or unobserved distributional violations by themselves. GT labels are used only for evaluation,
+not for policy decisions. The audit asks whether the validationselected fitted model has sufficient locked evidence to support
+the requested claim. The separately locked county check shows
+that finer resolution does not automatically rescue overall
+adequacy, while the PJM permission case demonstrates that
+the policy does not always abstain when signal is strong.
+Future work needs prospectively versioned inputs, finer exposure measurements, design-stage validity checks, and an
+independent future test interval.
+VII. C ONCLUSION
+The agricultural audit supports model description only:
+Modules A, B, and E fail on the locked state panel, and the
+separately locked county check remains inconclusive under
+Module A. More generally, the gate reduces unsupported
+permission relative to ungated explanation but does not establish structural validity. The synthetic reduction from 240/240
+to 171/240 false permissions demonstrates practical claim
+discipline, while the remaining failures show why leakage,
+omitted confounding, measurement validity, and distributionshift checks must be enforced at the design stage.
+R EFERENCES
+[1] D. Paudel, H. Boogaard, A. de Wit, S. Janssen, S. Osinga, C. Pylianidis,
+and I. N. Athanasiadis, “Machine learning for large-scale crop yield
+forecasting,” Agricultural Systems, vol. 187, p. 103016, 2021.
+
+

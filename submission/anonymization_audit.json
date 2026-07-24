@@ -1,0 +1,12 @@
+{
+  "created_utc": "2026-07-18T19:07:29.911209+00:00",
+  "artifact": "submission/ictai2026_anonymous_artifact.zip",
+  "scanned_files": 187,
+  "matches": [],
+  "missing_required_blind_files": [],
+  "metadata_checks": {
+    "zip_paths_checked": true,
+    "binary_bytes_checked": true
+  },
+  "status": "PASS"
+}

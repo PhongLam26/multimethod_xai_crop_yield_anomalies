@@ -36,7 +36,6 @@ def main() -> None:
     rejected.to_csv(reports / "rejected_experiments.csv", index=False)
     hashed = [
         ROOT / "paper_versions" / "v3_method_benchmark" / "source" / "fidelity_gated_xai_method_benchmark_v3.pdf",
-        ROOT / "submission" / "v3_method_anonymous_artifact.zip",
         ROOT / "submission" / "v3_method_anonymous_artifact_manifest.json",
         ROOT / "reports" / "experiments" / "county-v2-weather-models.json",
         ROOT / "reports" / "v2" / "v2_pipeline_audit.json",

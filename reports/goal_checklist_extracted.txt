@@ -1,0 +1,720 @@
+KẾ HOẠCH SỬA PAPER TOÀN DIỆN
+Tài liệu giao việc trực tiếp cho Codex
+Paper: “Auditing Weather-Feature Reliance in Detrended Crop-Yield Models”
+| Mục tiêu | Sửa paper, source code, thí nghiệm, artifacts và PDF cuối cho đến khi không còn lỗi P1; mọi claim chính đều có evidence truy vết được. |
+| Trạng thái hiện tại | MAJOR REVISION — chưa nộp bản hiện tại. |
+| Ưu tiên cao nhất | Sửa định nghĩa Gate B1 để thực sự đo incremental weather value; sau đó củng cố novelty và synthetic benchmark. |
+| Nguồn audit | PDF paper 8 trang và hai cẩm nang kiểm tra paper do tác giả cung cấp. |
+| Nguyên tắc | Không bịa kết quả; không dùng locked test để chọn lại model/feature/target; mọi thay đổi số liệu phải được rerun và regenerate từ artifact. |
+Dành cho Codex: đọc toàn bộ tài liệu trước khi sửa. Thực hiện theo thứ tự P1 → P2 → P3 → R và tự kiểm tra lại sau mỗi vòng.
+MỤC LỤC
+1. Cách Codex phải sử dụng tài liệu này2. Executive diagnosis và thứ tự ưu tiên3. Lỗi P1 bắt buộc sửa trước mọi thay đổi khác4. Các lỗi P2 về thiết kế, novelty và evidence5. Các lỗi P3 về cấu trúc, writing, figures và tables6. Các mục R: artifacts, references, reproducibility và submission7. Claim–Evidence Matrix bắt buộc Codex phải hoàn thành8. Danh sách artifacts tối thiểu cần có sau khi sửa9. Outline manuscript đề xuất sau khi sửa10. Thứ tự triển khai đề xuất cho Codex11. Vòng tự kiểm tra bắt buộc12. Checklist nghiệm thu cuối13. Prompt thực thi cuối dành cho CodexPhụ lục A. Các câu/thuật ngữ cần kiểm tra nhất quánPhụ lục B. Định nghĩa trạng thái issue
+Số trang có thể thay đổi sau khi Codex cập nhật nội dung; dùng Navigation Pane trong Word để di chuyển theo Heading.
+1. Cách Codex phải sử dụng tài liệu này
+Vai trò: Đóng vai senior scientific reviewer, ML engineer và reproducibility auditor. Nhiệm vụ không chỉ sửa văn phong mà phải sửa logic nghiên cứu, code, configs, thí nghiệm, artifacts, manuscript và PDF cuối.
+Phạm vi: Tìm source LaTeX/Word, code tạo dataset, target, features, splits, models, bootstrap, figures, tables, references và build scripts. Không chỉ chỉnh file PDF.
+Đầu ra cuối: Một bản paper build sạch; các artifact được tái tạo; bảng số liệu khớp; claim–evidence matrix hoàn chỉnh; không còn lỗi P1; các mục chưa thể hoàn thành phải được ghi BLOCKED kèm lý do và file còn thiếu.
+| RÀNG BUỘC KHÔNG ĐƯỢC VI PHẠMKhông mở locked test để chọn lại model, feature set, target, threshold hoặc gate rule.Không chỉ đổi tên Gate B1 trong văn bản; phải sửa đúng estimand, code so sánh, config, artifact và bảng kết quả.Không bịa kết quả thí nghiệm. Nếu không chạy được, ghi BLOCKED và giữ wording thận trọng.Không quảng bá một sensitivity favorable thành primary result.Không biến predictive fidelity thành bằng chứng causal.Mọi số trong PDF phải được sinh từ scripts/artifacts, không gõ tay. |
+1.1 Quy trình làm việc bắt buộc
+1. Khảo sát repository và lập bản đồ file: manuscript, code, configs, data schema, artifacts, figures, bibliography và build command.
+2. Chạy baseline build hiện tại; lưu log, hash PDF và trạng thái test trước khi sửa.
+3. Sửa lỗi P1 trước. Rerun unit tests và thí nghiệm liên quan.
+4. Sửa P2 theo thứ tự scientific design → evidence → manuscript.
+5. Sửa P3 về bố cục/hình/bảng sau khi số liệu đã khóa.
+6. Audit references, anonymity, PDF và venue compliance.
+7. Build lại từ clean state, chạy toàn bộ tests, đối chiếu tất cả số liệu và tạo final manifest.
+1.2 Các lệnh tìm kiếm khởi đầu gợi ý
+rg -n "Gate B1|incremental-weather|Weather only|Metadata only|Full vs|independent" .
+rg -n "fidelity_gate|gate_b1|gate_b2|weather_only|metadata_only|full" configs src scripts tests .
+rg -n "SHAP|LIME|permutation|response curve|model hash|row id" .
+rg -n "synthetic|false permission|PJM|county|winter wheat" .
+rg -n "Table V|Table XIII|E1|E10|VERIFIED|artifact" manuscript paper tex .
+2. Executive diagnosis và thứ tự ưu tiên
+| ID | Mức | Vấn đề | Hành động bắt buộc | Trạng thái |
+| P1-01 | P1 | Gate B1 không đo đúng incremental weather value. | Đổi primary weather-value contrast thành Full vs Metadata-only; sửa code/config/artifacts/manuscript. | OPEN |
+| P2-01 | P2 | Contribution đang coi hygiene là novelty. | Định vị lại contribution quanh stop-gate, benchmark và false permission/abstention. | OPEN |
+| P2-02 | P2 | Related Work thiếu nearest methodological work. | Bổ sung abstention/selective prediction/XAI validity/model criticism. | OPEN |
+| P2-03 | P2 | Prediction time, horizon và intended use chưa rõ. | Thêm feature-availability table và xác định post-season audit hay pre-harvest forecast. | OPEN |
+| P2-04 | P2 | Target/feature definition chưa đủ tái lập. | Bổ sung công thức, epsilon, feature groups, windows, coordinates, missing handling. | OPEN |
+| P2-05 | P2 | No-shortcut audit chưa được chứng minh. | Xuất feature list, chạy ablation year/trend/history-related fields, thêm unit tests. | BLOCKED/OPEN |
+| P2-06 | P2 | Model comparison và tuning còn hẹp. | Bổ sung strong tabular/model phù hợp hoặc giới hạn claim rõ ràng. | OPEN |
+| P2-07 | P2 | Thiếu ablation của chính gate. | Đo contribution từng component đến false permission/false abstention. | OPEN |
+| P2-08 | P2 | Synthetic benchmark quá ngắn. | Thêm scenario table, repetitions, CI, sensitivity/specificity và power. | OPEN |
+| P2-09 | P2 | County/PJM chưa thành evaluation hoàn chỉnh. | Tách thành subsection, bổ sung protocol và artifact mapping. | OPEN |
+| P2-10 | P2 | XAI provenance/output scale chưa rõ. | Ghi model hash, rows, output explained, seed aggregation, case rule. | OPEN |
+| P2-11 | P2 | Operational evaluation chỉ partial. | Thêm precision@k/recall@k/workload hoặc tuyên bố ngoài phạm vi. | OPEN |
+| P3-01 | P3 | Discussion lặp Results và gate caveats. | Cắt lặp, chuyển chỗ cho formalization và benchmark. | OPEN |
+| P3-02 | P3 | Figure/table information gain và readability. | Redesign Figure 1, phóng Figure 3, gộp/chuyển bảng. | OPEN |
+| R-01 | R | Artifact traceability mới là claim trong PDF. | Thực sự tái tạo E1–E10 và xuất manifest/path/hash/commands. | BLOCKED/OPEN |
+| R-02 | R | References chưa audit hai chiều và support. | Verify DOI/publisher/metadata/support; sửa BibTeX. | BLOCKED |
+| R-03 | R | Venue/PDF/portal compliance chưa kiểm. | Đọc author guideline và audit final upload file. | BLOCKED |
+Cổng quyết định: Không được đánh dấu paper “READY” nếu P1-01 chưa PASS, hoặc nếu các claim chính vẫn không có artifact truy vết được.
+3. Lỗi P1 bắt buộc sửa trước mọi thay đổi khác
+P1-01. Gate B1 chưa đo đúng incremental weather value
+| Mức độ | P1/FATAL đối với claim phương pháp; kết luận negative của dataset chính có thể vẫn giữ nếu rerun không thay đổi. |
+| Vị trí hiện tại | Section III-C, Table II, Figure 2, Table VIII, Discussion và Conclusion. Hiện Gate B1 là Weather-only vs Metadata-only; Full vs Metadata-only bị hạ thành sensitivity Gate B2. |
+| Vấn đề | Weather-only vs Metadata-only so sánh hai representation đứng riêng. Nó không ước lượng giá trị gia tăng của weather khi đã có metadata. Estimand đúng của incremental weather value phải là Full (Metadata + Weather) so với Metadata-only trên cùng rows và cùng protocol. |
+| Tác động reviewer | Reviewer có thể kết luận central gate bị định nghĩa sai. Trong dataset hiện tại Metadata-only gần như trùng zero baseline, nên Gate A và Gate B1 gần như lặp cùng một contrast; từ “independent” cũng không được hỗ trợ. |
+Hành động Codex phải thực hiện
+1. Tìm toàn bộ code/config/tests/manuscript định nghĩa Gate A, B1 và B2.
+2. Định nghĩa primary Gate B1 mới: loss(Full) − loss(Metadata-only), với negative value favor Full.
+3. Chuyển Weather-only vs Metadata-only thành exploratory/representation contrast; có thể giữ tên Gate B2 hoặc đổi thành Diagnostic W-vs-M, nhưng không gọi incremental value.
+4. Bảo đảm Full và Metadata-only được tune/select công bằng chỉ trên validation. Nếu mỗi feature family có model/hyperparameter riêng, ghi rõ selection rule; không dùng locked test để chọn.
+5. Rerun toàn bộ primary agricultural analysis, county analysis, synthetic benchmark và PJM analysis bằng gate definition mới.
+6. Cập nhật unit tests để kiểm đúng model pair, row IDs, prediction hashes, metric sign và confidence interval.
+7. Cập nhật Table II, Figure 2, Table VIII, abstract, discussion, conclusion, configs/fidelity_gate.yaml và artifact manifest.
+8. Thay cụm 'Gate A and Gate B1 are independent' bằng 'distinct required conditions' hoặc wording tương đương, trừ khi có phân tích thống kê chứng minh độc lập.
+Chuỗi/lệnh nên tìm trong repository
+rg -n "Gate B1|Gate B2|incremental-weather|Weather only vs|Full vs Metadata|independent" .
+rg -n "gate_b1|gate_b2|weather_only|metadata_only|full_model" configs src scripts tests .
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+paired_full_vs_metadata.csv: row-aligned losses và ΔRMSE cho Full vs Metadata-only.
+gate_decisions.json/yaml: estimand, pass rule, selected model IDs, row hashes và result.
+bootstrap_full_vs_metadata.csv: toàn bộ paired bootstrap draws.
+test_gate_pairing.py: assert Gate B1 dùng đúng Full và Metadata-only predictions.
+Regenerated Figure 2 và Table II/VIII.
+Updated synthetic benchmark outputs với Gate B1 mới.
+Thay đổi bắt buộc trong manuscript
+Thêm công thức: Δ_weather|metadata = L(f_M+W) − L(f_M).
+Nêu rõ Gate A kiểm overall predictive fidelity; Gate B1 kiểm conditional incremental feature-group value.
+Giải thích Weather-only vs Metadata-only chỉ là standalone representation diagnostic.
+Cập nhật mọi câu mô tả primary/sensitivity cho nhất quán.
+Tiêu chí PASS
+Không còn vị trí nào gọi Weather-only vs Metadata-only là incremental weather value.
+Gate B1 code, config, tests, artifacts, table và prose đều dùng Full vs Metadata-only.
+Hai phía của comparison dùng cùng locked rows, cùng target, cùng split và paired CI.
+Không có test-set reselection.
+Mọi số mới được regenerate, không chỉnh tay.
+Không được làm
+Không chỉ đổi nhãn Gate B1/B2 trong PDF mà giữ nguyên code.
+Không chọn Full model vì point estimate trên locked test đẹp hơn.
+Không gọi Gate A và B1 'statistically independent' nếu không có chứng minh.
+4. Các lỗi P2 về thiết kế, novelty và evidence
+P2-01. Định vị contribution: không dùng experimental hygiene làm novelty chính
+| Mức độ | P2/MAJOR |
+| Vị trí hiện tại | Đoạn contributions trong Introduction và các câu mô tả reusable lesson. |
+| Vấn đề | Contribution hiện liệt kê train-only target construction và validation-then-locked-test selection như đóng góp độc lập. Đây là safeguard bắt buộc, chưa đủ là novelty phương pháp. |
+| Tác động reviewer | Reviewer main-track có thể coi paper là checklist được thực hiện kỹ thay vì method/benchmark mới. |
+Hành động Codex phải thực hiện
+1. Viết lại contribution quanh formal stop-gate, benchmark có ground truth và audit traceability.
+2. Chuyển train-only preprocessing, locked test và no-reselection thành protocol safeguards.
+3. Tạo một bảng 'What is new vs standard practice' trong notes/supplement để kiểm wording.
+4. Đảm bảo mỗi contribution có một experiment/table/artifact hỗ trợ.
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+claim_evidence_matrix.csv hoặc .md cho từng contribution.
+Bảng ablation/benchmark chứng minh gate giảm false permission và đo false abstention.
+Artifact mapping cho target-construction sensitivity và audit traceability.
+Thay đổi bắt buộc trong manuscript
+Contribution 1: formal study-level INTERPRET/ABSTAIN protocol với explicit estimands và conjunctive conditions.
+Contribution 2: synthetic temporal benchmark đo false permission, false abstention và component ablations.
+Contribution 3: empirical prospective-vs-retrospective target audit và cross-domain stress test.
+Không viết chronological split/leakage control như novelty đứng riêng.
+Tiêu chí PASS
+Mỗi contribution là một kết quả/insight kiểm chứng được.
+Không có contribution chỉ mô tả hygiene cơ bản.
+Abstract, Introduction và Conclusion dùng cùng contribution set.
+P2-02. Related Work thiếu nearest methodological literature
+| Mức độ | P2/MAJOR |
+| Vị trí hiện tại | Section II Related Work. |
+| Vấn đề | Related Work hiện bao quát yield modeling, XAI methods và reproducibility nhưng chưa đối chiếu trực tiếp với selective prediction, abstention/reject option, explanation reliability dưới shift, model criticism và predictive-versus-causal attribution. |
+| Tác động reviewer | Novelty gap chưa được chứng minh; reviewer có thể nói method đã tồn tại dưới tên khác. |
+Hành động Codex phải thực hiện
+1. Tìm và đọc các nhóm công trình gần nhất bằng nguồn chính thức/peer-reviewed.
+2. Tổ chức theo chủ đề, không liệt kê paper A/B/C tuần tự.
+3. Cuối mỗi nhóm viết một câu gap chính xác mà paper giải quyết.
+4. Lập bảng comparison trong supplementary hoặc internal note: decision unit, gate input, uncertainty, output, causal boundary, benchmark.
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+related_work_matrix.csv/md với cột: work, task, abstention unit, fidelity condition, feature-value condition, uncertainty, limitation.
+Verified BibTeX entries và DOI/official URLs.
+Thay đổi bắt buộc trong manuscript
+Bổ sung nhóm Selective prediction/abstention.
+Bổ sung nhóm validity/reliability of post-hoc explanation.
+Bổ sung nhóm model criticism/evaluation before interpretation.
+Nêu khác biệt: protocol abstains from study-level substantive interpretation, không chỉ từ individual prediction.
+Tiêu chí PASS
+Có ít nhất một đoạn so sánh trực tiếp với nearest methodological work.
+Gap có citation support và không dùng câu mơ hồ kiểu 'few studies'.
+Không gán novelty cho temporal split hoặc paired CI.
+Không được làm
+Không thêm reference chỉ để tăng số lượng.
+Không trích dẫn nguồn chỉ vì title tương tự; phải đọc abstract/method để xác nhận support.
+P2-03. Prediction time, horizon, feature availability và intended use chưa rõ
+| Mức độ | P2/MAJOR |
+| Vị trí hiện tại | Title, Abstract, Introduction, Section III-A và Figure 1. |
+| Vấn đề | Paper dùng 35 full-season weather features nhưng chưa nói model được dùng trước, trong hay sau mùa vụ. Locked future years chỉ chứng minh temporal generalization, không tự động biến bài toán thành pre-harvest forecasting. |
+| Tác động reviewer | Reviewer có thể đánh giá task/use-case không khớp, hoặc coi paper dùng future-within-year information đối với một claim forecasting. |
+Hành động Codex phải thực hiện
+1. Xác định intended use duy nhất: post-season scientific audit, in-season nowcast hay pre-harvest forecast.
+2. Tạo feature availability table với thời điểm có sẵn của từng feature group.
+3. Nếu intended use là pre-harvest: định nghĩa cutoff và rerun features chỉ đến cutoff.
+4. Nếu intended use là post-season audit: thay wording forecasting bằng audit/prediction of detrended residuals where appropriate.
+5. Redesign Figure 1 thành timeline có train/validation/test và within-year availability.
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+feature_availability.md/csv.
+season_window_config.yaml.
+Unit test bảo đảm không dùng dữ liệu sau prediction cutoff nếu có cutoff.
+Updated data dictionary.
+Thay đổi bắt buộc trong manuscript
+Một câu explicit gồm input, prediction time, population, horizon và output.
+Bảng feature availability trong Method hoặc Supplement.
+Nêu rõ full-season features có ý nghĩa gì đối với use case.
+Tiêu chí PASS
+Reader biết chính xác model chạy khi nào và dữ liệu nào đã có sẵn.
+Title/abstract/use-case không rộng hơn task thực tế.
+Nếu claim forecast trước thu hoạch, không có feature sau cutoff.
+P2-04. Target formula, feature groups và preprocessing chưa đủ tái lập
+| Mức độ | P2/MAJOR |
+| Vị trí hiện tại | Section III-A/B và supplementary/artifact documentation. |
+| Vấn đề | Paper mô tả residual và z-score bằng lời nhưng thiếu công thức đầy đủ, epsilon/min-scale rule, danh sách 35 weather features, nội dung metadata-only, season windows, representative coordinates và missing handling. |
+| Tác động reviewer | Reviewer không thể tái lập target/features chỉ từ manuscript; nguy cơ hiểu sai raw residual, standardized event target và metadata shortcut. |
+Hành động Codex phải thực hiện
+1. Viết target construction bằng công thức và pseudocode.
+2. Định nghĩa trend model theo crop-state, training cutoff và minimum history.
+3. Nêu cách tính residual scale, degrees of freedom, epsilon hoặc xử lý near-zero scale.
+4. Xuất data dictionary đầy đủ cho metadata/weather/full.
+5. Mô tả representative coordinate, spatial aggregation, season dates và unit conversions.
+6. Mô tả imputation/encoding/scaling và scope fit train-only.
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+target_spec.md hoặc target_formula.tex.
+feature_dictionary.csv.
+series_trend_manifest.csv.
+missingness_report.csv.
+coordinate_manifest.csv.
+test_target_no_future_change.py.
+test_scale_edge_cases.py.
+Thay đổi bắt buộc trong manuscript
+Chèn công thức trend, residual và standardized residual.
+Nêu raw residual là regression target; z chỉ định nghĩa event.
+Thêm table tóm tắt feature groups và availability.
+Nêu min-history 3 là technical minimum, không phải stable variance threshold.
+Tiêu chí PASS
+Một reviewer có thể implement target từ công thức/pseudocode mà không đoán.
+Không còn thuật ngữ metadata-only/weather-only/full chưa định nghĩa.
+Không có NaN/Inf hoặc undefined z ở scale gần 0.
+Công thức gợi ý để Codex tích hợp:
+\hat{y}_{c,s,t} = a_{c,s}^{(\mathrm{train})} + b_{c,s}^{(\mathrm{train})} t
+r_{c,s,t} = y_{c,s,t} - \hat{y}_{c,s,t}
+z_{c,s,t} = r_{c,s,t} / \max(\hat{\sigma}_{c,s,\mathrm{train}}, \epsilon)
+Event_{c,s,t}(\tau) = \mathbb{1}[z_{c,s,t} < \tau]
+P2-05. Chưa chứng minh no-shortcut/construct-circularity audit
+| Mức độ | P2/MAJOR — BLOCKED cho đến khi đọc feature list và code. |
+| Vị trí hiện tại | Target construction, metadata feature set và ablation section. |
+| Vấn đề | Train-only construction xử lý future leakage tốt nhưng chưa đủ để loại trừ feature có thể tái dựng trend/residual scale hoặc shortcut theo crop-state-year. |
+| Tác động reviewer | Reviewer có thể cho rằng model học lại target formula thay vì weather signal tổng quát. |
+Hành động Codex phải thực hiện
+1. So sánh từng thành phần target formula với toàn bộ feature list.
+2. Đánh dấu year, trend prediction, historical mean/std, residual scale, history length và các biến gần target.
+3. Chạy no-shortcut ablation loại từng nhóm nghi ngờ trên đúng full validation protocol.
+4. Kiểm tra performance và XAI sau ablation; không dùng compact exploratory run làm evidence cuối.
+5. Thêm unit test cấm target-derived columns vào model matrix.
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+target_feature_overlap.csv.
+no_shortcut_ablation.csv.
+test_forbidden_feature_columns.py.
+feature_matrix_schema.json.
+Ablation prediction files và paired CI.
+Thay đổi bắt buộc trong manuscript
+Mô tả shortcut audit và kết quả ablation.
+Nếu không có shortcut, ghi rõ các feature bị cấm và test tương ứng.
+Nếu có shortcut, loại khỏi final protocol và regenerate toàn bộ result.
+Tiêu chí PASS
+Không feature nào tái dựng trực tiếp target hoặc event threshold.
+No-shortcut ablation chạy cùng target/split/population/tuning rule.
+Artifact cho phép reviewer kiểm column-level provenance.
+Không được làm
+Không kết luận PASS chỉ vì feature dùng dữ liệu quá khứ.
+Không chỉ kiểm tên cột; phải kiểm semantic transformation.
+P2-06. Model family và hyperparameter coverage còn hẹp
+| Mức độ | P2/MAJOR hoặc limitation mạnh nếu không đủ compute. |
+| Vị trí hiện tại | Section III-B, validation tables và sensitivity model-family table. |
+| Vấn đề | Primary grid chỉ có Ridge, Random Forest và ExtraTrees với grid nhỏ. HistGradientBoosting/ElasticNet chỉ là sensitivity. |
+| Tác động reviewer | Gate failure có thể bị quy cho under-tuning hoặc model family không phù hợp thay vì lack of reliable signal. |
+Hành động Codex phải thực hiện
+1. Bổ sung ít nhất một strong tabular boosting family và một model phù hợp nonlinear weather response.
+2. Cân nhắc GAM/spline và mixed-effects/hierarchical baseline.
+3. Giữ validation-only selection, equal budget và fixed seeds.
+4. Nếu không bổ sung, giới hạn claim rõ: 'under this finite pre-specified model family'.
+5. Báo compute budget và search space.
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+expanded_model_grid.yaml.
+validation_grid_all_models.csv.
+seed_level_metrics.csv.
+compute_manifest.json.
+paired test predictions cho validation-selected models.
+Thay đổi bắt buộc trong manuscript
+Nêu search space và lý do chọn model families.
+Không gọi comparison là SOTA nếu không có fair protocol.
+Nêu kết luận conditional on model family.
+Tiêu chí PASS
+Có strong internal comparator hợp lý hoặc limitation đủ rõ.
+Tất cả model được select bằng validation, không test.
+Không cherry-pick model có final point estimate thuận lợi.
+P2-07. Thiếu ablation của chính fidelity-gate method
+| Mức độ | P2/MAJOR |
+| Vị trí hiện tại | Section VI synthetic evidence và supplementary. |
+| Vấn đề | Paper có nhiều sensitivity của dữ liệu/model nhưng chưa chỉ ra từng gate component đóng góp gì vào false permission, false abstention và power. |
+| Tác động reviewer | Reviewer chưa biết full gate tốt hơn Gate A-only, Gate B-only hoặc simpler rule ở điểm nào. |
+Hành động Codex phải thực hiện
+1. Thiết kế component ablation trên cùng synthetic scenarios.
+2. So sánh: no gate, Gate A only, Gate B1 only, A+B1, A+B1+tail, full null-aware gate.
+3. Ablate bootstrap structure: IID vs year block như diagnostic, không nhất thiết thành primary.
+4. Báo false permission, false abstention, sensitivity, specificity và permission rate.
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+gate_component_ablation.csv.
+scenario_level_decisions.csv.
+ablation_summary_ci.csv.
+Figure: trade-off false permission vs false abstention.
+Thay đổi bắt buộc trong manuscript
+Thêm table/figure component ablation.
+Giải thích component nào ngăn invalid interpretation trong leakage/confounding/shift scenarios.
+Nêu cost của gate quá bảo thủ.
+Tiêu chí PASS
+Có evidence full gate tạo giá trị so với simpler rules.
+Báo cả false permission và false abstention.
+Không chỉ báo một con số 0% mà thiếu denominator/CI.
+P2-08. Synthetic benchmark chưa đủ chi tiết để hỗ trợ central contribution
+| Mức độ | P2/MAJOR |
+| Vị trí hiện tại | Section VI và supplementary/artifacts. |
+| Vấn đề | Main paper chỉ nêu danh sách scenario và false permission 28.6%→0%, nhưng thiếu số scenario, ground-truth label, repetitions, confidence intervals, power và scenario-level result. |
+| Tác động reviewer | Một gate quá bảo thủ có thể đạt 0% false permission bằng cách luôn abstain; hiện chưa đánh giá trade-off đầy đủ. |
+Hành động Codex phải thực hiện
+1. Formalize ground-truth permission rule cho từng scenario.
+2. Tăng repeated simulations/seeds nếu benchmark hiện deterministic một lần.
+3. Báo số valid/invalid scenarios và denominator.
+4. Báo false permission, false abstention, sensitivity, specificity, permission rate và CI.
+5. Báo kết quả theo signal strength, sample size, imbalance, shift, leakage, confounding và measurement error.
+6. Tạo scenario table đủ để reviewer kiểm từng quyết định.
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+synthetic_scenarios.yaml.
+synthetic_ground_truth.csv.
+synthetic_runs_long.csv.
+synthetic_summary.csv.
+synthetic_component_ablation.csv.
+reproduction command trong README.
+Thay đổi bắt buộc trong manuscript
+Thêm bảng: Scenario | Ground-truth permission | Gate A | Gate B1 | Full gate | Correct?.
+Nêu repetitions, seeds, CI và simulator equations.
+Giải thích six valid-signal scenarios cụ thể là gì.
+Tiêu chí PASS
+False permission và false abstention đều có denominator và uncertainty.
+Reviewer có thể map từng scenario đến ground truth.
+Full gate không phải always-abstain rule theo evidence định lượng.
+P2-09. County-level và PJM stress tests chưa được trình bày như evaluation hoàn chỉnh
+| Mức độ | P2/MAJOR |
+| Vị trí hiện tại | County experiment hiện nằm trong Limitations; PJM chỉ có một đoạn ở Section VI. |
+| Vấn đề | Hai experiment quan trọng nhưng thiếu protocol, split, target, features, model grid, gate components và artifact mapping. |
+| Tác động reviewer | Reviewer có thể coi đây là post-hoc add-on thay vì external validation của method. |
+Hành động Codex phải thực hiện
+1. Tạo subsection riêng cho Agricultural external-resolution check và Cross-domain permission case.
+2. Nêu population, target, time split, feature groups, model selection, rows, baselines và gate rules.
+3. Áp dụng Gate B1 mới nhất quán.
+4. Báo Gate A và Gate B1 tách biệt, không chỉ một ΔRMSE.
+5. Cho ví dụ XAI được phép trong PJM nhưng giới hạn là predictive reliance, không causal.
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+county_protocol.yaml, county_predictions.csv, county_bootstrap.csv.
+pjm_protocol.yaml, pjm_predictions.csv, pjm_bootstrap.csv.
+External-domain claim–evidence rows.
+Thay đổi bắt buộc trong manuscript
+Di chuyển county result khỏi Limitations sang Results/External Evidence.
+Giữ limitation về transfer và resolution trong Discussion.
+Mở rộng PJM protocol đủ tái lập.
+Tiêu chí PASS
+Mỗi external case có same-task baseline, selection rule và paired uncertainty.
+Không có test-set reselection.
+Kết luận transfer được giới hạn rõ.
+P2-10. XAI provenance, model artifact và output scale chưa rõ
+| Mức độ | P2/MAJOR — BLOCKED nếu chưa có explanation artifacts. |
+| Vị trí hiện tại | Abstract/Related Work/Discussion và artifact release. |
+| Vấn đề | Paper nói giữ SHAP, LIME, permutation, ablation và response curves như fitted-function descriptions nhưng không nêu model hash, output explained, background data, seed aggregation hoặc case-selection rule. |
+| Tác động reviewer | Reviewer không thể xác minh explanation thuộc đúng final model/rows; dễ hiểu sai residual score thành probability hoặc causal effect. |
+Hành động Codex phải thực hiện
+1. Lập XAI provenance manifest cho từng method.
+2. Ghi model hash, feature set hash, row IDs, output scale, background/reference data và seed handling.
+3. Nếu dùng 5 seed models, nêu explanation trên từng seed hay ensemble mean.
+4. Pre-specify local case selection; nếu không cần case study, bỏ claim analyst review.
+5. Đảm bảo SHAP/LIME giải thích predicted raw residual hoặc score được ghi đúng.
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+xai_manifest.csv/md.
+model_hashes.json.
+explanation_row_ids.csv.
+shap_config.yaml, lime_config.yaml.
+test_xai_row_alignment.py.
+Thay đổi bắt buộc trong manuscript
+Thêm một bảng XAI provenance.
+Nêu rõ output scale: predicted residual, standardized score hay other.
+Lặp lại causal boundary: gate pass chỉ cho phép predictive model-reliance interpretation.
+Tiêu chí PASS
+Mỗi explanation truy được về model hash, feature hash và row IDs.
+Output scale được ghi chính xác.
+Không có causal wording.
+P2-11. Operational evaluation và calibration scope chưa được chốt
+| Mức độ | P2/PARTIAL |
+| Vị trí hiện tại | Table VI/VII, Discussion và use-case wording. |
+| Vấn đề | Paper có PR-AUC, ROC-AUC, precision/recall/F1, severity tails và top-10 lift, nhưng chưa có precision@k/recall@k/workload. Calibration có thể N/A nếu score không được dùng như probability. |
+| Tác động reviewer | Nếu paper gợi ý event screening/triage, reviewer sẽ hỏi capacity và false positives per year. |
+Hành động Codex phải thực hiện
+1. Quyết định paper có claim operational screening hay chỉ scientific audit.
+2. Nếu có operational claim: báo precision@k, recall@k, alerts/year, false positives/year và capacity scenarios.
+3. Nếu không: ghi rõ operational deployment và probability calibration nằm ngoài phạm vi.
+4. Không thêm calibration metrics vô nghĩa nếu output không được diễn giải là probability.
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+operational_metrics.csv nếu áp dụng.
+capacity_scenarios.csv.
+Confusion counts và threshold policy.
+Thay đổi bắt buộc trong manuscript
+Nêu top-k được chọn trước test hay chỉ fixed diagnostic.
+Giải thích top-10 tương ứng workload nào.
+Ghi calibration N/A với lý do nếu phù hợp.
+Tiêu chí PASS
+Use case và metrics nhất quán.
+Không gọi deployment-ready nếu chưa có workload/calibration.
+Severity analysis có implication rõ.
+P2-12. Abstract/Introduction thiếu intended user và practical use
+| Mức độ | P2/MAJOR nhẹ |
+| Vị trí hiện tại | Title, Abstract và Introduction. |
+| Vấn đề | Abstract có problem, data, method và result nhưng chưa nói gate trả quyết định ở cấp nào và ai dùng protocol. |
+| Tác động reviewer | Practical value chưa rõ; reviewer khó hiểu đây là tool cho scientist, model developer hay farm decision maker. |
+Hành động Codex phải thực hiện
+1. Chọn intended user chính: scientific-ML researchers/reviewers using XAI to discuss real-world events.
+2. Nêu output là study/task-level INTERPRET hoặc ABSTAIN, không phải causal attribution.
+3. Đảm bảo title không khiến người đọc nghĩ paper dự đoán yield tốt.
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+Updated claim–evidence matrix cho abstract claims.
+Thay đổi bắt buộc trong manuscript
+Thêm một câu use-case trong Abstract.
+Mở Introduction bằng risk cụ thể: unreliable fitted models can yield persuasive but unsupported explanations.
+RQ phải dẫn trực tiếp đến Gate A/B.
+Tiêu chí PASS
+Reader hiểu paper giúp ai, quyết định gì và không làm gì.
+Abstract/Conclusion không rộng hơn evidence.
+5. Các lỗi P3 về cấu trúc, writing, figures và tables
+P3-01. Discussion lặp Results và có văn phong quá phòng thủ
+| Mức độ | P3/PRESENTATION |
+| Vị trí hiện tại | Section V và các đoạn sau Tables VIII–XII. |
+| Vấn đề | Các cụm 'cannot replace', 'cannot trigger re-selection', 'locked', 'sensitivity only' và 'does not repair' lặp nhiều lần. |
+| Tác động reviewer | Paper mất chỗ cho novelty, equations và benchmark; narrative giống rebuttal hơn article. |
+Hành động Codex phải thực hiện
+1. Đánh dấu mọi câu lặp lại gate status.
+2. Giữ một scope paragraph ngắn ở Results và một multiplicity paragraph ở Discussion.
+3. Cắt 15–20% phần lặp.
+4. Dùng chỗ trống cho formal gate definition, synthetic benchmark và prediction timeline.
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+before_after_word_count.md.
+List of removed/replaced paragraphs.
+Thay đổi bắt buộc trong manuscript
+Results chỉ nêu result và immediate implication.
+Discussion giải thích tại sao result xảy ra, external validity và future study design.
+Không paraphrase toàn bộ bảng.
+Tiêu chí PASS
+Không còn ba đoạn liên tiếp lặp cùng boundary.
+Discussion thêm insight chứ không đọc lại Results.
+Meaning không bị overclaim sau khi rút gọn.
+P3-02. Figure/table information gain và readability cần cải thiện
+| Mức độ | P3/PRESENTATION |
+| Vị trí hiện tại | Figure 1, Figure 3, Tables VIII–XIII và captions. |
+| Vấn đề | Figure 1 quá chung chung; Figure 3 nhỏ; nhiều caption viết hoa dài; một số bảng lặp status hoặc dày. |
+| Tác động reviewer | Reviewer khó đọc ở 100% zoom; valuable page space chưa được dùng hiệu quả. |
+Hành động Codex phải thực hiện
+1. Redesign Figure 1 thành timeline availability + split + locking + gate flow.
+2. Phóng Figure 3 hoặc chuyển thành compact transition table nếu rõ hơn.
+3. Gộp Table VIII status với summary prose hoặc chuyển supplement.
+4. Table XIII phải có artifact path/filename hoặc stable ID có thể tra.
+5. Rút caption nhưng vẫn self-contained: population, split, metric, CI, direction.
+6. Kiểm grayscale/color-blind và font size.
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+Source scripts cho từng figure.
+figure_manifest.csv với source data/hash.
+Render PDF 100% và 200% visual QA.
+Thay đổi bắt buộc trong manuscript
+Mỗi figure/table trả lời một câu hỏi cụ thể.
+Không dùng all-caps caption dài nếu template không bắt buộc.
+Không lặp toàn bộ table trong text.
+Tiêu chí PASS
+Mọi chữ đọc được ở 100% zoom.
+Figure 1 cung cấp thông tin availability/horizon mới.
+Không figure chiếm diện tích lớn mà có thể thay bằng một câu.
+Captions tự đứng được.
+6. Các mục R: artifacts, references, reproducibility và submission
+R-01. Tái tạo và xác minh E1–E10 thay vì chỉ ghi VERIFIED trong PDF
+| Mức độ | R/BLOCKER trước submission |
+| Vị trí hiện tại | Table XIII và artifact release. |
+| Vấn đề | Manuscript tuyên bố E1–E10 VERIFIED nhưng audit hiện chưa đọc code/predictions/bootstrap/config thực tế. |
+| Tác động reviewer | Theo checklist, claim không truy được về artifact là điều kiện DỪNG. |
+Hành động Codex phải thực hiện
+1. Tạo artifact index với file path, command, input hash, output hash và paper claim.
+2. Chạy lại E1–E10 từ clean environment.
+3. So sánh regenerated numbers với PDF; fail build nếu mismatch vượt tolerance.
+4. Lưu row-level predictions, bootstrap draws và configuration hashes.
+5. Tạo one-command reproduction hoặc Makefile/runner.
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+artifact_manifest.csv/json.
+reproduction_log.txt.
+numeric_consistency_report.csv.
+final_pdf_sha256.txt.
+git_commit.txt.
+Thay đổi bắt buộc trong manuscript
+Table XIII nên map ID đến artifact cụ thể, không chỉ mô tả chung.
+Data/code availability statement phải đúng thực tế.
+Tiêu chí PASS
+Mọi headline number có artifact path và reproduction command.
+Clean rerun tạo đúng tables/figures.
+Không còn số gõ tay.
+R-02. Reference verification và BibTeX audit
+| Mức độ | R/BLOCKER |
+| Vị trí hiện tại | Toàn bộ bibliography và citation placement. |
+| Vấn đề | Chưa xác minh existence, metadata, support, official version và citation hai chiều. |
+| Tác động reviewer | Reference giả/sai metadata hoặc không support claim có thể chặn submission. |
+Hành động Codex phải thực hiện
+1. Verify từng reference qua DOI/publisher/official proceedings.
+2. Kiểm title, authors, year, venue, volume, pages và DOI/URL.
+3. Đọc abstract/section liên quan để xác nhận nguồn support đúng claim.
+4. Kiểm mọi citation có bibliography entry và mọi entry được cite.
+5. Ưu tiên peer-reviewed official version; đánh dấu preprint nếu chỉ có preprint.
+6. Kiểm dataset living sources có access date đúng style.
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+reference_audit.csv với VERIFIED/METADATA ERROR/PREPRINT/NOT FOUND/NOT CITED.
+Cleaned references.bib.
+citation_support_notes.md.
+Thay đổi bắt buộc trong manuscript
+Sửa metadata, URL line breaks và citation placement.
+Không để một citation cuối đoạn support nhiều claim không liên quan.
+Tiêu chí PASS
+100% references tồn tại và metadata đúng.
+Mọi reference support đúng claim.
+Không entry thừa/không cite.
+R-03. Venue, anonymity, PDF và portal compliance
+| Mức độ | R/BLOCKER |
+| Vị trí hiện tại | PDF cuối, supplementary, artifact link và submission portal. |
+| Vấn đề | Chưa có author guidelines nên page limit, template, links, supplementary và artifact policy chưa thể PASS. |
+| Tác động reviewer | Sai template/page/anonymity có thể desk reject dù nội dung tốt. |
+Hành động Codex phải thực hiện
+1. Đọc đúng track và author guidelines phiên bản hiện hành.
+2. Kiểm page limit, reference counting, paper size, columns, margins, font, file size.
+3. Kiểm double-blind: PDF metadata, repo URL, usernames, commit authors, acknowledgements và local paths.
+4. Kiểm fonts embedded, Type 3, bookmarks/links, missing glyphs, undefined refs.
+5. Upload thử, tải preview xuống và so hash/version.
+Artifacts/thí nghiệm phải tạo hoặc cập nhật
+venue_compliance_checklist.md.
+pdfinfo.txt, pdffonts.txt.
+anonymity_scan.txt.
+upload_manifest.md với PDF hash, supplement hash, commit và submission ID.
+Thay đổi bắt buộc trong manuscript
+Sửa code/data availability wording theo venue policy.
+Không để repo hoặc artifact làm lộ danh tính nếu blind.
+Tiêu chí PASS
+Đúng template/page/anonymity.
+Fonts embedded, không Type 3, không broken refs.
+Portal metadata khớp PDF và đúng file cuối.
+7. Claim–Evidence Matrix bắt buộc Codex phải hoàn thành
+Codex phải tạo file machine-readable tương đương bảng dưới đây và điền đường dẫn artifact thật. Không được để 'VERIFIED' chỉ vì manuscript nói vậy.
+| Claim | Evidence cần có | Artifact path | Paper location | Status / ghi chú |
+| Gate A controls predictive fidelity | Selected model vs zero; paired year-block CI and tail checks | [FILL] | Table II/V/VII | OPEN |
+| Gate B1 measures incremental weather value | Full vs Metadata-only; same rows/protocol; paired CI | [FILL] | Table II/Fig. 2 | OPEN — corrected estimand |
+| Gate prevents false permission | Scenario ground truth; repeated simulations; CI | [FILL] | Section VI | OPEN — report false abstention |
+| Prospective and retrospective targets differ | Row-level event membership and Jaccard CI | [FILL] | Fig. 3 | PARTIAL — verify artifact |
+| Agricultural model must abstain | Locked predictions, paired CI and tail metrics | [FILL] | Tables V–VIII | PARTIAL — verify rerun |
+| County case is inconclusive | County predictions and paired CI | [FILL] | External evidence | OPEN — move from Limitations |
+| PJM gate permits predictive interpretation | Gate A, corrected Gate B1 and XAI provenance | [FILL] | External evidence | OPEN — no causal claim |
+| Every number is traceable | E1–E10 paths, hashes and commands | [FILL] | Table XIII | BLOCKED |
+8. Danh sách artifacts tối thiểu cần có sau khi sửa
+Data/target
+data_schema.json hoặc data_dictionary.csv
+target_spec.md + pseudocode
+split_manifest.csv
+feature_availability.csv
+series_eligibility.csv
+target_vectors.csv
+target_unit_tests log
+Model selection
+validation_grid.csv
+seed_level_metrics.csv
+selected_config.json
+model_hashes.json
+compute_manifest.json
+Primary audit
+locked_predictions_all_models.csv
+paired_baseline_differences.csv
+paired_full_vs_metadata.csv
+bootstrap_draws_year.csv
+tail_metrics.csv
+topk_null_tests.csv
+gate_decisions.json
+Robustness
+rolling_origin.csv
+prefix_learning_curve.csv
+history_sensitivity.csv
+resampling_sensitivity.csv
+crop_state_diagnostics.csv
+no_shortcut_ablation.csv
+Method benchmark
+synthetic_scenarios.yaml
+synthetic_ground_truth.csv
+synthetic_runs_long.csv
+gate_component_ablation.csv
+synthetic_summary_ci.csv
+External evidence
+county_protocol + predictions + bootstrap
+pjm_protocol + predictions + bootstrap
+external_gate_decisions.json
+XAI
+xai_manifest.csv
+SHAP/LIME configs
+explanation row IDs
+model/feature hashes
+case selection rules
+Publishing
+figure_manifest.csv
+numeric_consistency_report.csv
+reference_audit.csv
+artifact_manifest.csv
+reproduction_log.txt
+final_pdf_sha256.txt
+venue_compliance_checklist.md
+upload_manifest.md
+9. Outline manuscript đề xuất sau khi sửa
+I. Introduction
+Problem: persuasive XAI can be misleading when predictive fidelity is inadequate.
+Gap: existing XAI reports often lack a pre-specified permission/abstention rule; distinguish from selective prediction.
+RQ: whether a leakage-safe future-period model has sufficient fidelity and incremental feature-group value for substantive model-reliance interpretation.
+Contributions: formal gate, benchmark/trade-off, empirical target audit and external cases.
+II. Related Work
+Yield modeling and detrending.
+Post-hoc XAI and causal boundary.
+Selective prediction/abstention and model criticism.
+Temporal validation, uncertainty and reproducibility.
+Explicit gap statement.
+III. Method
+A. Data, prediction time, panel and target equations.
+B. Feature groups, availability, leakage and shortcut controls.
+C. Models, baselines and validation-only selection.
+D. Formal Gate A and corrected Gate B1 estimands.
+E. Synthetic benchmark and evaluation metrics.
+IV. Results
+A. Validation selection and locked agricultural test.
+B. Overall/tail fidelity and incremental weather value.
+C. Gate component ablation and synthetic benchmark.
+D. Robustness and target sensitivity.
+E. County and PJM external evidence.
+F. Traceability and XAI provenance.
+V. Discussion
+Why agricultural gate failed.
+What gate pass permits and does not permit.
+False permission vs false abstention trade-off.
+External validity, data resolution and future study design.
+VI. Conclusion
+RQ answer, 2–3 results, supported use case and boundary; no new metrics.
+10. Thứ tự triển khai đề xuất cho Codex
+Phase 0 — Baseline freeze
+Build current paper from clean state.
+Record git commit, PDF hash, test status and current metrics.
+Do not modify data/test split yet.
+Phase 1 — Fix P1 gate logic
+Correct Gate B1 estimand in code/config/tests.
+Rerun all affected analyses.
+Regenerate tables/figures and verify no test reselection.
+Phase 2 — Reproducible target/features
+Add formulas, data dictionary, availability table and shortcut tests.
+Run no-shortcut ablation.
+Phase 3 — Method evidence
+Expand model grid if feasible.
+Implement synthetic scenario repetitions and gate component ablations.
+Report false permission and false abstention with CI.
+Phase 4 — External/XAI evidence
+Rework county and PJM sections.
+Create XAI provenance manifest and output-scale documentation.
+Phase 5 — Manuscript restructuring
+Rewrite contributions and Related Work.
+Reduce repetition; redesign figures/tables.
+Phase 6 — Final scientific audit
+Recompute all metrics from row-level artifacts.
+Complete claim–evidence matrix and E1–E10 manifest.
+Phase 7 — Publishing audit
+Verify references, venue rules, anonymity and final PDF.
+Create upload manifest and final hash.
+11. Vòng tự kiểm tra bắt buộc: Codex không được dừng sớm
+1. Sau mỗi phase, chạy tests và build paper.
+2. Nếu một số trong PDF thay đổi, truy ngược đến artifact và cập nhật claim–evidence matrix.
+3. So sánh row counts, target hashes, prediction hashes và bootstrap configuration.
+4. Tìm các cụm cũ có thể còn sót: Gate B1, independent, incremental-weather, sensitivity only.
+5. Kiểm numerical consistency giữa text, tables, figures và artifacts.
+6. Render PDF; kiểm từng trang ở 100% và 200% zoom.
+7. Chỉ đóng issue khi tiêu chí PASS của issue đó đã có evidence file.
+8. Nếu không thể hoàn thành vì thiếu data/API/compute, để OPEN/BLOCKED và ghi command đã thử, error và artifact còn thiếu.
+11.1 Lệnh kiểm tra cuối gợi ý
+git status --short
+git rev-parse HEAD
+pytest -q
+python <audit_runner>.py --all
+latexmk -pdf -interaction=nonstopmode <main.tex>
+pdftotext <paper.pdf> - | rg -n "TODO|FIXME|placeholder|Gate B1|independent"
+pdfinfo <paper.pdf>
+pdffonts <paper.pdf>
+sha256sum <paper.pdf>
+12. Checklist nghiệm thu cuối cho Codex
+Scientific validity
+☐ Gate B1 dùng Full vs Metadata-only và có paired CI.
+☐ Không model/feature/target/gate rule nào được chọn bằng locked test.
+☐ Target formula, availability và shortcut audit rõ.
+☐ Mọi baseline cùng target/rows/split/protocol.
+☐ Synthetic benchmark báo false permission và false abstention.
+☐ Conclusion không vượt evidence.
+Reproducibility
+☐ Clean rerun tạo lại tables/figures.
+☐ E1–E10 có path, command, input/output hash.
+☐ Mọi số headline có row-level artifact.
+☐ Model và XAI có hash/provenance.
+Manuscript
+☐ Contributions không dùng hygiene làm novelty.
+☐ Related Work có nearest methodological comparison.
+☐ Prediction time/use case rõ.
+☐ Discussion không lặp Results.
+☐ Figures/tables đọc được và có purpose.
+References and submission
+☐ 100% references verified và support claim.
+☐ Anonymity đúng policy.
+☐ Page limit/template/font/link/bookmark đúng.
+☐ Portal metadata khớp PDF.
+☐ Đúng file cuối đã được mở, preview và lưu hash.
+13. Prompt thực thi cuối dành cho Codex
+Bạn đang sửa một paper nghiên cứu ML/XAI và repository đi kèm. Hãy đọc toàn bộ tài liệu này trước khi thao tác.
+Mục tiêu là đưa paper đến trạng thái sẵn sàng nộp, không chỉ sửa văn phong. Thực hiện theo đúng thứ tự P1 → P2 → P3 → R. Không được dùng locked test để chọn lại model, feature, target, threshold hoặc gate rule. Không được bịa kết quả. Mọi thay đổi số liệu phải được rerun từ code và regenerate vào paper.
+Bắt đầu bằng cách:
+1) lập bản đồ toàn bộ repository;
+2) build baseline hiện tại và lưu commit/PDF hash;
+3) sửa P1-01 về Gate B1;
+4) chạy tests và rerun toàn bộ experiment bị ảnh hưởng;
+5) tiếp tục từng issue theo tiêu chí PASS trong tài liệu.
+Sau mỗi issue, cập nhật issue tracker và claim–evidence matrix bằng đường dẫn artifact thật. Không đóng issue chỉ vì prose đã được sửa. Nếu thiếu data, API, guideline hoặc compute, ghi BLOCKED với command đã thử, error và yêu cầu cụ thể.
+Không dừng khi paper chỉ “trông ổn”. Chỉ kết thúc khi:
+- không còn P1;
+- mọi claim chính có artifact;
+- numerical consistency PASS;
+- references đã verify;
+- PDF/venue/anonymity PASS;
+- chính file cuối sắp upload đã được mở và lưu SHA-256.
+PHỤ LỤC A. Các câu/thuật ngữ cần tìm và kiểm tra nhất quán
+Gate A
+Gate B1
+Gate B2
+incremental weather value
+independent
+Weather only
+Metadata only
+Full
+selected model
+locked test
+substantive observed-event claims
+weather-specific claims
+causal
+retrospective only
+VERIFIED
+artifact
+ABSTAIN
+INTERPRET
+PHỤ LỤC B. Định nghĩa trạng thái issue
+| Trạng thái | Định nghĩa |
+| OPEN | Đã xác định lỗi nhưng chưa thực hiện đầy đủ. |
+| IN PROGRESS | Đang sửa; chưa có đủ artifact để PASS. |
+| BLOCKED | Thiếu file/data/guideline/compute; phải ghi lý do và yêu cầu cụ thể. |
+| PASS | Đã đáp ứng toàn bộ tiêu chí PASS và có evidence path. |
+| WONTFIX | Chỉ dùng khi có lý do khoa học/venue rõ; phải hạ claim tương ứng. |

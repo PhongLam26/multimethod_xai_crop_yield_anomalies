@@ -1,0 +1,36 @@
+{
+  "schema_version": "claim-audit-config-v1",
+  "project": {
+    "domain": "synthetic-example",
+    "target_unit": "target units",
+    "feature_family_label": "example feature family",
+    "requested_claim": "event_recovery"
+  },
+  "metrics": {
+    "primary_error_metric": "rmse",
+    "secondary_error_metric": "mae"
+  },
+  "uncertainty": {
+    "confidence_level": 0.95,
+    "bootstrap_unit": "block_id",
+    "replicates": 2000,
+    "seed": 20260722,
+    "interval": "percentile"
+  },
+  "pass_rules": {
+    "paired_error_delta_ci_high_lt_zero": true,
+    "ci_touching_zero_passes": false
+  },
+  "event": {
+    "event_claim_requested": true,
+    "event_label_source": "uploaded",
+    "severity_direction": "lower_is_more_severe",
+    "top_k": 10,
+    "alpha": 0.05
+  },
+  "module_d": {
+    "enabled": true,
+    "affects_verdict": false
+  }
+}
+

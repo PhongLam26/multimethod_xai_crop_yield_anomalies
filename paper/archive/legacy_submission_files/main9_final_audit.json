@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "findings": [],
+  "pdf": "paper/final/DAP_multi_ICTAI2026_main9_audit.pdf",
+  "pages": 5,
+  "sha256": "998f3049f18f3c4b4ccfe1b3b7f6089471903656efd67318f390a5b1dc564e91",
+  "anonymous_package": "submission/main9_anonymous_artifact.zip",
+  "package_sha256": "eeccefbc83bab4054e65d0d4bac1f8b2bc2be370fbe605a230238f19a25eba15",
+  "git_commit": "2c90bd4950c73d85dd34ae36ede4358bc730e715",
+  "worktree_dirty": true
+}

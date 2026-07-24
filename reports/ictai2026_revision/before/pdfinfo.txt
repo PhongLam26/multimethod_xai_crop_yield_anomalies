@@ -1,0 +1,22 @@
+﻿Title:           
+Subject:         
+Keywords:        
+Author:          
+Creator:         LaTeX with hyperref
+Producer:        MiKTeX pdfTeX-1.40.29
+CreationDate:    Mon Jul 20 02:16:26 2026 SE Asia Standard Time
+ModDate:         Mon Jul 20 02:16:26 2026 SE Asia Standard Time
+Custom Metadata: yes
+Metadata Stream: no
+Tagged:          no
+UserProperties:  no
+Suspects:        no
+Form:            none
+JavaScript:      no
+Pages:           8
+Encrypted:       no
+Page size:       612 x 792 pts (letter)
+Page rot:        0
+File size:       562217 bytes
+Optimized:       no
+PDF version:     1.5

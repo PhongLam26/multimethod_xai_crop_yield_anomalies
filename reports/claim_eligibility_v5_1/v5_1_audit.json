@@ -1,0 +1,434 @@
+{
+  "created_utc": "2026-07-21T18:16:53.780579+00:00",
+  "pdf": "paper\\final\\ictai2026_claim_eligibility_audit_v5_1_complete.pdf",
+  "pdf_sha256": "42ad29572e45f9c4014d7a51fbd30ac3b2d017eb5af671f3cad284288204cf05",
+  "status": "PASS",
+  "checks": [
+    {
+      "check": "PDF exists",
+      "artifact": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\paper\\final\\ictai2026_claim_eligibility_audit_v5_1_complete.pdf",
+      "actual": true,
+      "expected": true,
+      "status": "PASS"
+    },
+    {
+      "check": "PDF page count",
+      "artifact": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\paper\\final\\ictai2026_claim_eligibility_audit_v5_1_complete.pdf",
+      "actual": 8,
+      "expected": 8,
+      "status": "PASS"
+    },
+    {
+      "check": "PDF metadata Author",
+      "artifact": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\paper\\final\\ictai2026_claim_eligibility_audit_v5_1_complete.pdf",
+      "actual": "Anonymous",
+      "expected": "Anonymous",
+      "status": "PASS"
+    },
+    {
+      "check": "PDF metadata Title",
+      "artifact": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\paper\\final\\ictai2026_claim_eligibility_audit_v5_1_complete.pdf",
+      "actual": "Claim-Eligibility Auditing for Post-hoc Explanations: Synthetic Calibration and Cross-Domain Cases",
+      "expected": "Claim-Eligibility Auditing for Post-hoc Explanations: Synthetic Calibration and Cross-Domain Cases",
+      "status": "PASS"
+    },
+    {
+      "check": "Old V5 PDF preserved",
+      "artifact": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\paper\\final\\ictai2026_claim_eligibility_audit_v5.pdf",
+      "actual": true,
+      "expected": true,
+      "status": "PASS"
+    },
+    {
+      "check": "Old V5 PDF hash unchanged",
+      "artifact": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\paper\\final\\ictai2026_claim_eligibility_audit_v5.pdf",
+      "actual": "61EAC2207BC51832EE0C9C9560F984D8D840839DD40120C76D3AB1624F5108AF",
+      "expected": "61EAC2207BC51832EE0C9C9560F984D8D840839DD40120C76D3AB1624F5108AF",
+      "status": "PASS"
+    },
+    {
+      "check": "Forbidden manuscript wording absent",
+      "artifact": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\paper\\final\\ictai2026_claim_eligibility_audit_v5_1_complete.pdf",
+      "actual": [],
+      "expected": [],
+      "status": "PASS"
+    },
+    {
+      "check": "Required rendered-text markers present",
+      "artifact": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\paper\\final\\ictai2026_claim_eligibility_audit_v5_1_complete.pdf",
+      "actual": [
+        "Post-hoc explanations are commonly interpreted immediately after model fitting",
+        "This paper delivers three artifacts",
+        "Train-only preprocessing and locked testing are safeguards, not standalone novelty",
+        "pre-specified evaluation labels",
+        "GT labels are used only for evaluation",
+        "are never inputs to Modules A, B, or E",
+        "predicts a residual of+0.209while the observed residual is-0.510",
+        "exact SHAP base value rounds to+0.000",
+        "Modules A, B, and E do not pass",
+        "Absolute RMSE values are reported in domain-specific units",
+        "MWh for PJM",
+        "[-296.7,-221.8]×10 3",
+        "[-186.0,-119.3]×10 3",
+        "The agricultural audit supports model description only"
+      ],
+      "expected": [
+        "Post-hoc explanations are commonly interpreted immediately after model fitting",
+        "This paper delivers three artifacts",
+        "Train-only preprocessing and locked testing are safeguards, not standalone novelty",
+        "pre-specified evaluation labels",
+        "GT labels are used only for evaluation",
+        "are never inputs to Modules A, B, or E",
+        "predicts a residual of+0.209while the observed residual is-0.510",
+        "exact SHAP base value rounds to+0.000",
+        "Modules A, B, and E do not pass",
+        "Absolute RMSE values are reported in domain-specific units",
+        "MWh for PJM",
+        "[-296.7,-221.8]×10 3",
+        "[-186.0,-119.3]×10 3",
+        "The agricultural audit supports model description only"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "Forbidden source wording absent",
+      "artifact": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\paper_versions\\v5_claim_eligibility_audit\\source\\fidelity_gated_xai_method_benchmark_v3.tex",
+      "actual": [],
+      "expected": [],
+      "status": "PASS"
+    },
+    {
+      "check": "Required provenance records present",
+      "artifact": "reports/claim_eligibility_v5_1/v5_1_provenance.json",
+      "actual": [
+        "fig1_workflow_v5_1",
+        "fig2_xai_claim_eligibility_v5_1",
+        "fig3_synthetic_dumbbell_v5_1",
+        "fig4_state_delta_rmse_map",
+        "table1_claim_eligibility_modules_v5_1",
+        "table2_locked_same_task_audit",
+        "table_synthetic_14_regimes_v5_1"
+      ],
+      "expected": [
+        "fig1_workflow_v5_1",
+        "fig2_xai_claim_eligibility_v5_1",
+        "fig3_synthetic_dumbbell_v5_1",
+        "fig4_state_delta_rmse_map",
+        "table1_claim_eligibility_modules_v5_1",
+        "table2_locked_same_task_audit",
+        "table_synthetic_14_regimes_v5_1"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "All provenance assertions pass",
+      "artifact": "reports/claim_eligibility_v5_1/v5_1_provenance.json",
+      "actual": [
+        "PASS"
+      ],
+      "expected": [
+        "PASS"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "Provenance required fields complete",
+      "artifact": "reports/claim_eligibility_v5_1/v5_1_provenance.json",
+      "actual": {},
+      "expected": {},
+      "status": "PASS"
+    },
+    {
+      "check": "Fig. 2 row and exact values",
+      "artifact": "artifacts/xai/local_case_decomposition.csv",
+      "actual": [
+        0.209,
+        -0.51,
+        -0.0,
+        -0.007
+      ],
+      "expected": [
+        0.209,
+        -0.51,
+        0.0,
+        -0.007
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "Fig. 2 arithmetic assertion",
+      "artifact": "reports/claim_eligibility_v5_1/v5_1_provenance.json",
+      "actual": "PASS",
+      "expected": "PASS",
+      "status": "PASS"
+    },
+    {
+      "check": "Synthetic GT audit assertions pass",
+      "artifact": "reports/claim_eligibility_v5_1/synthetic_gt_label_audit_v5_1.json",
+      "actual": "PASS",
+      "expected": "PASS",
+      "status": "PASS"
+    },
+    {
+      "check": "Synthetic GT audit covers 14 regimes",
+      "artifact": "reports/claim_eligibility_v5_1/synthetic_gt_label_audit_v5_1.json",
+      "actual": 14,
+      "expected": 14,
+      "status": "PASS"
+    },
+    {
+      "check": "Synthetic permissible regimes",
+      "artifact": "synthetic GT audit",
+      "actual": [
+        "imbalanced_tail",
+        "moderate_signal",
+        "small_sample",
+        "spatial_resolution_mismatch",
+        "strong_signal",
+        "train_only_detrending"
+      ],
+      "expected": [
+        "imbalanced_tail",
+        "moderate_signal",
+        "small_sample",
+        "spatial_resolution_mismatch",
+        "strong_signal",
+        "train_only_detrending"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "Synthetic impermissible regimes",
+      "artifact": "synthetic GT audit",
+      "actual": [
+        "correlated_features",
+        "geographic_shift",
+        "leakage",
+        "measurement_error",
+        "no_signal",
+        "omitted_confounder",
+        "temporal_drift",
+        "weak_signal"
+      ],
+      "expected": [
+        "correlated_features",
+        "geographic_shift",
+        "leakage",
+        "measurement_error",
+        "no_signal",
+        "omitted_confounder",
+        "temporal_drift",
+        "weak_signal"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "Synthetic table and dumbbell use same source hash",
+      "artifact": "provenance",
+      "actual": "7f835b7906a6256d3400dd9af1fa6f0754329310192b48e0860f4678ead04e2d",
+      "expected": "7f835b7906a6256d3400dd9af1fa6f0754329310192b48e0860f4678ead04e2d",
+      "status": "PASS"
+    },
+    {
+      "check": "Synthetic table source hash matches CSV",
+      "artifact": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\artifacts\\experiments\\synthetic-gate-benchmark\\scenario_level_decisions.csv",
+      "actual": "7f835b7906a6256d3400dd9af1fa6f0754329310192b48e0860f4678ead04e2d",
+      "expected": "7f835b7906a6256d3400dd9af1fa6f0754329310192b48e0860f4678ead04e2d",
+      "status": "PASS"
+    },
+    {
+      "check": "Synthetic table has 14 data rows",
+      "artifact": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\paper\\generated\\table_synthetic_scenario_decisions_v5_1.tex",
+      "actual": 14,
+      "expected": 14,
+      "status": "PASS"
+    },
+    {
+      "check": "Synthetic benchmark dimensions",
+      "artifact": "synthetic summary.json",
+      "actual": [
+        14,
+        30,
+        420
+      ],
+      "expected": [
+        14,
+        30,
+        420
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "Synthetic false permission",
+      "artifact": "synthetic summary.json",
+      "actual": [
+        240,
+        171,
+        71.2
+      ],
+      "expected": [
+        240,
+        171,
+        71.2
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "Synthetic false abstention",
+      "artifact": "synthetic summary.json",
+      "actual": [
+        180,
+        20,
+        11.1
+      ],
+      "expected": [
+        180,
+        20,
+        11.1
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "Synthetic sensitivity/specificity",
+      "artifact": "synthetic summary.json",
+      "actual": [
+        88.9,
+        28.7
+      ],
+      "expected": [
+        88.9,
+        28.7
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "Crop Module A values",
+      "artifact": "artifacts/gates/figure2_three_comparisons.json",
+      "actual": [
+        -0.005,
+        -0.019,
+        0.009,
+        333
+      ],
+      "expected": [
+        -0.005,
+        -0.019,
+        0.009,
+        333
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "Crop Module B values",
+      "artifact": "artifacts/gates/figure2_three_comparisons.json",
+      "actual": [
+        -0.012,
+        -0.029,
+        0.002,
+        333
+      ],
+      "expected": [
+        -0.012,
+        -0.029,
+        0.002,
+        333
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "State map locked-row count",
+      "artifact": "artifacts/maps/state_level_locked_delta_rmse.csv",
+      "actual": 333,
+      "expected": 333,
+      "status": "PASS"
+    },
+    {
+      "check": "County external-resolution values",
+      "artifact": "county summary.json",
+      "actual": [
+        13.47,
+        13.78,
+        0.26,
+        -0.71
+      ],
+      "expected": [
+        13.47,
+        13.78,
+        0.26,
+        -0.71
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "PJM Gate A values",
+      "artifact": "external-domain-eia summary.json",
+      "actual": [
+        77521,
+        335037,
+        [
+          -296661,
+          -221790
+        ],
+        "PASS"
+      ],
+      "expected": [
+        77521,
+        335037,
+        [
+          -296661,
+          -221790
+        ],
+        "PASS"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "PJM Gate B1 values",
+      "artifact": "external-domain-eia summary.json",
+      "actual": [
+        227417,
+        [
+          -186037,
+          -119309
+        ],
+        "PASS"
+      ],
+      "expected": [
+        227417,
+        [
+          -186037,
+          -119309
+        ],
+        "PASS"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "Accented reference names encoded in BibTeX",
+      "artifact": "paper_versions/v5_claim_eligibility_audit/source/references.bib",
+      "actual": [
+        "Ga{\\\"e}l",
+        "{\\'E}douard",
+        "Bl{\\\"o}baum",
+        "Schl{\\\"o}tterer",
+        "Hedstr{\\\"o}m",
+        "H{\\\"o}hne",
+        "Schr{\\\"o}der",
+        "Larivi{\\`e}re",
+        "d'Alch{\\'e}-Buc"
+      ],
+      "expected": [
+        "Ga{\\\"e}l",
+        "{\\'E}douard",
+        "Bl{\\\"o}baum",
+        "Schl{\\\"o}tterer",
+        "Hedstr{\\\"o}m",
+        "H{\\\"o}hne",
+        "Schr{\\\"o}der",
+        "Larivi{\\`e}re",
+        "d'Alch{\\'e}-Buc"
+      ],
+      "status": "PASS"
+    }
+  ]
+}

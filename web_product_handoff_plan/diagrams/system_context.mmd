@@ -1,0 +1,22 @@
+flowchart LR
+  User[Researcher or analyst]
+  UI[Web UI]
+  API[API service]
+  Engine[Audit engine]
+  DB[(PostgreSQL metadata)]
+  Store[(Object storage)]
+  Report[Report generator]
+  Export[PDF HTML JSON CSV exports]
+
+  User --> UI
+  UI --> API
+  API --> Engine
+  API --> DB
+  API --> Store
+  Engine --> DB
+  Engine --> Store
+  API --> Report
+  Report --> Store
+  Report --> Export
+  User --> Export
+

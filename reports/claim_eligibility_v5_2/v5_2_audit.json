@@ -1,0 +1,268 @@
+{
+  "created_utc": "2026-07-21T18:49:51.414939+00:00",
+  "pdf": "paper/final/ictai2026_claim_eligibility_audit_v5_2_final.pdf",
+  "pdf_sha256": "737de0031b593031948f43d200fec39f8483e1aaa69df9a210e736be9b325965",
+  "status": "PASS",
+  "checks": [
+    {
+      "check": "PDF exists",
+      "actual": true,
+      "expected": true,
+      "artifact": "paper/final/ictai2026_claim_eligibility_audit_v5_2_final.pdf",
+      "status": "PASS"
+    },
+    {
+      "check": "PDF page count",
+      "actual": 8,
+      "expected": 8,
+      "artifact": "paper/final/ictai2026_claim_eligibility_audit_v5_2_final.pdf",
+      "status": "PASS"
+    },
+    {
+      "check": "PDF metadata Author",
+      "actual": "Anonymous",
+      "expected": "Anonymous",
+      "artifact": "paper/final/ictai2026_claim_eligibility_audit_v5_2_final.pdf",
+      "status": "PASS"
+    },
+    {
+      "check": "V5.1 PDF preserved",
+      "actual": true,
+      "expected": true,
+      "artifact": "paper/final/ictai2026_claim_eligibility_audit_v5_1_complete.pdf",
+      "status": "PASS"
+    },
+    {
+      "check": "V5.1 PDF hash unchanged",
+      "actual": "42AD29572E45F9C4014D7A51FBD30AC3B2D017EB5AF671F3CAD284288204CF05",
+      "expected": "42AD29572E45F9C4014D7A51FBD30AC3B2D017EB5AF671F3CAD284288204CF05",
+      "artifact": "paper/final/ictai2026_claim_eligibility_audit_v5_1_complete.pdf",
+      "status": "PASS"
+    },
+    {
+      "check": "Figure 1 copied image SHA-256",
+      "actual": "254D06C1B30D322F339E5194DDA1853F9ABB3944DB32695835AB718D64C0A454",
+      "expected": "254D06C1B30D322F339E5194DDA1853F9ABB3944DB32695835AB718D64C0A454",
+      "artifact": "paper_versions/v5_claim_eligibility_audit/source/figures/claim_eligibility_workflow.png",
+      "status": "PASS"
+    },
+    {
+      "check": "Figure 1 LaTeX include path",
+      "actual": true,
+      "expected": true,
+      "artifact": "paper_versions/v5_claim_eligibility_audit/source/fidelity_gated_xai_method_benchmark_v3.tex",
+      "status": "PASS"
+    },
+    {
+      "check": "No local image path in LaTeX source",
+      "actual": [],
+      "expected": [],
+      "artifact": "paper_versions/v5_claim_eligibility_audit/source/fidelity_gated_xai_method_benchmark_v3.tex",
+      "status": "PASS"
+    },
+    {
+      "check": "Required rendered text markers",
+      "actual": [
+        "Claim-Eligibility Auditing for Post-hoc Explanations",
+        "Post-hoc explanations are commonly interpreted immediately after model fitting",
+        "This paper delivers three artifacts",
+        "pre-specified evaluation labels",
+        "GT labels are used only for evaluation",
+        "are never inputs to Modules A, B, or E",
+        "The unrounded SHAP terms reconstruct the fitted prediction",
+        "displayed values are rounded to three decimals",
+        "predicts a residual of+0.209while the observed residual is-0.510",
+        "Absolute RMSE values are reported in domain-specific units",
+        "MWh for PJM",
+        "[-296.7,-221.8]×10 3",
+        "[-186.0,-119.3]×10 3"
+      ],
+      "expected": [
+        "Claim-Eligibility Auditing for Post-hoc Explanations",
+        "Post-hoc explanations are commonly interpreted immediately after model fitting",
+        "This paper delivers three artifacts",
+        "pre-specified evaluation labels",
+        "GT labels are used only for evaluation",
+        "are never inputs to Modules A, B, or E",
+        "The unrounded SHAP terms reconstruct the fitted prediction",
+        "displayed values are rounded to three decimals",
+        "predicts a residual of+0.209while the observed residual is-0.510",
+        "Absolute RMSE values are reported in domain-specific units",
+        "MWh for PJM",
+        "[-296.7,-221.8]×10 3",
+        "[-186.0,-119.3]×10 3"
+      ],
+      "artifact": "paper/final/ictai2026_claim_eligibility_audit_v5_2_final.pdf",
+      "status": "PASS"
+    },
+    {
+      "check": "Forbidden rendered/source wording absent",
+      "actual": [],
+      "expected": [],
+      "artifact": "source and extracted PDF text",
+      "status": "PASS"
+    },
+    {
+      "check": "Figure 2 provenance required fields complete",
+      "actual": [],
+      "expected": [],
+      "artifact": "reports/claim_eligibility_v5_2/v5_2_provenance.json",
+      "status": "PASS"
+    },
+    {
+      "check": "Figure 2 arithmetic assertion",
+      "actual": "PASS",
+      "expected": "PASS",
+      "artifact": "reports/claim_eligibility_v5_2/v5_2_provenance.json",
+      "status": "PASS"
+    },
+    {
+      "check": "Figure 2 exact/displayed values",
+      "actual": [
+        -0.0,
+        -0.007,
+        0.209,
+        -0.51,
+        0.21
+      ],
+      "expected": [
+        0.0,
+        -0.007,
+        0.209,
+        -0.51,
+        0.21
+      ],
+      "artifact": "reports/claim_eligibility_v5_2/v5_2_provenance.json",
+      "status": "PASS"
+    },
+    {
+      "check": "Figure 2 source artifact values",
+      "actual": [
+        0.209,
+        -0.51,
+        -0.0
+      ],
+      "expected": [
+        0.209,
+        -0.51,
+        0.0
+      ],
+      "artifact": "artifacts/xai/local_case_decomposition.csv",
+      "status": "PASS"
+    },
+    {
+      "check": "Crop Module A invariant",
+      "actual": [
+        -0.005,
+        -0.019,
+        0.009,
+        333
+      ],
+      "expected": [
+        -0.005,
+        -0.019,
+        0.009,
+        333
+      ],
+      "artifact": "artifacts/gates/figure2_three_comparisons.json",
+      "status": "PASS"
+    },
+    {
+      "check": "Crop Module B invariant",
+      "actual": [
+        -0.012,
+        -0.029,
+        0.002,
+        333
+      ],
+      "expected": [
+        -0.012,
+        -0.029,
+        0.002,
+        333
+      ],
+      "artifact": "artifacts/gates/figure2_three_comparisons.json",
+      "status": "PASS"
+    },
+    {
+      "check": "Synthetic invariants",
+      "actual": [
+        240,
+        171,
+        180,
+        20,
+        88.9,
+        28.7
+      ],
+      "expected": [
+        240,
+        171,
+        180,
+        20,
+        88.9,
+        28.7
+      ],
+      "artifact": "artifacts/experiments/synthetic-gate-benchmark/summary.json",
+      "status": "PASS"
+    },
+    {
+      "check": "County invariants",
+      "actual": [
+        13.47,
+        13.78,
+        0.26,
+        -0.71
+      ],
+      "expected": [
+        13.47,
+        13.78,
+        0.26,
+        -0.71
+      ],
+      "artifact": "artifacts/experiments/county-v2-weather-models/summary.json",
+      "status": "PASS"
+    },
+    {
+      "check": "PJM invariants",
+      "actual": [
+        77521,
+        335037,
+        [
+          -296661,
+          -221790
+        ],
+        227417,
+        [
+          -186037,
+          -119309
+        ],
+        "PASS",
+        "PASS"
+      ],
+      "expected": [
+        77521,
+        335037,
+        [
+          -296661,
+          -221790
+        ],
+        227417,
+        [
+          -186037,
+          -119309
+        ],
+        "PASS",
+        "PASS"
+      ],
+      "artifact": "artifacts/experiments/external-domain-eia/summary.json",
+      "status": "PASS"
+    },
+    {
+      "check": "Rendered pages count",
+      "actual": 8,
+      "expected": 8,
+      "artifact": "reports/claim_eligibility_v5_2/render_clean_build_001",
+      "status": "PASS"
+    }
+  ]
+}

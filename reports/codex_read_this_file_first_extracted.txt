@@ -1,0 +1,309 @@
+codex_read_this_file_first
+Kế hoạch sửa paper ICTAI 2026 — đầy đủ, có kiểm chứng trước/sau
+MỤC TIÊU DUY NHẤT
+Sửa bản paper “Auditing Weather-Feature Reliance in Detrended Crop-Yield Models” theo toàn bộ checklist của giảng viên, nhưng KHÔNG phá vỡ logic khoa học đã sửa đúng trước đó.
+Tạo một bản sao mới, sửa trong bản sao, biên dịch, kiểm tra ẩn danh, kiểm tra số trang, so sánh với bản cũ, và chỉ kết luận hoàn tất khi từng mục đều có bằng chứng xác nhận.
+CẢNH BÁO — KHÔNG ĐƯỢC GHI ĐÈ BẢN V3
+Không chỉnh trực tiếp thư mục paper_versions/v3_method_benchmark. Hãy sao chép toàn bộ thư mục đó sang một thư mục phiên bản mới, ví dụ paper_versions/v4_ictai2026_revision, rồi chỉ làm việc trong bản v4.
+Bản PDF hiện tại dùng làm baseline so sánh: fidelity_gated_xai_method_benchmark_v3(11).pdf hoặc PDF mới nhất tương ứng với source v3.
+Nguồn yêu cầu: file “Cac_diem_can_sua_cho_hoi_nghi_ICTAI2026.docx” của giảng viên và bản paper hiện tại. Tài liệu này gom lại toàn bộ 21 mục sửa, thứ tự ưu tiên, câu chữ gợi ý và quy trình xác nhận sau sửa.
+1. Bối cảnh dự án và vị trí làm việc
+Cấu trúc dự án quan sát được có các thư mục chính như audit, build, configs, data, figures, manuscript, outputs, paper, paper_versions và reports. Phiên bản paper đang làm nằm dưới:
+paper_versions/  v3_method_benchmark/    source/      figures/      tmp/      <main LaTeX source files>      IEEEtran.cls      IEEEtran.bst      references.bib
+Codex phải tự xác định file .tex gốc đang tạo ra PDF baseline bằng log build, lệnh compile hiện có, hoặc dependency graph. Không đoán tên file chỉ từ phần tên bị rút gọn trong sidebar.
+2. Quy trình bắt buộc trước khi sửa nội dung
+Đọc toàn bộ tài liệu này trước khi chạm vào source.
+Xác định main .tex, bibliography, figures được dùng, script build và PDF baseline.
+Sao chép v3_method_benchmark thành v4_ictai2026_revision. Không sửa v3.
+Tạo thư mục báo cáo mới: reports/ictai2026_revision/.
+Lưu baseline artifacts: PDF, pdfinfo, page count, SHA-256, extracted text và ảnh render từng trang.
+Chỉ sau khi baseline đã đóng băng mới bắt đầu sửa.
+# Gợi ý thao tác — điều chỉnh theo môi trường thực tếcp -a paper_versions/v3_method_benchmark paper_versions/v4_ictai2026_revisionmkdir -p reports/ictai2026_revision/before reports/ictai2026_revision/aftersha256sum <baseline.pdf> > reports/ictai2026_revision/before/final_hashes.txtpdfinfo <baseline.pdf> > reports/ictai2026_revision/before/pdfinfo.txtpdftotext <baseline.pdf> reports/ictai2026_revision/before/paper.txt
+NGUYÊN TẮC KHOA HỌC KHÔNG ĐƯỢC PHÁ
+1) GT labels trong synthetic benchmark chỉ dùng để đánh giá, không được dùng làm input của policy.
+2) Policy permit chỉ dựa trên observable Modules A, B và E.
+3) Không đổi số liệu bằng tay để làm kết quả đẹp hơn. Nếu rerun làm số thay đổi, phải regenerate toàn bộ Abstract, bảng, Discussion và Conclusion từ cùng một source of truth.
+4) Không biến “negative result” thành claim rằng weather không quan trọng về khoa học.
+5) Không dùng SHAP/LIME như bằng chứng nhân quả hoặc observed-event evidence khi các module bắt buộc fail.
+3. Định vị đóng góp — việc quan trọng nhất
+Rủi ro lớn nhất không phải số liệu sai, mà là reviewer đọc specificity 28.7% rồi kết luận: “gate không thật sự chặn”. Codex phải viết lại câu chuyện theo logic sau:
+Ungated explanations falsely permit 240/240 structurally invalid runs.
+Observable A+B+E gating reduces false permission to 171/240, tức loại được 69/240 invalid runs.
+Phần invalid còn lại tập trung ở leakage, omitted confounding, correlated features và shift — các lỗi có thể giữ nguyên hoặc làm tăng predictive accuracy.
+Vì vậy predictive gating là điều kiện cần cho claim discipline, nhưng không thể là structural-validity detector.
+Design-stage checks về leakage, confounding, measurement validity và distribution shift vẫn bắt buộc.
+CÂU CHỐT PHẢI XUẤT HIỆN SỚM
+Predictive gating reduces over-permission relative to ungated explanation, but it cannot detect structural violations that preserve or improve predictive performance. It is therefore necessary for claim discipline, not sufficient for scientific validity.
+3.1 Abstract — mục tiêu và bản nháp gợi ý
+Rút Abstract còn khoảng 190–205 từ. Mở đầu bằng phát hiện và contribution, không mở đầu bằng danh sách quy trình. Phải có 240/240 → 171/240, negative agricultural result và giới hạn necessary-but-not-sufficient.
+Draft target (Codex may tighten for page fit, but preserve the logic and numbers):Post-hoc explanations can appear coherent even when the fitted model lacks locked-period evidence for the outcome claim being made. We propose a reproducible claim-eligibility audit that separates overall predictive adequacy (Module A), incremental feature-group value (Module B), event recovery (Module E), and descriptive diagnostics (Module D). In synthetic stress tests, ungated explanations falsely permit 240/240 structurally invalid runs, whereas the observable A+B+E policy reduces false permission to 171/240 while retaining 88.9% sensitivity. The remaining 71.2% false-permission rate and 28.7% specificity show a principled boundary: predictive gates cannot reliably detect leakage, omitted confounding, or distributional violations that preserve or improve predictive performance. We apply the audit to a leakage-safe U.S. crop-state-year panel. A validation-selected Weather-only ExtraTrees model fails locked overall adequacy, Full-minus-Metadata incremental weather value also fails, and the complete below-trend event-recovery rule does not pass. Consequently, post-hoc explanations are retained only as fitted-function diagnostics. The contribution is a locked, same-row, paired-uncertainty protocol that reduces unsupported interpretation while making explicit which validity checks must remain at the study-design stage.
+3.2 Mở đầu Discussion — đoạn bắt buộc
+The synthetic benchmark clarifies the scope of the proposed gate. Relative to ungated explanation, the observable A+B+E policy reduces false permission from 240/240 to 171/240 invalid runs. The remaining false permissions are concentrated in regimes such as leakage, omitted confounding, correlated features, and geographic or temporal shift, which may preserve or even improve predictive performance. Predictive gating should therefore be interpreted as a necessary claim-discipline layer, not as a detector of structural validity; design-stage leakage, confounding, measurement, and distribution-shift checks remain independently required.
+3.3 Conclusion — đoạn bắt buộc
+The agricultural audit supports model description only: Modules A, B, and E fail on the locked state panel, and the separately locked county check remains inconclusive under Module A. More generally, the gate reduces unsupported permission relative to ungated explanation but does not establish structural validity. The synthetic reduction from 240/240 to 171/240 false permissions demonstrates practical claim discipline, while the remaining failures show why leakage, omitted confounding, measurement validity, and distribution-shift checks must be enforced at the design stage.
+4. Ma trận sửa đầy đủ 21 mục
+ID
+Ưu tiên
+Vị trí
+Vấn đề / rủi ro
+Codex phải sửa
+Tiêu chí xác nhận
+1
+P1
+Fig. 2, panel B
+Năm SHAP group contributions cộng thành +0.217 nhưng figure ghi predicted 0.209; base/expected value khoảng -0.008 không hiển thị.
+Hiển thị base value trong panel hoặc ghi rõ trong caption rằng group bars + base value = 0.209. Không để người đọc nghĩ phép cộng sai.
+Tự động hoặc thủ công kiểm tra: 0.081+0.060+0.054+0.035-0.013+base = 0.209; figure/caption hiển thị base.
+2
+P0
+Synthetic calibration table, V.A
+Bảng 14 regimes chưa có số Table và caption IEEE chuẩn.
+Đánh số thành TABLE VII; thêm caption đầy đủ, nêu GT chỉ là evaluation label và policy chỉ dùng observable A/B/E.
+PDF render có TABLE VII, cross-reference đúng, không còn bảng “trôi”.
+3
+P3
+Table IV
+Dòng Zero residual chỉ ghi 0.000, trong khi baseline khác có [0.000, 0.000].
+Đổi thành 0.000 [0.000, 0.000] hoặc thêm footnote giải thích reference difference và CI bằng 0 theo định nghĩa.
+Cột hiển thị nhất quán; caption/footnote không gây hiểu nhầm.
+4
+P1
+Abstract; Table IV; Table VI
+Khoảng Module B [-0.029, 0.002] dễ bị hiểu là Full-minus-zero do Table IV đặt tên cột như vậy.
+Thêm câu nói rõ Module B được tính trực tiếp bằng paired Full-minus-Metadata; trùng Full-minus-zero vì Metadata predictions gần zero tới ~1e-13.
+Search toàn paper thấy câu làm rõ; Table VI và narrative khớp.
+5
+P3
+Toàn bài
+Dấu hàng nghìn không nhất quán: 1257/1291/574 so với 2,000/77,521.
+Chọn một convention tiếng Anh/IEEE và áp dụng toàn bài; khuyến nghị 1,257; 1,291; 2,000; 77,521.
+Regex audit không còn số >=1000 viết lẫn lộn.
+6
+P0
+Toàn bài
+ICTAI giới hạn trang chặt; sửa thêm có thể làm vượt 8 trang.
+Compile sau từng batch lớn. Mục tiêu <=8 trang. Nếu chính sách cho phép trang mua thêm thì vẫn ưu tiên 8; tuyệt đối không vượt mức cho phép của hội nghị.
+pdfinfo xác nhận page count; không có content tràn/cắt.
+7
+P1
+Fig. 1; Table II; Algorithm 1
+Ba thành phần mã hoá cùng workflow, tốn chỗ.
+Ưu tiên giữ Fig. 1 + Table II; chuyển hoặc bỏ Algorithm 1. Chỉ giữ nếu page budget vẫn ổn và có giá trị riêng.
+Bản cuối không lặp cùng decision path ba lần; page space được dùng cho framing.
+8
+P1
+Abstract
+Abstract đặc, phát hiện chính nằm cuối.
+Rút khoảng 200 từ; mở bằng finding; nêu 240/240→171/240 và necessary-not-sufficient trước setup chi tiết.
+Word count mục tiêu 190–205; key numbers xuất hiện trong nửa đầu.
+9
+P1
+Lần đầu giới thiệu Module D
+D trùng số Module A ở panel này nên reviewer hỏi vì sao giữ.
+Thêm câu D được giữ để tổng quát cho dataset khác; chỉ trùng A ở đây vì Metadata-only collapse về zero baseline.
+Câu giải thích xuất hiện tại lần nhắc đầu tiên, không chỉ ở Results.
+10
+P1
+Sensitivity/rolling/prefix/cluster tables
+Robustness chiếm chỗ nhưng không quyết định primary claim.
+Chuyển bảng chi tiết sang anonymous supplement; main paper giữ summary và Module A/B/E/Table VI.
+Main PDF gọn; supplement có bảng đầy đủ và được dẫn đúng.
+11
+P0
+Abstract; Discussion; Conclusion
+Specificity 28.7% dễ bị đọc thành phương pháp không chạy.
+Định vị thành reduction 240/240→171/240; giải thích leakage/confounding không thể bắt chỉ bằng predictive metrics.
+Cùng một framing nhất quán ở cả 3 phần.
+12
+P1
+Discussion
+R2 âm có thể bị xem là setup cố tình yếu để fail.
+Bảo vệ bằng PJM positive case, county-resolution check, và lập luận audit model hiện tại là câu hỏi hợp lệ dù model tốt hơn có thể tồn tại.
+Discussion có đoạn phản biện rõ; không claim crop model mạnh.
+13
+P1
+IV.B Event diagnostics
+ROC-AUC/PR-AUC dương có vẻ mâu thuẫn với Module E fail.
+Nói rõ global ordering khác paired tail-error + rank/top-k recovery trên pre-specified tail; hai kết quả không mâu thuẫn.
+Câu giải thích trực tiếp nằm ngay sau metrics.
+14
+P1
+Module E; Table V
+Nhiều điều kiện trên n nhỏ có thể bị gọi là designed-to-fail.
+Giải thích mỗi check chặn failure mode khác; dẫn Table VII cho thấy E pass 100% ở moderate/strong signal và valid imbalanced-tail regimes.
+Discussion/Table V narrative có bằng chứng E thực sự có thể pass.
+15
+P3
+III.B; V.C
+Chỉ 10 calendar-year blocks làm CI rộng và power thấp.
+Thêm câu nêu power/precision hạn chế nhưng year-block đúng vì giữ cross-sectional dependence trong cùng năm.
+Câu trade-off xuất hiện cạnh mô tả bootstrap và limitations.
+16
+P0
+Repo/manifest/artifact links
+Bất kỳ URL/tên thật nào có thể phá double-blind.
+Ẩn danh links qua anonymous repository hoặc đổi thành artifacts available upon acceptance; rà README, logs, filenames, commit metadata, local paths.
+Automated rg audit + manual check không còn tên/email/usernames/identifying URLs.
+17
+P0
+PDF metadata; LaTeX metadata
+Trang ghi Anonymous nhưng PDF Author/XMP hoặc hyperref vẫn có thể lộ tên.
+Xoá author, email, subject identifying text trong LaTeX và PDF metadata; kiểm tra pdfinfo/exiftool sau compile.
+pdfinfo Author trống/Anonymous; source không chứa tên thật trong author metadata.
+18
+P3
+Acknowledgment/Funding
+Double-blind không nên có acknowledgement/funding nhận diện.
+Giữ không có ở review version; chỉ thêm camera-ready.
+Search PDF/source không có acknowledgment/funding identifying content.
+19
+P1
+Quan hệ bài house-price
+Nguy cơ overlap/double submission và tự lộ qua cross-cite.
+Rà text/fig/method overlap; ghi rõ contribution/domain/data khác; nếu cần cross-cite thì dùng anonymous companion wording, không tên/link.
+Tạo overlap report; không có đoạn copy dài hoặc claim novelty trùng không giải thích.
+20
+P1
+Related Work II.B
+XAI faithfulness/counterfactual references dừng khoảng 2020.
+Thêm 4–6 tài liệu 2021–2025 đã xác minh từ nguồn chính thống; mỗi tài liệu phục vụ một lập luận cụ thể. Tuyệt đối không bịa reference.
+DOI/title/authors kiểm chứng; citations xuất hiện đúng ngữ cảnh; page count vẫn đạt.
+21
+P3
+References
+Cách et al. và author listing không đồng nhất.
+Chuẩn hoá BibTeX và dùng IEEEtran style; không chỉnh tay output nếu BibTeX có thể xử lý.
+Bibliography compile sạch; style nhất quán; không missing refs/citations.
+5. Câu chữ chính xác cần chèn hoặc làm rõ
+5.1 Module B interval
+The Module B interval is computed directly from paired Full-minus-Metadata predictions on the same locked rows. It is numerically identical to Full-minus-zero in this panel because the Metadata-only prediction vector coincides with the zero-residual baseline to floating-point precision (maximum absolute difference approximately 10^-13).
+5.2 Lý do giữ Module D
+Module D is retained as a general representation diagnostic for settings in which metadata carries predictive information. It coincides numerically with Module A only in this panel because Metadata-only predictions collapse to the zero-residual baseline.
+5.3 ROC/PR không mâu thuẫn Module E
+Weakly positive ROC-AUC and PR-AUC summarize global discrimination across all locked rows, whereas Module E requires paired error improvement and recovery of the pre-specified tail beyond rank and top-k null checks. The two results therefore address different questions and are not contradictory.
+5.4 Bảo vệ Module E
+The components of Module E target distinct failure modes: tail RMSE/MAE test error magnitude, rank statistics test ordering, and chance-adjusted top-k checks test prioritization of the most important events. The module is not mechanically impossible to pass: in the synthetic benchmark, moderate-signal, strong-signal, and valid imbalanced-tail regimes pass Module E in 30/30 seeds.
+5.5 Bootstrap và power
+With only ten locked calendar-year blocks, interval precision and statistical power are necessarily limited. We nevertheless retain year-level paired resampling because it preserves the cross-sectional dependence shared by crop-state rows within the same calendar year.
+5.6 Bảo vệ trước “setup được dựng để fail”
+The negative agricultural result does not imply that weather lacks scientific relevance or that a stronger model cannot exist. The audit asks a narrower and model-specific question: whether the validation-selected fitted model has sufficient locked evidence to support the requested claim. The separately locked county check shows that finer resolution does not automatically rescue overall adequacy, while the PJM permission case demonstrates that the policy does not always abstain when signal is strong.
+5.7 Fig. 2 base value caption
+The displayed grouped SHAP contributions sum to 0.217; adding the SHAP base value of approximately -0.008 yields the reported prediction of 0.209. The observed residual is -0.510.
+5.8 Table VII caption
+TABLE VIISYNTHETIC SCENARIO-LEVEL CALIBRATION. GT PERMIT IS USED ONLY AS THE EVALUATION LABEL. POLICY PERMISSION IS COMPUTED SOLELY FROM PRE-SPECIFIED OBSERVABLE MODULES A, B, AND E; NEITHER THE GT LABEL NOR THE HIDDEN DATA-GENERATING MECHANISM IS AN INPUT TO THE POLICY.
+6. Ẩn danh và điều kiện nộp — kiểm tra như một security audit
+Không chỉ kiểm tra trang đầu. Codex phải kiểm tra source tree, build artifacts và metadata.
+6.1 Search tự động
+rg -n -i "(author|affiliation|email|acknowledg|funding|github|gitlab|osf|zenodo|drive.google|dropbox|username|home/|users/)" paper_versions/v4_ictai2026_revisionrg -n -i "(Tran|Nguyen|FPT|Tensoract|<replace-with-known-identifiers>)" paper_versions/v4_ictai2026_revision
+Thay placeholder bằng mọi tên thật, tên trường, email, username và đường dẫn máy cá nhân có thể nhận diện. Không xoá mù quáng citation hợp lệ; xem ngữ cảnh từng match.
+6.2 Metadata PDF
+pdfinfo <final.pdf>exiftool <final.pdf>   # nếu cóAcceptance:- Author: blank hoặc Anonymous- Không có email/tổ chức/tên thật trong Subject/Keywords/Creator metadata ngoài thông tin phần mềm chung- Không có attached files hoặc annotations lộ danh tính
+6.3 Artifact links
+Nếu anonymous repository đã tồn tại và không lộ danh tính: dùng link đó.
+Nếu chưa có anonymous repository: thay link định danh bằng “Artifacts will be released upon acceptance” hoặc supplementary package ẩn danh được hội nghị cho phép.
+Kiểm tra cả commit history, README, file properties, ZIP metadata, logs, paths và filenames.
+6.4 IEEE format và page count
+Dùng đúng IEEE conference class/template hiện hành trong project.
+Single-spaced, double-column, 10pt theo template; không dùng thủ thuật giảm font/margin trái chuẩn để ép trang.
+Compile sạch; kiểm tra warnings về overfull/underfull boxes, missing refs, missing citations và figure placement.
+Mục tiêu PDF cuối: 8 trang bao gồm references. Nếu vượt, cắt redundancy/supplementary trước khi làm bất kỳ thay đổi format không chuẩn nào.
+7. Tài liệu tham khảo mới — quy tắc chống bịa
+Giảng viên yêu cầu cập nhật 4–6 tài liệu 2021–2025 về XAI faithfulness/counterfactual/robustness. Codex chỉ được thêm reference khi đã xác minh đủ: title, authors, venue, year, pages/article number và DOI hoặc URL publisher chính thức.
+Ưu tiên paper gốc hoặc survey chất lượng cao từ venue/journal chính thống.
+Mỗi reference phải hỗ trợ một câu cụ thể trong Related Work; không “nhồi” citation vào cuối đoạn.
+Không lấy metadata từ blog, Semantic Scholar snippet hoặc citation aggregator làm nguồn duy nhất.
+Nếu không có internet/không xác minh được, báo blocker; tuyệt đối không tạo reference nghe hợp lý nhưng không tồn tại.
+Sau khi thêm, chạy citation check: mọi citation key tồn tại, mọi bibliography entry được dùng hoặc có lý do giữ lại.
+8. Xử lý overlap với bài house-price
+Tạo một báo cáo riêng reports/ictai2026_revision/overlap_with_house_price.md. Ít nhất phải kiểm tra:
+Title/abstract/contribution wording có bị tái sử dụng quá nhiều không.
+Workflow figure, Algorithm, Table II hoặc terminology có trùng nguyên xi không.
+Contribution của crop paper phải nhấn mạnh leakage-safe detrended target, event-recovery module, crop/state/county evidence và synthetic boundary.
+Nếu cùng phương pháp nền, mô tả như application-specific audit extension; không claim độc lập sai lệch.
+Không cross-cite bằng tên tác giả/link nhận diện trong bản double-blind.
+9. Kế hoạch triển khai theo phase
+Phase A — Freeze baseline
+Copy v3 → v4; lưu hash, pdfinfo, page count, text extraction và render của baseline.
+Ghi lại main .tex, build command và danh sách figures/tables đang được include.
+Tạo checklist 21 mục với trạng thái BEFORE.
+Phase B — Desk-reject blockers
+Ẩn danh source, links và PDF metadata.
+Xác nhận đúng IEEE template và compile sạch.
+Giữ page count trong giới hạn.
+Đánh số Table VII; sửa Fig. 2 base value.
+Phase C — Reframe contribution
+Viết lại Abstract khoảng 200 từ.
+Chèn opening Discussion về 240/240 → 171/240 và giới hạn lý thuyết.
+Điều chỉnh Conclusion cho cùng framing.
+Bổ sung đoạn chống “setup designed to fail”.
+Phase D — Logic and consistency
+Làm rõ Module B paired contrast và Module D rationale.
+Làm rõ ROC/PR versus Module E và bảo vệ power của E.
+Làm rõ 10 year-block precision/power trade-off.
+Đồng nhất number formatting, Table IV CI và terminology.
+Phase E — Space and literature
+Loại redundancy Fig. 1/Table II/Algorithm 1.
+Chuyển robustness tables chi tiết sang anonymous supplement.
+Thêm recent verified XAI references; chuẩn hoá IEEE bibliography.
+Rà overlap house-price.
+Phase F — Final regression audit
+Compile final PDF và rerun all automated checks.
+Render từng trang và kiểm tra bằng mắt: clipping, table overflow, tiny text, broken references.
+So sánh before/after text và rendered pages; xác nhận không có regression ngoài các thay đổi chủ ý.
+Cập nhật checklist 21 mục sang PASS/FAIL với evidence path.
+10. Quy trình so sánh bản mới với bản trước
+Không chỉ nói “đã sửa”. Phải tạo bằng chứng so sánh.
+10.1 So sánh cấu trúc và nội dung
+pdftotext <before.pdf> reports/ictai2026_revision/before/paper.txtpdftotext <after.pdf>  reports/ictai2026_revision/after/paper.txtdiff -u reports/ictai2026_revision/before/paper.txt reports/ictai2026_revision/after/paper.txt > reports/ictai2026_revision/text_diff.patch || true
+Kiểm tra Abstract, Discussion opening, Conclusion, captions, table numbering, references và anonymization wording.
+Đảm bảo số liệu chính không thay đổi ngoài format: A -0.005 [-0.019, 0.009]; B -0.012 [-0.029, 0.002]; E RMSE -0.043 [-0.074, 0.007], rank 0.180, top-10 1/10; synthetic 240/240, 171/240, 20/180, 88.9%, 28.7%.
+10.2 So sánh hình ảnh từng trang
+Render before và after thành PNG/PDF pages. Tạo contact sheet hoặc image diff. Mọi thay đổi bố cục phải có lý do. Đặc biệt kiểm tra:
+Fig. 2 panel B đã có base value/caption và không bị quá nhỏ.
+Table VII có số/caption, không đẩy references vượt trang.
+Không có bảng bị cắt giữa trang hoặc text tràn cột.
+Không có citation “??”, figure/table “??” hoặc missing glyph.
+10.3 So sánh metadata và anonymity
+pdfinfo <before.pdf> > reports/ictai2026_revision/before/pdfinfo.txtpdfinfo <after.pdf>  > reports/ictai2026_revision/after/pdfinfo.txtdiff -u reports/ictai2026_revision/before/pdfinfo.txt reports/ictai2026_revision/after/pdfinfo.txt > reports/ictai2026_revision/pdfinfo_diff.patch || true
+Bản after phải tốt hơn baseline: Author trống/Anonymous, không còn URL định danh, không có tên/email trong source/package.
+10.4 Báo cáo hoàn tất bắt buộc
+Tạo file reports/ictai2026_revision/FINAL_REVISION_REPORT.md gồm:
+Danh sách file đã đổi.
+Page count before/after.
+Bảng 21 mục: status, evidence, location in final PDF.
+Exact Abstract/Discussion/Conclusion paragraphs cuối.
+Anonymity checks và pdfinfo output.
+References mới và nguồn xác minh.
+Các thay đổi không thực hiện được hoặc blocker còn lại.
+Hash của final PDF và source archive.
+11. Acceptance checklist — chỉ được kết luận DONE khi tất cả đạt
+☐ 01. Bản v3 không bị chỉnh sửa; bản v4 tồn tại và build độc lập.
+☐ 02. PDF cuối đúng template IEEE và trong giới hạn trang.
+☐ 03. PDF metadata không lộ tác giả/cơ quan/email.
+☐ 04. Không có identifying repository/manifest link hoặc path.
+☐ 05. Abstract khoảng 200 từ và nêu 240/240 → 171/240 sớm.
+☐ 06. Discussion mở bằng scope necessary-but-not-sufficient.
+☐ 07. Conclusion lặp lại đúng scope, không overclaim.
+☐ 08. Fig. 2 panel B hiển thị hoặc giải thích SHAP base value.
+☐ 09. Synthetic calibration là TABLE VII có caption chuẩn.
+☐ 10. Table IV Zero residual hiển thị CI nhất quán hoặc có footnote.
+☐ 11. Module B paired Full-minus-Metadata được giải thích rõ.
+☐ 12. Module D rationale xuất hiện sớm.
+☐ 13. ROC/PR versus Module E được giải thích không mâu thuẫn.
+☐ 14. Module E được bảo vệ bằng distinct failure modes và synthetic pass cases.
+☐ 15. 10 year-block power/precision trade-off được nói rõ.
+☐ 16. Không lặp workflow ba lần không cần thiết.
+☐ 17. Robustness tables chi tiết được chuyển supplement nếu cần để giữ trang.
+☐ 18. Number formatting nhất quán.
+☐ 19. 4–6 recent XAI references được xác minh, không bịa.
+☐ 20. Bibliography theo IEEEtran và compile không lỗi.
+☐ 21. Overlap với house-price đã được audit và documented.
+☐ 22. No missing references/citations/figures; no overfull content đáng kể.
+☐ 23. Before/after diff và FINAL_REVISION_REPORT.md đã được tạo.
+☐ 24. Final PDF đã được mở và kiểm tra từng trang bằng mắt.
+ĐỊNH NGHĨA “DONE”
+Không được kết luận “đã sửa xong” chỉ vì compile thành công. DONE nghĩa là: 21 mục đều có trạng thái PASS hoặc blocker được báo rõ; final PDF được kiểm tra từng trang; anonymity và metadata đã được kiểm tra; before/after comparison đã hoàn tất; và bản v3 vẫn nguyên vẹn.
+12. Mẫu báo cáo cuối Codex phải trả về
+COMPLETION REPORT1. New revision folder:   paper_versions/v4_ictai2026_revision/2. Files changed:   - ...3. Build result:   - Final PDF: ...   - Page count: ...   - SHA-256: ...4. Critical framing changes:   - Abstract: ...   - Discussion opening: ...   - Conclusion: ...5. Figure/table fixes:   - Fig. 2 base value: PASS/FAIL + evidence   - Table VII numbering/caption: PASS/FAIL + evidence   - Table IV CI consistency: PASS/FAIL + evidence6. Double-blind checks:   - PDF Author metadata: ...   - Identifying URLs: ...   - Names/emails/path audit: ...7. All 21 checklist items:   ID | Status | Final PDF location | Evidence file8. Before/after comparison:   - Text diff: ...   - Render diff: ...   - Regressions found/fixed: ...9. Remaining blockers:   - None / list exact blockers
+CUỐI CÙNG
+Hãy ưu tiên tính trung thực và khả năng audit. Không “sửa” negative result thành positive result. Nhiệm vụ là làm reviewer hiểu đúng đóng góp: gate giảm over-permission so với ungated XAI, nhưng predictive metrics không thể thay thế structural validity checks.

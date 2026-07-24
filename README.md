@@ -1,9 +1,9 @@
-# Multi-Method XAI Crop-Yield Anomaly Project
+# Crop-Yield Residual Fidelity Audit
 
-This repository explains detrended low-yield crop anomalies with multiple
-interpretable machine-learning methods. The workflow detects crop-state-year yield
-anomalies, trains weather-yield residual models, and compares whether independent XAI
-methods identify the same extreme-weather driver groups.
+This repository audits whether a leakage-safe residual model has enough prospective
+skill to support substantive weather-feature interpretation for below-trend yield
+events. It is a negative-result workflow: when the fidelity gate fails, XAI outputs
+are retained only as model diagnostics.
 
 ## Data
 
@@ -15,48 +15,40 @@ methods identify the same extreme-weather driver groups.
 The processed frame contains 1,257 rows from 1990-2025 for Barley, Canola, Oats, and
 Wheat. The default anomaly rule flags 214 low-yield rows using `trend_residual_z < -1.0`.
 
-## Quick Start
+## Main Audit
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-python scripts/run_xai_pipeline.py
-python scripts/build_paper_assets.py
-python scripts/package_overleaf.py
-python scripts/validate_xai_outputs.py
+python scripts/run_audit.py --config configs/fidelity_gate.yaml --stage all
 ```
 
 ## Main Workflow
 
-1. Load and validate the processed crop-state-year frame.
-2. Detrend yield within each crop-state series and flag low-yield anomalies.
-3. Train ExtraTrees yield and residual models under forward-time splits.
-4. Explain residual-model behavior with SHAP, grouped SHAP, group permutation,
-   group ablation, ALE curves, and selected LIME cases.
-5. Compare top driver groups across methods for global and anomaly-only views.
-6. Build manuscript tables, figures, and an Overleaf package.
+1. Reconstruct and validate the processed crop--state--year frame.
+2. Fit trends and residual scales using training years only.
+3. Select configurations on 2012--2015 validation data.
+4. Audit the locked 2016--2025 test using naive baselines, fixed seeds, paired
+   year-block intervals, tail metrics, and robustness checks.
+5. Compare retrospective full-series detrending against train-only detrending.
+6. Generate the tables, figures, and LaTeX number macros consumed by the paper.
 
 ## Method Settings
 
-- `RANDOM_STATE = 7`
-- `XAI_N_ESTIMATORS = 160`
-- `PERMUTATION_REPEATS = 8`
-- LIME cases are selected from the lowest residual-z anomaly rows in 2012, 2021,
-  and 2022.
+- Fixed stochastic seeds: `7, 17, 27, 37, 47`
+- Year-block bootstrap: 2,000 deterministic replicates
+- Final-test period: 2016--2025, held out from selection
 
 ## Main Outputs
 
-- `outputs/xai/`: generated XAI CSV tables.
-- `figures/xai/`: high-resolution PNG and PDF figures.
-- `paper/latex_source/`: main manuscript source, generated tables, and copied figures.
-- `paper/overleaf_zip/multimethod_xai_crop_yield_anomalies.zip`: upload package.
-- `paper/final/DAP_multi_final.pdf`: final compiled paper PDF.
+- `artifacts/audit/`: E1--E10 evidence, row-level predictions, and gate record.
+- `paper/generated/`: generated tables, vector figures, and LaTeX macros.
+- `paper/source/`: canonical blind manuscript source.
+- `paper/final/ictai2026_paper_blind.pdf`: canonical blind PDF.
+- `README_REPRODUCE.md`: one-command complete reproduction instructions.
 
 ## Interpretation
 
-All explanations are model-based diagnostics. Agreement across methods is evidence
-that the fitted model consistently associates an anomaly with a driver group; it is
-not a formal causal or climate-event attribution claim.
-
-This public release includes the final paper materials and reproducibility workflow.
+All XAI outputs are model-based diagnostics. They are not evidence of weather causes
+or event drivers unless the pre-specified fidelity gate passes.

@@ -1,0 +1,11 @@
+{
+  "repository_url": "https://github.com/PhongLam26/ictai2026-weather-feature-audit",
+  "visibility": "private",
+  "release_tag": "v1.0.3-review-materials",
+  "release_url": "https://github.com/PhongLam26/ictai2026-weather-feature-audit/releases/tag/v1.0.3-review-materials",
+  "release_zip": "dist/ictai2026_reviewer_materials_v1.0.3.zip",
+  "release_zip_sha256": "0e2fdb7298dfd727e8648b2fd1cfb388b67591848f4a37e8b7afae895618b99c",
+  "clean_clone_reproduction": "PASS: full clean clone 832b892c3cd3913d13497bc4e0486dd6d8d2cff7, 312.7s, 20 tests, zero skipped; EasyChair checklist generated",
+  "verified_source_commit": "832b892c3cd3913d13497bc4e0486dd6d8d2cff7",
+  "release_tag_commit": "e1853d4"
+}

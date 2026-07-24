@@ -1,0 +1,29 @@
+﻿baseline_name: before_v5_1_remaining_fixes
+baseline_pdf: C:\Users\phong\Downloads\send\multimethod_xai_crop_yield_anomalies\paper\final\ictai2026_claim_eligibility_audit_v5.pdf
+baseline_sha256: 61EAC2207BC51832EE0C9C9560F984D8D840839DD40120C76D3AB1624F5108AF
+source_path: C:\Users\phong\Downloads\send\multimethod_xai_crop_yield_anomalies\paper_versions\v5_claim_eligibility_audit\source\fidelity_gated_xai_method_benchmark_v3.tex
+compiler: MiKTeX-pdfTeX 4.27 (MiKTeX 26.5)
+build_command: pdflatex -> bibtex -> pdflatex -> pdflatex
+pdfinfo:
+Title:           Claim-Eligibility Auditing for Post-hoc Explanations: Synthetic Calibration and Cross-Domain Cases
+Subject:         
+Keywords:        
+Author:          Anonymous
+Creator:         LaTeX with hyperref
+Producer:        MiKTeX pdfTeX-1.40.29
+CreationDate:    Wed Jul 22 00:21:33 2026 SE Asia Standard Time
+ModDate:         Wed Jul 22 00:21:33 2026 SE Asia Standard Time
+Custom Metadata: yes
+Metadata Stream: no
+Tagged:          no
+UserProperties:  no
+Suspects:        no
+Form:            none
+JavaScript:      no
+Pages:           8
+Encrypted:       no
+Page size:       612 x 792 pts (letter)
+Page rot:        0
+File size:       547958 bytes
+Optimized:       no
+PDF version:     1.5

@@ -1,0 +1,289 @@
+CODEX — FINAL ONE-SHOT LOGIC CLEANUP AND FIGURE 2 / FIGURE 3 REDESIGN
+Remove the remaining repeated and AI-like prose, then replace the two unattractive charts with clearer chart types built from the same verified data.
+Read the whole document before editing. Do not stop after partial text fixes, a successful build, or a visually different chart.
+BASELINE PDF: /mnt/data/ictai2026_claim_eligibility_audit_v5_2_final_fix_logic.pdfNEW REQUIRED OUTPUT: paper/final/ictai2026_claim_eligibility_audit_v5_4_chart_redesign_final.pdfDo not overwrite the current source or PDF. Keep the paper exactly 8 IEEE conference pages.
+0. Objective and completion rule
+This pass must finish two kinds of work together: (1) remove the remaining duplicated, compliance-like, and formulaic prose; (2) replace Fig. 2 and Fig. 3 with different chart types that communicate the paper's main evidence more cleanly. The scientific values and policy verdicts must remain unchanged.
+A chart is not accepted merely because it looks different. It must make the intended scientific comparison easier to understand, remain readable at final IEEE scale, and be generated from the same machine-readable artifacts as the tables.
+☐ Create a source backup/commit before editing.
+☐ Create a completion matrix with NOT STARTED / IN PROGRESS / IMPLEMENTED / BLOCKED / VERIFIED.
+☐ Do not report GOAL ACHIEVED while any P0/P1 item remains unverified.
+☐ Keep the anonymous review version double-blind.
+☐ Do not add supplementary material or a web screenshot in this pass.
+1. Scientific invariants — never change these
+☐ Processed crop panel: 1,257 rows; locked crop rows: 333.
+☐ Validation-selected crop model: Weather-only ExtraTrees.
+☐ Validation RMSE 0.384; locked RMSE 0.669; locked R² = -0.014.
+☐ Module A: ΔRMSE -0.005, 95% CI [-0.019, 0.009], DOES NOT PASS.
+☐ Module B: ΔRMSE -0.012, 95% CI [-0.029, 0.002], DOES NOT PASS.
+☐ Module E: ΔRMSE -0.043, 95% CI [-0.074, 0.007]; rank 0.180; top-10 1/10; DOES NOT PASS.
+☐ Barley–Colorado 2016: prediction +0.209; observed residual -0.510.
+☐ Synthetic invalid runs: ungated false permission 240/240; audit false permission 171/240; sensitivity 88.9%; specificity 28.7%; false abstention 20/180.
+☐ County case: Module B passes; Module A does not pass.
+☐ PJM case: applicable Modules A and B pass.
+2. Mandatory remaining prose and logic fixes
+2.1 Delete the repeated paragraph after the Fig. 2 crop example
+The preceding paragraph already states the prediction, observation, coherent SHAP reconstruction, wrong direction/magnitude, and audited restriction. The next three sentences repeat the same conclusion and make the paper sound generated or over-explained.
+Delete: “The example is the concrete consequence of the audit. SHAP explains the fitted prediction correctly, but the prediction has the wrong sign and magnitude for the observed event. The allowed claim is therefore model-descriptive explanation only, not weather attribution.”
+☐ Remove the full repeated three-sentence paragraph unless one sentence contains genuinely new evidence. It currently does not.
+☐ Do not replace it with another summary sentence. Let the preceding evidence paragraph and Fig. 2 carry the conclusion.
+2.2 Remove the second explanation of Module D
+The screenshot supplied by the reviewer identifies this exact repetition. Methods already explains that D lies outside the permission path, is numerically identical to A in this panel, and retains vector-equality detail in the reproducibility record. Results then repeats essentially the same statement.
+Delete from Results: “Module D remains the outside-path Weather-only versus Metadata-only representation diagnostic and is numerically identical to Module A in this panel because Metadata-only predictions collapse to the zero-residual baseline.”
+☐ Keep the concise Module D explanation in Methods only.
+☐ Keep Table II values; the table already lets the reader see that Metadata-only matches the zero-residual baseline.
+☐ Do not add a replacement sentence in Results.
+2.3 Merge the repeated synthetic conclusion
+The synthetic section first explains that leakage, omitted confounding, correlated features, and geographic shift preserve predictive performance and are therefore difficult for the audit. It then repeats the same conclusion in a second paragraph with nearly the same regime list.
+Replace the repeated final paragraph with one factual sentence: “Accordingly, omitted confounding, geographic shift, leakage, and correlated-feature regimes remain false permissions in all 30 seeds, with temporal drift permitted in 29/30.”
+☐ Keep the exact 30/30 and 29/30 results.
+☐ Remove the repeated generic sentence “The observable modules cannot reliably identify all structurally invalid regimes...” if the preceding paragraph has already explained the mechanism.
+☐ Do not repeat “These are false permissions, not successful abstentions” if the new sentence already calls them false permissions.
+2.4 Rewrite the PJM ending as scientific interpretation, not audit-log prose
+Replace the current manifest-heavy ending with:Because both applicable modules pass, permutation importance may be interpreted as predictive reliance on the locked PJM rows. PJM therefore serves as a positive control showing that the audit can permit interpretation when the applicable evidence is strong.
+☐ Move row IDs, hashes, seed handling, and output-scale details to the Reproducibility subsection only.
+☐ Remove “synthetic regimes define the decision-rule boundary” from the PJM paragraph; that belongs in the synthetic or Discussion section.
+2.5 Rewrite the AI-like Discussion sentence about favorable sensitivities
+Use:The favorable results occur under smaller evaluation populations, non-primary temporal folds, or settings in which another required module still does not pass. They therefore guide future design choices but do not replace the primary locked verdict.
+☐ Delete the vague wording “These results identify design conditions under which predictive signal may be stronger.”
+☐ Keep the concrete examples, but do not restate each example again after the replacement sentences.
+2.6 Shorten and de-duplicate the Fig. 2 caption
+Use one rounding sentence only:The unrounded grouped SHAP terms reconstruct the fitted prediction of +0.209; displayed values are rounded.
+☐ Do not state twice that unrounded terms reconstruct the prediction.
+☐ Keep observed -0.510, the allowed model-descriptive scope, and the A/B/E verdicts.
+2.7 Final natural-writing cleanup
+Search for
+Required treatment
+This paper delivers...
+Remove checklist-style contribution language if any instance remains.
+These results identify design conditions under which...
+Replace with the concrete cause of the difference.
+Accordingly / More generally / This distinction motivates...
+Retain only where the transition is genuinely needed.
+reproducibility record / manifest / hashes repeated in Results
+Consolidate in the dedicated Reproducibility subsection.
+The audit... The audit... The audit...
+Vary syntax and let numerical evidence lead the paragraph.
+☐ Every edited paragraph must follow CLAIM → EVIDENCE → MEANING.
+☐ Do not introduce new prose merely to fill space saved by deleting repetition.
+3. Replace Fig. 2 with a different chart type
+Do not redraw the same waterfall again. Replace it with a three-panel evidence board: outcome mismatch, contribution profile, and allowed interpretation.
+3.1 New Fig. 2 structure
+Panel
+Chart type
+Scientific job
+A. Outcome mismatch
+Paired-marker / dumbbell plot on one horizontal residual axis
+Show observed -0.510 and prediction +0.209 as the dominant comparison.
+B. Why the model predicted +0.209
+Diverging horizontal contribution bars
+Show grouped SHAP contributions without a cumulative waterfall.
+C. Allowed interpretation
+Compact verdict matrix / two-row evidence card
+Contrast unsupported ungated attribution with the audited model-descriptive scope.
+3.2 Panel A — paired observed-versus-predicted axis
+☐ Use one horizontal x-axis labeled “raw residual, t ha^-1”.
+☐ Use x-limits approximately -0.56 to +0.24 so both values have breathing room.
+☐ Plot observed -0.510 as a hollow diamond or open circle.
+☐ Plot prediction +0.209 as a filled square or filled circle.
+☐ Connect the two markers with a thick horizontal line or range band.
+☐ Label the line “wrong direction and magnitude”.
+☐ CRITICAL GEOMETRY: -0.510 must be slightly LEFT of the -0.5 tick. +0.209 must be slightly RIGHT of the +0.2 tick.
+☐ Do not manually position markers by eye. Plot them from numeric x-values.
+☐ Make observed and prediction the largest visual elements in the full figure.
+3.3 Panel B — diverging grouped-contribution bars
+Use a zero-centered horizontal bar chart. Positive contributions extend right; negative contributions extend left. Sort by absolute contribution magnitude.
+Grouped term
+Displayed contribution
+Heat
++0.081
+Drought
++0.060
+Frost/cold
++0.054
+Excess rain
++0.035
+Radiation
+-0.013
+Other/remainder
+-0.007
+☐ Title the panel “Why the model predicted +0.209”.
+☐ Use direct value labels at bar ends.
+☐ Use one neutral tone for positive bars and a distinct grayscale-safe tone/hatch for negative bars.
+☐ Do not imply that larger SHAP values establish real-world weather effects.
+☐ Add a short note: “SHAP explains the fitted prediction.”
+☐ Keep the exact unrounded arithmetic in the provenance record; displayed values may be rounded.
+3.4 Panel C — compact interpretation matrix
+Recommended content:UNGATED READINGCoherent model explanation  →  weather attributionUNSUPPORTED  ✕CLAIM-ELIGIBILITY AUDITA does not passB does not passE does not pass→ MODEL-DESCRIPTIVE EXPLANATION ONLY
+☐ Avoid large poster-style boxes with excessive empty space.
+☐ Use a compact two-row matrix, aligned evidence chips, or a short claim ladder.
+☐ Do not use “ABSTAIN” alone; state what remains allowed.
+☐ Do not say SHAP failed. The fitted-model explanation is coherent; the stronger outcome claim is unsupported.
+3.5 Fig. 2 styling and generation
+☐ Generate with Matplotlib or another deterministic chart script from the verified locked artifact.
+☐ Export as vector PDF/SVG for LaTeX when possible; otherwise use at least 300 dpi PNG.
+☐ White background, consistent sans-serif font, no gradients, no shadows, no decorative illustration.
+☐ Readable at IEEE two-column width and in grayscale.
+☐ Keep sufficient margins so labels are not clipped.
+☐ Create a provenance record with configuration ID, row ID, prediction hash, target hash, SHAP source, exact values, and generation script.
+3.6 Suggested Fig. 2 caption
+Fig. 2. A coherent model explanation does not establish an observed-event claim. (A) The locked Weather-only model predicts +0.209 for the Barley–Colorado 2016 row, whereas the observed residual is -0.510 t ha^-1. (B) Grouped SHAP contributions describe why the fitted model produced +0.209; the unrounded terms reconstruct the prediction and displayed values are rounded. (C) Ungated interpretation would promote the explanation to weather attribution, while the claim-eligibility audit retains only a model-descriptive explanation because Modules A, B, and E do not pass.
+4. Replace Fig. 3 with an annotated regime heatmap
+Do not keep the existing dumbbell chart. Replace it with a compact annotated heatmap that shows the pattern across invalid regimes and complements Table III.
+4.1 Heatmap data
+Regime
+Ungated (%)
+Audit (%)
+Reduction (percentage points)
+Group
+No signal
+100
+0
+100
+Signal absent or degraded
+Weak signal
+100
+7
+93
+Signal absent or degraded
+Measurement error
+100
+67
+33
+Signal absent or degraded
+Temporal drift
+100
+97
+3
+Performance-preserving invalidity / shift
+Leakage
+100
+100
+0
+Performance-preserving invalidity / shift
+Omitted confounding
+100
+100
+0
+Performance-preserving invalidity / shift
+Correlated features
+100
+100
+0
+Performance-preserving invalidity / shift
+Geographic shift
+100
+100
+0
+Performance-preserving invalidity / shift
+☐ Load these values from the Table III machine-readable source, not by copying this DOCX by hand.
+☐ Assert that Fig. 3 values and Table III values share the same source hash.
+4.2 Heatmap layout
+☐ Rows are invalid regimes.
+☐ Columns are Ungated false permission (%), Audit false permission (%), and Reduction (percentage points).
+☐ Print the numeric value inside every cell.
+☐ Use one sequential color scale for false-permission columns and a separate sequential scale or patterned cell for Reduction.
+☐ Add a clear horizontal separator and group labels for “Signal absent or degraded” and “Invalidity that preserves predictive performance”.
+☐ Order rows by scientific group, then by audit rate within group.
+☐ Use full regime names or stable readable abbreviations; do not truncate labels ambiguously.
+☐ Make the 100 → 0 and 100 → 7 reductions visually obvious without needing the caption.
+☐ Keep Table III because it reports A/B/E module rates and all valid/invalid regimes. Fig. 3 shows only the high-level invalid-regime pattern.
+4.3 Alternative only if the heatmap cannot fit cleanly
+The only acceptable fallback is a grouped horizontal bar chart with two bars per regime: Ungated and Audit. Do not return to the original dumbbell style. Record in the report why the heatmap failed layout QA before using the fallback.
+4.4 Suggested Fig. 3 caption
+Fig. 3. False-permission patterns across structurally invalid synthetic regimes. The audit sharply reduces permission when the requested signal is absent or degraded, but changes little when leakage, confounding, correlated features, or shift preserve predictive performance. Values are percentages across 30 seeds; ground-truth labels are used only for evaluation and are not inputs to the audit.
+5. Page layout and float constraints
+☐ Keep the manuscript exactly 8 pages.
+☐ Do not insert the future web-application screenshot yet.
+☐ Keep page 6 primarily as a result-visual page containing redesigned Fig. 3, Table III, and Fig. 4.
+☐ Do not force page 6 to be fully filled with enlarged low-information figures; preserve a clean reserved area if needed for the later web visual.
+☐ Do not reduce body font, reference font, margins, line spacing, or caption font below IEEE norms.
+☐ Do not use negative vertical spacing.
+☐ No heading may stand alone; no figure/table may interrupt a sentence.
+☐ Fig. 2 must remain close to the paragraph discussing +0.209 versus -0.510.
+☐ Verify all captions remain attached to their figures.
+6. Automated search and regression checks
+# Repeated prose to removerg -ni "The example is the concrete consequence|Module D remains the outside-path|The observable modules cannot reliably identify all structurally invalid regimes|These results identify design conditions under which" <SOURCE># Compliance-like PJM proserg -ni "XAI manifest binds|row IDs, hashes|seed handling, and output scale" <SOURCE># AI-like transitionsrg -ni "This paper delivers|These different verdicts|This intentionally easy|More generally|Accordingly, every manuscript number" <SOURCE># Figure 2 geometry and valuesrg -n "\+0\.209|-0\.510|heat|drought|frost/cold|excess rain|radiation|other/remainder" <FIG2_SOURCE> <SOURCE># Figure 3 valuesrg -n "No signal|Weak signal|Measurement error|Temporal drift|Leakage|Omitted confounding|Correlated features|Geographic shift" <FIG3_SOURCE> <TABLE_SOURCE># Scientific invariantsrg -n "240/240|171/240|88\.9|28\.7|-0\.005|-0\.012|-0\.043" <SOURCE>
+☐ Do not rely on grep alone. Inspect the rendered PDF and chart geometry visually.
+☐ For Fig. 2, programmatically assert observed_x == -0.510 and prediction_x == 0.209.
+☐ For Fig. 3, programmatically compare every displayed value with the Table III source data.
+7. Mandatory build and visual QA loop
+Clean all stale LaTeX and generated-chart files.
+Regenerate Fig. 2 and Fig. 3 from source artifacts.
+Build the anonymous V5.4 PDF.
+Confirm exactly 8 pages.
+Render all eight pages to PNG.
+Inspect every page at 100% zoom.
+Inspect Fig. 2 in color and grayscale.
+Inspect Fig. 3 cell labels and group separators at final PDF scale.
+Verify Table III remains legible and unchanged.
+Verify no reference or figure is pushed to page 9.
+Run scientific-value diff against the baseline PDF/source.
+Repeat until all acceptance criteria pass.
+8. Hard acceptance matrix
+Priority
+Acceptance condition
+Evidence required
+P0
+Repeated three-sentence Fig. 2 paragraph removed.
+Source search and rendered Results page
+P0
+Module D is explained only once in Methods.
+Source search; no duplicate Results sentence
+P0
+Synthetic repeated conclusion merged into one factual sentence.
+Rendered synthetic text
+P0
+PJM ending is scientific and manifest details are moved.
+Old/new paragraph comparison
+P0
+Discussion sensitivity paragraph uses concrete language.
+Rendered Discussion excerpt
+P0
+Fig. 2 caption has one rounding statement.
+Final caption
+P0
+Fig. 2 uses paired markers + diverging bars + compact verdict matrix.
+Rendered figure and source script
+P0
+Observed -0.510 is plotted left of -0.5; prediction +0.209 is right of +0.2.
+Programmatic assertion and visual inspection
+P0
+Fig. 3 is an annotated heatmap, not the previous dumbbell.
+Rendered figure and source script
+P0
+Fig. 3 values match Table III source exactly.
+Hash/value comparison
+P1
+Paper remains exactly 8 pages and page 6 remains a clean result-visual page.
+Full rendered-page QA
+P1
+No scientific values, verdicts, or citations changed.
+Automated baseline comparison
+P1
+Anonymous PDF and package remain double-blind.
+Metadata and source scan
+9. Required Codex completion report
+Report section
+Required contents
+Backup
+Backup/commit path and baseline PDF SHA-256.
+Text cleanup
+Every deleted/merged sentence and its final replacement.
+Fig. 2
+New chart structure, source artifact, generation script, coordinate assertions, provenance, and final caption.
+Fig. 3
+Heatmap data source, exact values, group ordering, source hash, generation script, and final caption.
+Scientific invariance
+All fixed values compared with baseline.
+Layout QA
+Eight rendered pages inspected; no orphan headings, clipping, overlap, or sentence interruption.
+Double-blind
+PDF metadata and package scan result.
+Final artifacts
+New PDF path, SHA-256 path, build report path.
+Completion matrix
+Every P0/P1 item marked VERIFIED or BLOCKED with evidence.
+10. Final stop rule
+Do not report GOAL ACHIEVED merely because the prose was shortened or the figures were regenerated. GOAL ACHIEVED is allowed only when every P0/P1 item is VERIFIED, Fig. 2 and Fig. 3 are genuinely different and clearer chart types, the coordinates and values are correct, and the final paper remains an anonymous eight-page IEEE PDF.
+End of final logic cleanup and chart redesign plan

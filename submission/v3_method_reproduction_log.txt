@@ -1,0 +1,27 @@
+# V3 Method Reproduction Log
+
+- Status: PASS
+- Created UTC: 2026-07-19T17:36:12.990396+00:00
+- Git commit: `98b77cf5d0d72e13fc7cd6bfb4b6464e27359e6e`
+- PDF: `paper_versions/v3_method_benchmark/source/fidelity_gated_xai_method_benchmark_v3.pdf`
+- PDF SHA-256: `e32f32cf991df68885e075819940d086b5f315798d80c29935c962394a7e12ae`
+- Commands verified:
+  - `python scripts/reproduce_v3_method_release.py`
+  - `python -c "from scripts.run_main8_audit import main; main()"`
+  - `python -c "from scripts.run_audit import run_null_experiments, run_selection_and_baseline_records; run_null_experiments(); run_selection_and_baseline_records()"`
+  - `python scripts/run_expanded_models.py`
+  - `python scripts/run_extended_audits.py`
+  - `python scripts/build_target_feature_contracts.py`
+  - `python scripts/build_audit_v2_assets.py`
+  - `python scripts/run_synthetic_gate_benchmark.py`
+  - `python scripts/run_eia_external_domain.py`
+  - `python scripts/score_paper_routes.py`
+  - `python scripts/audit_v2_pipeline.py`
+  - `python -m unittest discover -s tests -p 'test_*.py'`
+  - `python scripts/final_pdf_numerical_crosscheck.py --pdf paper_versions/v3_method_benchmark/source/fidelity_gated_xai_method_benchmark_v3.pdf`
+  - `python scripts/final_submission_audit.py --pdf paper_versions/v3_method_benchmark/source/fidelity_gated_xai_method_benchmark_v3.pdf`
+  - `python scripts/audit_pdf.py paper_versions/v3_method_benchmark/source/fidelity_gated_xai_method_benchmark_v3.pdf`
+  - `python scripts/build_v3_method_anonymous_artifact.py; python scripts/audit_v3_method_anonymous_artifact.py`
+  - `python scripts/write_fidelity_gate_acceptance_audit.py`
+- E1-E10 manifest: `artifacts/audit/e1_e10/e1_e10_traceability_manifest.csv`
+- Numeric consistency CSV: `artifacts/audit_records/numeric_consistency_report.csv`

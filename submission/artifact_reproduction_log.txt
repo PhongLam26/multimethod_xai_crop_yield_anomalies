@@ -1,0 +1,10 @@
+# Artifact Reproduction Log
+
+- Status: PASS
+- Exit code: 0
+- Command: `python scripts/reproduce_all.py --clean`
+- Runtime seconds: `20.3`
+- Source commit: `98b77cf5d0d72e13fc7cd6bfb4b6464e27359e6e`
+- Environment lock: `requirements-lock.txt`
+- Pipeline: weather reconstruction; audit; unit tests; reference audit; generated assets; PDF QA; artifact verification; anonymity audit; final numerical audit; final manifest; checklist.
+- Result: Gate A FAIL; primary Gate B1 FAIL; diagnostic Gate B2 FAIL. This is the expected scientific decision; all technical checks passed.

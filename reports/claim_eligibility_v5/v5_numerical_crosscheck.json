@@ -1,0 +1,317 @@
+{
+  "created_utc": "2026-07-21T17:21:35.989020+00:00",
+  "pdf": "paper\\final\\ictai2026_claim_eligibility_audit_v5.pdf",
+  "pdf_sha256": "61eac2207bc51832ee0c9c9560f984d8d840839dd40120c76d3ab1624f5108af",
+  "status": "PASS",
+  "checks": [
+    {
+      "claim": "PDF page count",
+      "displayed_or_checked": "8 pages",
+      "artifact": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\paper\\final\\ictai2026_claim_eligibility_audit_v5.pdf",
+      "actual": 8,
+      "expected": 8,
+      "status": "PASS"
+    },
+    {
+      "claim": "PDF metadata Author",
+      "displayed_or_checked": "Anonymous",
+      "artifact": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\paper\\final\\ictai2026_claim_eligibility_audit_v5.pdf",
+      "actual": "Anonymous",
+      "expected": "Anonymous",
+      "status": "PASS"
+    },
+    {
+      "claim": "PDF title",
+      "displayed_or_checked": "claim-eligibility title",
+      "artifact": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\paper\\final\\ictai2026_claim_eligibility_audit_v5.pdf",
+      "actual": "Claim-Eligibility Auditing for Post-hoc Explanations: Synthetic Calibration and Cross-Domain Cases",
+      "expected": "Claim-Eligibility Auditing for Post-hoc Explanations: Synthetic Calibration and Cross-Domain Cases",
+      "status": "PASS"
+    },
+    {
+      "claim": "Forbidden wording absent",
+      "displayed_or_checked": [
+        "fidelity-gated",
+        "stop-gate",
+        "claim-module",
+        "pre-specified admissibility labels",
+        "supplementary",
+        "supplemental",
+        "Table S",
+        "Fig. S",
+        "Algorithm 1",
+        "Neither local explanations nor global/group diagnostics support"
+      ],
+      "artifact": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\paper\\final\\ictai2026_claim_eligibility_audit_v5.pdf",
+      "actual": [],
+      "expected": [],
+      "status": "PASS"
+    },
+    {
+      "claim": "Module A delta and CI",
+      "displayed_or_checked": "-0.005 [-0.019, 0.009]",
+      "artifact": "artifacts/gates/figure2_three_comparisons.json",
+      "actual": [
+        -0.005,
+        -0.019,
+        0.009,
+        333
+      ],
+      "expected": [
+        -0.005,
+        -0.019,
+        0.009,
+        333
+      ],
+      "status": "PASS"
+    },
+    {
+      "claim": "Module B delta and CI",
+      "displayed_or_checked": "-0.012 [-0.029, 0.002]",
+      "artifact": "artifacts/gates/figure2_three_comparisons.json",
+      "actual": [
+        -0.012,
+        -0.029,
+        0.002,
+        333
+      ],
+      "expected": [
+        -0.012,
+        -0.029,
+        0.002,
+        333
+      ],
+      "status": "PASS"
+    },
+    {
+      "claim": "Corrected Fig. 2 local case",
+      "displayed_or_checked": "Barley-Colorado 2016; pred +0.209; obs -0.510",
+      "artifact": "artifacts/xai/local_case_decomposition.csv",
+      "actual": [
+        "Barley|Colorado|2016|spring",
+        0.209,
+        -0.51
+      ],
+      "expected": [
+        "Barley|Colorado|2016|spring",
+        0.209,
+        -0.51
+      ],
+      "status": "PASS"
+    },
+    {
+      "claim": "Corrected Fig. 2 displayed base",
+      "displayed_or_checked": "base approximately -0.008",
+      "artifact": "artifacts/xai/local_case_decomposition.csv",
+      "actual": -0.007,
+      "expected": -0.007,
+      "status": "PASS"
+    },
+    {
+      "claim": "Synthetic benchmark dimensions",
+      "displayed_or_checked": "14 regimes x 30 seeds",
+      "artifact": "artifacts/experiments/synthetic-gate-benchmark/summary.json",
+      "actual": [
+        14,
+        30,
+        420
+      ],
+      "expected": [
+        14,
+        30,
+        420
+      ],
+      "status": "PASS"
+    },
+    {
+      "claim": "Synthetic false permission",
+      "displayed_or_checked": "240/240 ungated; 171/240 audited",
+      "artifact": "artifacts/experiments/synthetic-gate-benchmark/summary.json",
+      "actual": [
+        240,
+        240,
+        171,
+        71.2
+      ],
+      "expected": [
+        240,
+        240,
+        171,
+        71.2
+      ],
+      "status": "PASS"
+    },
+    {
+      "claim": "Synthetic false abstention",
+      "displayed_or_checked": "20/180 valid runs",
+      "artifact": "artifacts/experiments/synthetic-gate-benchmark/summary.json",
+      "actual": [
+        20,
+        180,
+        11.1
+      ],
+      "expected": [
+        20,
+        180,
+        11.1
+      ],
+      "status": "PASS"
+    },
+    {
+      "claim": "Synthetic sensitivity/specificity",
+      "displayed_or_checked": "88.9% / 28.7%",
+      "artifact": "artifacts/experiments/synthetic-gate-benchmark/summary.json",
+      "actual": [
+        88.9,
+        28.7
+      ],
+      "expected": [
+        88.9,
+        28.7
+      ],
+      "status": "PASS"
+    },
+    {
+      "claim": "Synthetic GT labels evaluation only",
+      "displayed_or_checked": "six permissible regimes",
+      "artifact": "synthetic_ground_truth.csv",
+      "actual": [
+        "imbalanced_tail",
+        "moderate_signal",
+        "small_sample",
+        "spatial_resolution_mismatch",
+        "strong_signal",
+        "train_only_detrending"
+      ],
+      "expected": [
+        "imbalanced_tail",
+        "moderate_signal",
+        "small_sample",
+        "spatial_resolution_mismatch",
+        "strong_signal",
+        "train_only_detrending"
+      ],
+      "status": "PASS"
+    },
+    {
+      "claim": "Pre-specified sensitivity count",
+      "displayed_or_checked": "11 categories / 51 rows",
+      "artifact": "reports/claim_eligibility_v5/sensitivity_count_v5.json",
+      "actual": [
+        11,
+        51,
+        "PASS"
+      ],
+      "expected": [
+        11,
+        51,
+        "PASS"
+      ],
+      "status": "PASS"
+    },
+    {
+      "claim": "State map locked-row count",
+      "displayed_or_checked": "state labels sum to 333",
+      "artifact": "artifacts/maps/state_level_locked_delta_rmse.csv",
+      "actual": 333,
+      "expected": 333,
+      "status": "PASS"
+    },
+    {
+      "claim": "County external-resolution case",
+      "displayed_or_checked": "A inconclusive; B passes",
+      "artifact": "artifacts/experiments/county-v2-weather-models/summary.json",
+      "actual": [
+        13.47,
+        13.78,
+        0.26,
+        -0.71
+      ],
+      "expected": [
+        13.47,
+        13.78,
+        0.26,
+        -0.71
+      ],
+      "status": "PASS"
+    },
+    {
+      "claim": "PJM Module A CI",
+      "displayed_or_checked": "[-296.7, -221.8] x 10^3 MWh",
+      "artifact": "artifacts/experiments/external-domain-eia/summary.json",
+      "actual": [
+        77521,
+        335037,
+        [
+          -296661,
+          -221790
+        ],
+        "PASS"
+      ],
+      "expected": [
+        77521,
+        335037,
+        [
+          -296661,
+          -221790
+        ],
+        "PASS"
+      ],
+      "status": "PASS"
+    },
+    {
+      "claim": "PJM Module B CI",
+      "displayed_or_checked": "[-186.0, -119.3] x 10^3 MWh",
+      "artifact": "artifacts/experiments/external-domain-eia/summary.json",
+      "actual": [
+        227417,
+        [
+          -186037,
+          -119309
+        ],
+        "PASS"
+      ],
+      "expected": [
+        227417,
+        [
+          -186037,
+          -119309
+        ],
+        "PASS"
+      ],
+      "status": "PASS"
+    },
+    {
+      "claim": "Required rendered-text markers",
+      "displayed_or_checked": [
+        "Claim-Eligibility Auditing for Post-hoc Explanations",
+        "pre-specified evaluation labels",
+        "GT labels define six permissible regimes and are used only for evaluation",
+        "Modules A, B, and E do not pass",
+        "[-296.7,-221.8]",
+        "[-186.0,-119.3]",
+        "MWh"
+      ],
+      "artifact": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\paper\\final\\ictai2026_claim_eligibility_audit_v5.pdf",
+      "actual": [
+        "Claim-Eligibility Auditing for Post-hoc Explanations",
+        "pre-specified evaluation labels",
+        "GT labels define six permissible regimes and are used only for evaluation",
+        "Modules A, B, and E do not pass",
+        "[-296.7,-221.8]",
+        "[-186.0,-119.3]",
+        "MWh"
+      ],
+      "expected": [
+        "Claim-Eligibility Auditing for Post-hoc Explanations",
+        "pre-specified evaluation labels",
+        "GT labels define six permissible regimes and are used only for evaluation",
+        "Modules A, B, and E do not pass",
+        "[-296.7,-221.8]",
+        "[-186.0,-119.3]",
+        "MWh"
+      ],
+      "status": "PASS"
+    }
+  ]
+}

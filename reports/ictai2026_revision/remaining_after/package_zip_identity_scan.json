@@ -1,0 +1,84 @@
+{
+  "zip": "paper\\final\\ictai2026_v4_anonymous_review_package_20260721.zip",
+  "entries": [
+    {
+      "filename": "supplementary/map/census_state_geometry_provenance.json",
+      "file_size": 747,
+      "compress_size": 457,
+      "date_time": [
+        2026,
+        7,
+        20,
+        0,
+        35,
+        16
+      ]
+    },
+    {
+      "filename": "supplementary/map/figure_S1_state_delta_rmse_map.pdf",
+      "file_size": 37967,
+      "compress_size": 36368,
+      "date_time": [
+        2026,
+        7,
+        20,
+        0,
+        35,
+        16
+      ]
+    },
+    {
+      "filename": "supplementary/map/figure_S1_state_delta_rmse_map.png",
+      "file_size": 187509,
+      "compress_size": 180172,
+      "date_time": [
+        2026,
+        7,
+        20,
+        0,
+        35,
+        16
+      ]
+    },
+    {
+      "filename": "supplementary/map/figure_S1_state_delta_rmse_map_manifest.json",
+      "file_size": 578,
+      "compress_size": 377,
+      "date_time": [
+        2026,
+        7,
+        20,
+        0,
+        35,
+        16
+      ]
+    },
+    {
+      "filename": "supplementary/map/SUPPLEMENTARY_FIGURE_S1_CAPTION.md",
+      "file_size": 686,
+      "compress_size": 414,
+      "date_time": [
+        2026,
+        7,
+        21,
+        19,
+        59,
+        32
+      ]
+    },
+    {
+      "filename": "ictai2026_fidelity_gated_xai_v4_ictai_revision_20260721.pdf",
+      "file_size": 496731,
+      "compress_size": 441682,
+      "date_time": [
+        2026,
+        7,
+        21,
+        20,
+        9,
+        30
+      ]
+    }
+  ],
+  "identity_hits": []
+}

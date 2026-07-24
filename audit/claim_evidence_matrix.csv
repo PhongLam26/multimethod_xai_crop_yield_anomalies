@@ -1,0 +1,6 @@
+claim_id,claim,status,evidence_path,required_manuscript_action
+C1,Weather features explain below-trend crop-yield events,FAIL,artifacts/metrics/tail_metrics.csv,Remove the claim; final-test lower-tail residual prediction has strongly negative R2.
+C2,Heat is the strongest weather driver,UNVERIFIED,artifacts/metrics/same_task_baselines.csv,Do not retain a heat ranking until group-size and conditional-permutation audits are complete and the model passes the fidelity gate.
+C3,The residual model supports event-level XAI,PASS,artifacts/metrics/same_task_baselines.csv,State the stop-rule result: model reliance is not event explanation when final-test fidelity is inadequate.
+C4,Target construction is leakage-safe,PASS,audit/leakage_audit.csv,Describe train-only trend and residual-scale fitting for every temporal fold.
+C5,Weather adds predictive signal beyond context,UNVERIFIED,artifacts/metrics/same_task_baselines.csv,Report uncertainty and do not claim a meaningful gain because the final-test intervals overlap.

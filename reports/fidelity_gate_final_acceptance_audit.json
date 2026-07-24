@@ -1,0 +1,156 @@
+{
+  "status": "PASS_LOCAL_READY_PORTAL_ACTION_REQUIRED",
+  "selected_route": "Fidelity-gated XAI method benchmark",
+  "method_route_score": 85,
+  "pdf": "paper_versions/v3_method_benchmark/source/fidelity_gated_xai_method_benchmark_v3.pdf",
+  "pdf_sha256": "e32f32cf991df68885e075819940d086b5f315798d80c29935c962394a7e12ae",
+  "artifact": "submission/v3_method_anonymous_artifact.zip",
+  "artifact_sha256": "7b3e638b3a64e1e2ce4e733527dc1d3472cd7823f601591cdfd1c019d875e73c",
+  "local_items": [
+    {
+      "id": "P1-01",
+      "requirement": "Module B uses Full vs Metadata-only with paired CI and no locked-test reselection.",
+      "status": "PASS",
+      "evidence": [
+        "configs/fidelity_gate.yaml",
+        "artifacts/gates/gate_b_decision.json",
+        "artifacts/audit_records/paired_comparisons.csv",
+        "artifacts/audit/selection/gate_b1_representatives.json",
+        "tests/test_release_contract.py"
+      ],
+      "note": ""
+    },
+    {
+      "id": "P2-01",
+      "requirement": "Contributions are framed around the claim-module protocol, benchmark, and traceability rather than hygiene alone.",
+      "status": "PASS",
+      "evidence": [
+        "paper_versions/v3_method_benchmark/source/fidelity_gated_xai_method_benchmark_v3.tex",
+        "reviewer_materials/CLAIM_EVIDENCE_MAP.md"
+      ],
+      "note": ""
+    },
+    {
+      "id": "P2-02",
+      "requirement": "Nearest methodological references and claim support are verified.",
+      "status": "PASS",
+      "evidence": [
+        "artifacts/audit/references/ref_verification.csv",
+        "artifacts/audit/references/methodology_reference_support.csv",
+        "scripts/reference_audit.py"
+      ],
+      "note": ""
+    },
+    {
+      "id": "P2-03/P2-04/P2-05",
+      "requirement": "Prediction time, target formula, feature availability, and no-shortcut audit are explicit and tested.",
+      "status": "PASS",
+      "evidence": [
+        "artifacts/targets/target_spec.md",
+        "artifacts/data/feature_availability.csv",
+        "artifacts/audit_records/no_shortcut_ablation.csv",
+        "tests/test_feature_contracts.py"
+      ],
+      "note": ""
+    },
+    {
+      "id": "P2-06/P2-07/P2-08",
+      "requirement": "Model contrasts, module-component ablation, and repeated synthetic benchmark are regenerated.",
+      "status": "PASS",
+      "evidence": [
+        "artifacts/audit_records/expanded_model_baselines.csv",
+        "artifacts/experiments/synthetic-gate-benchmark/synthetic_summary_ci.csv",
+        "artifacts/experiments/synthetic-gate-benchmark/gate_component_ablation.csv"
+      ],
+      "note": ""
+    },
+    {
+      "id": "P2-09/P2-10/P2-11",
+      "requirement": "County/PJM protocols, XAI provenance, and operational scope are bounded by module status.",
+      "status": "PASS",
+      "evidence": [
+        "artifacts/experiments/county-v2-weather-models/county_protocol.yaml",
+        "artifacts/experiments/external-domain-eia/pjm_gate_decisions.json",
+        "artifacts/experiments/external-domain-eia/pjm_protocol.yaml",
+        "artifacts/xai/xai_manifest.csv",
+        "artifacts/audit_records/external_xai_claim_evidence.csv"
+      ],
+      "note": "V2 model status is INCONCLUSIVE with explanation availability ABSTAIN."
+    },
+    {
+      "id": "P3-01/P3-02",
+      "requirement": "Discussion is condensed; generated figures/tables remain readable within the 8-page PDF.",
+      "status": "PASS",
+      "evidence": [
+        "paper_versions/v3_method_benchmark/source/fidelity_gated_xai_method_benchmark_v3.pdf",
+        "submission/final_audit.json",
+        "submission/pdf_technical_audit.json"
+      ],
+      "note": ""
+    },
+    {
+      "id": "R-01",
+      "requirement": "E1-E10 traceability includes path, command, input hash, output hash, clean rerun evidence, and PDF numeric crosscheck.",
+      "status": "PASS",
+      "evidence": [
+        "artifacts/audit/e1_e10/e1_e10_traceability_manifest.csv",
+        "artifacts/audit_records/numeric_consistency_report.csv",
+        "submission/v3_method_reproduction_log.txt",
+        "scripts/reproduce_v3_method_release.py"
+      ],
+      "note": ""
+    },
+    {
+      "id": "R-02",
+      "requirement": "Bibliography has no uncited/unknown entries and supports the cited claims.",
+      "status": "PASS",
+      "evidence": [
+        "artifacts/audit/references/ref_verification.csv",
+        "artifacts/audit/references/citation_usage.csv",
+        "artifacts/audit/references/methodology_reference_support.csv"
+      ],
+      "note": ""
+    },
+    {
+      "id": "R-03-local",
+      "requirement": "Public ICTAI template, page, font, anonymity, metadata, and package checks pass locally.",
+      "status": "PASS",
+      "evidence": [
+        "submission/ictai2026_venue_compliance.json",
+        "submission/venue_compliance_checklist.md",
+        "submission/v3_method_anonymous_artifact_audit.json"
+      ],
+      "note": ""
+    },
+    {
+      "id": "FINAL-PDF-HASH",
+      "requirement": "Final PDF hash sidecar matches the current final PDF bytes.",
+      "status": "PASS",
+      "evidence": [
+        "submission/final_pdf_sha256.txt",
+        "paper_versions/v3_method_benchmark/source/fidelity_gated_xai_method_benchmark_v3.pdf"
+      ],
+      "note": ""
+    },
+    {
+      "id": "FINAL-PACKAGE",
+      "requirement": "Anonymous artifact package includes required evidence and sidecar manifests.",
+      "status": "PASS",
+      "evidence": [
+        "submission/v3_method_anonymous_artifact.zip",
+        "submission/v3_method_anonymous_artifact_manifest.json",
+        "submission/v3_method_anonymous_artifact_manifest.csv"
+      ],
+      "note": ""
+    }
+  ],
+  "portal_item": {
+    "id": "R-03-portal",
+    "requirement": "EasyChair authenticated upload preview metadata matches the final PDF.",
+    "status": "USER_ACTION_REQUIRED",
+    "evidence": [
+      "submission/ictai2026_venue_compliance.json"
+    ],
+    "note": "Cannot be completed without the user's authenticated EasyChair session. Public venue rules and local upload artifacts pass."
+  }
+}

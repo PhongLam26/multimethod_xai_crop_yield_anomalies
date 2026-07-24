@@ -1,0 +1,175 @@
+KẾ HOẠCH SỬA VÒNG CUỐI CHO VERSION A
+Auditing Weather-Feature Reliance in Detrended Crop-Yield Models
+Đối chiếu paper v3(6) với góp ý mới của giảng viên, bổ sung workflow có nhánh và bản đồ kết quả tại Hoa Kỳ
+--- TABLE ---
+Kết luận audit hiện tạiPaper đã sửa được phần lớn lỗi nền tảng: Gate B1 có số, contribution rõ hơn, dữ liệu panel minh bạch hơn, bảng validation đã gộp, Metadata-only được giải thích, local XAI đã xuất hiện, synthetic/county/PJM nằm trước Discussion và bản hiện còn 7 trang. Tuy nhiên, chưa nên chốt: các PASS cục bộ chưa được thừa nhận đủ sớm; logic Gate A và event module còn nhập nhằng; workflow vẫn tuyến tính; chưa có bản đồ kết quả; một số claim, reference và chi tiết phương pháp vẫn thiếu; Figure 3 hiện giống bảng hơn là hình XAI.
+--- END TABLE ---
+Tài liệu này là prompt triển khai vòng cuối cho Codex. Codex phải đọc toàn bộ trước khi sửa, chạy lại artifact khi có thay đổi số, và không được nhập tay kết quả hoặc dùng sensitivity thuận lợi để thay primary decision.
+0. Prompt tổng hợp để gửi Codex
+Bạn đang sửa bản fidelity_gated_xai_method_benchmark_v3(6). Hãy đọc paper, repository, artifact E1–E10, mã huấn luyện, mã bootstrap, mã XAI, synthetic benchmark và dữ liệu county/PJM trước khi chỉnh. Đọc thêm tài liệu góp ý giảng viên dành riêng cho Version A.Mục tiêu vòng này không phải làm kết quả đẹp hơn. Mục tiêu là làm logic claim minh bạch, thừa nhận ngay các PASS cục bộ, tách rõ overall predictive adequacy, event-recovery adequacy và incremental weather value; đồng thời biến paper thành một câu chuyện trực quan bằng workflow có nhánh, một hình XAI thật và một bản đồ Hoa Kỳ thể hiện kết quả state-level trên locked test.Không thay primary split, target, population, primary tail, gate threshold hoặc validation-selected configuration sau khi xem test. Mọi con số phải sinh từ artifact. Không nhập tay số vào LaTeX. Mọi result thuận lợi phải được ghi đúng role: primary, sensitivity, diagnostic hoặc external sanity check.Thực hiện theo thứ tự:1. Audit trạng thái theo bảng “Đã làm / Làm một phần / Chưa làm” trong tài liệu này.2. Sửa P0: logic gate/module, local PASS disclosure, terminology, workflow branched figure, US result map, Figure XAI thật, synthetic policy explanation và các lỗi số/claim.3. Sửa P1: estimand population-level, validation-to-test shift, ROC/PR reconciliation, references faithfulness/benchmark, feature definitions, PJM citation, history 8/10 explanation.4. Xóa raw repository paths khỏi main narrative; thay bằng Supplementary Table/Figure và manifest.5. Regenerate tables/figures/PDF, giữ dưới 8 trang, kiểm tra anonymous build.6. Chạy acceptance checklist. Chỉ dừng khi mọi P0 đều PASS; nếu không làm được, báo rõ artifact thiếu và không bịa.Khi hoàn thành, trả lại: files changed, commands run, gate/module values, local PASS paragraph, figure paths, map metric/provenance, new citations, page count, assertions và remaining limitations.
+1. Paper v3(6) đã làm được gì?
+--- TABLE ---
+Hạng mục | Trạng thái | Nhận xét trên bản v3(6) | Hành động vòng cuối
+Gate A/B1 trong Abstract | ĐÃ LÀM | Abstract in A = −0.005 [−0.019, 0.009] và B1 = −0.012 [−0.029, 0.002]. | Giữ; thêm một câu thừa nhận local PASS và rút danh sách XAI method nếu thiếu chỗ.
+Contribution | ĐÃ LÀM | Intro có 4 contribution và nói train-only/locked test là safeguards. | Làm rõ 3 điểm novelty bằng câu ngắn; không lặp tự phòng thủ.
+Panel provenance | ĐÃ LÀM | Đã liệt kê 12 states, 40 series, range/median years, validation 144→140. | Giữ; bổ sung crop×state matrix và feature definitions ở supplement.
+10 year blocks | ĐÃ LÀM | Methods và Limitations đã nói giới hạn precision/power. | Giữ; không nói CI crossing zero đồng nghĩa effect bằng 0.
+Validation table/Ridge | ĐÃ LÀM MỘT PHẦN | Đã gộp bảng và thêm Ridge. | Kiểm tra P(rank 1)=1.00 của Ridge; có thể phải đổi N/A hoặc sửa code/định nghĩa.
+Metadata-only ≈ zero | ĐÃ LÀM TỐT | Đã giải thích OLS residual và in max absolute differences ~1e−13. | Giữ; câu này là điểm mạnh.
+Gate decision table | ĐÃ LÀM | Table VI có A/B1/B2, estimate, CI, status. | Bổ sung final event-module decision hoặc tách Gate E để logic không nhập nhằng.
+Local XAI output | ĐÃ LÀM MỘT PHẦN | Có SHAP family share và local decomposition. | Biến thành bar/waterfall figure thật; không để như một hàng bảng.
+Raw vs standardized target | ĐÃ LÀM | Đã nói point estimate đổi dấu −0.005 → +0.030. | Giữ; viết tự nhiên hơn, không dùng giọng rebuttal.
+Rolling fold 2 | ĐÃ LÀM | Đã nói 2007–2009 significantly favors baseline. | Giữ; thêm validation-to-test gap 0.384→0.669.
+Synthetic scenario table | ĐÃ LÀM MỘT PHẦN | Có 14 regimes và A/B1/Full pass rates. | Giải thích vì sao A+B1 pass nhưng Full fail; thêm policy/module columns hoặc ablation.
+County/PJM positioning | ĐÃ LÀM MỘT PHẦN | County là abstention; PJM gọi sanity-check. | Bỏ “corrected”; nói rõ PJM là easy positive, không đo boundary sensitivity; thêm citation nguồn.
+Table/page reduction | ĐÃ LÀM | Bản còn 7 trang, nhiều bảng chuyển artifact. | Dùng 1 trang còn lại cho workflow/map nhưng vẫn ≤8 trang.
+Local PASS disclosure | CHƯA LÀM | Abstract và đầu Discussion chưa thừa nhận tập trung History 8/10, fold 4, severe-tail error, county B1. | Bắt buộc thêm trong Abstract và Discussion ngay nơi reviewer nhìn.
+Branched workflow | CHƯA LÀM | Figure 1 vẫn là đường thẳng Gate A+B1→ABSTAIN/INTERPRET. | Thay bằng flowchart thuật toán có decision diamonds và nhánh A/B/E/B2.
+US result map | CHƯA LÀM | Không có bản đồ vị trí và spatial result. | Thêm choropleth 12 states dùng locked state-level ΔRMSE; optional forest plot.
+Faithfulness/benchmark refs | CHƯA LÀM | Related Work vẫn chủ yếu Slack/Janzing. | Thêm nguồn primary và định vị synthetic benchmark.
+Population-level estimands | CHƯA LÀM | B1 mới định nghĩa bằng empirical loss contrast. | Định nghĩa θA, θB trên locked target population rồi mới nêu estimator.
+--- END TABLE ---
+2. P0 — bắt buộc sửa trước khi chốt
+2.1. Thừa nhận các PASS cục bộ ngay trong Abstract và Discussion
+Đây là góp ý lớn nhất của giảng viên. Paper đang trung thực về role nhưng các kết quả thuận lợi vẫn nằm rải rác. Reviewer có thể đọc chúng như selective storytelling. Không giấu PASS; đặt chúng cạnh lý do chúng không phải primary.
+Câu đề xuất cho Abstract (rút gọn nếu thiếu từ):Several prespecified sensitivities are locally favorable, including the longer-history population, one rolling-origin fold, and severe-tail error components. They do not alter the primary decision because they evaluate a different population or fold, or fail the complete event-recovery rule.Đoạn đề xuất đặt đầu Discussion, tiêu đề “Why Local Passes Do Not Reverse the Primary Decision”:Several analyses are locally favorable. The eight- and ten-year history filters improve paired error on a smaller 313-row population; the 2013–2015 rolling fold passes, whereas the 2007–2009 fold significantly favors the baseline; severe tails improve RMSE and MAE but fail rank and top-k recovery; and the county analysis passes Gate B1 while Gate A remains inconclusive. These results identify settings in which predictive signal may be stronger, but they either change the target population, represent non-primary temporal folds, or fail another required component. We therefore treat them as design evidence for future studies rather than alternative primary tests.
+Tại Table tail, thêm cột “Failed component” hoặc ghi ngay caption: z<−1.5 passes error but fails rank and top-k; z<−2 similarly fails rank/top-k.
+Khi lần đầu nhắc History 8/10, nói ngay “different 313-row population”.
+Khi nhắc county B1 pass, đặt cùng câu Gate A inconclusive.
+2.2. Tách rõ ba module: A, B và E
+Logic hiện tại gọi Gate A lúc là overall RMSE, lúc là conjunction có tail; PJM lại bỏ tail. Đây là rủi ro phương pháp lớn nhất. Sửa tên để mọi table/figure/synthetic case nhất quán:
+--- TABLE ---
+Module | Câu hỏi | Điều kiện | Claim scope
+A — Overall predictive adequacy | Mô hình locked có tốt hơn baseline trên cùng target/population? | Upper paired CI của ΔRMSE < 0. | Overall predictive claim.
+B — Incremental weather value | Full có tốt hơn Metadata-only? | Upper paired CI của ΔRMSE < 0. | Weather-specific predictive value/reliance.
+E — Event-recovery adequacy | Mô hình có phục hồi primary below-trend tail vượt null? | Tail RMSE/MAE + rank + permutation + top-k đầy đủ. | Observed below-trend event claim.
+D — Representation diagnostic | Weather-only so với Metadata-only ra sao? | Không tham gia decision. | Descriptive only.
+--- END TABLE ---
+Decision policy phải ghi rõ: A fail → model-descriptive only; A pass nhưng B fail → overall predictive claim only; A+B pass → weather-specific predictive reliance; event-level claim cần thêm E pass. PJM dùng A+B, không dùng E. Crop below-trend claim dùng A+B+E.
+Synthetic table mới nên có cột:Scenario | GT claim type | A overall | B weather value | E event recovery | Final permissionNếu giữ tên Gate A/B1 cũ vì code/config phụ thuộc, ít nhất đổi caption và bảng thành:Gate A-overall | Gate B1 | Event module | Final claim permission.
+2.3. Thay Figure 1 bằng workflow có nhánh và rõ thuật toán
+--- TABLE ---
+Yêu cầu bắt buộc cho Figure 1Figure phải là vector PDF/SVG, full two-column width, có decision diamonds, nhánh PASS/FAIL, nhánh event claim optional và nhánh diagnostic D/B2 bằng nét đứt. Không dùng sơ đồ tuyến tính hoặc chỉ ghi Gate A+B1.
+--- END TABLE ---
+Bố cục đề xuất:Raw snapshots + hashes        |Train-only target, scale, preprocessing        |Validation model/feature selection        |LOCK configuration + claim type        |Predict locked future rows   _____|___________________________  |                 |               |[A] Overall     [B] Full vs      [D] Weather vs Metadatavs baseline     Metadata          diagnostic only (dashed)  |                 |  |                 |  |          Is weather-specific claim requested?  |                 | yes  |                 v  |             B PASS / FAIL  |Is below-trend event claim requested?  | no                         | yes  |                            v  |                      [E] Tail error + rank + top-k  |                            |  v                            vDecision outputs:- A FAIL → MODEL-DESCRIPTIVE ONLY- A PASS, B FAIL → OVERALL PREDICTIVE CLAIM ONLY- A+B PASS, E not requested → WEATHER-SPECIFIC PREDICTIVE RELIANCE- A+B+E PASS → BELOW-TREND EVENT-RECOVERY CLAIM PERMITTED- Any required module FAIL → abstain from that claim levelD/B2 never changes selection or permission.
+Mỗi diamond phải có nhãn YES/NO hoặc PASS/FAIL trên mũi tên.
+PJM route phải được hiểu từ workflow: claim type continuous/non-event nên bypass E.
+Caption chỉ 2–3 câu, không lặp toàn Methods.
+Thêm Algorithm 1 tương ứng với workflow; tên bước trong algorithm và figure phải khớp.
+Algorithm 1 (logic bắt buộc):Input: prespecified split, candidate grid, feature groups, baseline, requested claim type.1. Fit target construction and preprocessing on training rows only.2. Select model/configuration on validation; lock model, feature roles and claim rule.3. Refit through validation cutoff and predict locked future rows.4. Estimate Module A on paired locked rows.5. Estimate Module B with Full and Metadata-only representatives.6. If an event-level claim is requested, estimate Module E on the primary tail.7. Compute Module D as a diagnostic; never use it for reselection.8. Return the highest claim level whose required modules pass.
+2.4. Thêm bản đồ Hoa Kỳ thể hiện kết quả state-level
+Bản đồ phải là kết quả, không chỉ là bản đồ data coverage. Metric chính nên cùng thang với Gate A để không mở thêm một estimand khó giải thích.
+--- TABLE ---
+Metric khuyến nghịState-level locked-test ΔRMSE = RMSE(Weather-only) − RMSE(Zero residual), tính trên các locked rows của từng state. Giá trị âm nghĩa là model có point estimate tốt hơn baseline; giá trị dương nghĩa là baseline tốt hơn. Đây là descriptive subgroup result, không phải state-level gate trừ khi CI và rule đã được pre-specify.
+--- END TABLE ---
+Panel A: contiguous-US choropleth. Tất cả states không nghiên cứu màu xám nhạt; 12 states nghiên cứu tô theo diverging scale centered at 0.
+Ghi state abbreviations và n locked rows. Không ghi số quá nhỏ gây rối; có thể dùng tooltip chỉ trong artifact, nhưng PDF phải tự đọc được.
+Panel B nếu đủ chỗ: forest plot 12 states với ΔRMSE và interval. Nếu interval per-state không đáng tin vì quá ít năm, chỉ dùng point estimate + n và ghi rõ descriptive.
+Không dùng leave-one-state-out “4/12 improve” để tô map nếu metric đó khác state-level ΔRMSE. Chọn đúng một metric và nêu rõ.
+State geometry phải được pin/versioned: lưu GeoJSON/cartographic boundary snapshot trong artifact, hash file, cite nguồn chính thức; không tải live khi build.
+Map script lấy state values trực tiếp từ prediction vectors; assertion kiểm tra 12 state names khớp panel và weighted/global values có logic hợp lệ.
+Caption đề xuất:State-level heterogeneity on the locked 2016–2025 crop panel. Colors show the descriptive difference in RMSE between the validation-selected Weather-only model and the zero-residual baseline within each state; negative values favor the model. Gray states are outside the study panel. These subgroup estimates illustrate spatial heterogeneity and are not separate gate decisions.
+Vị trí: đặt sau subsection Target/Cluster/Model-Family Sensitivity hoặc tạo subsection ngắn “Spatial Heterogeneity”. Nếu cần chỗ, bỏ Figure 2 ba cột vì Table Gate Decisions đã chứa cùng số; dùng chỗ đó cho map.
+2.5. Biến Figure XAI thành hình trực quan thật
+Panel A: horizontal bar chart grouped SHAP shares; kiểm tra tổng 100.1% do rounding, normalize hoặc ghi rounding note.
+Panel B: waterfall/local contribution plot cho Barley–Colorado 2016, có base value, signed group contributions, predicted residual và observed residual.
+Panel C nhỏ: module outcomes A/B/E hoặc gate intervals; tránh biến thành bảng chữ dày đặc.
+Giữ caption: fitted-function description under abstention; không causal/event evidence.
+Nếu SHAP, LIME, permutation, ablation, response curves không xuất hiện đầy đủ, rút Abstract thành “post-hoc explanation outputs” và trỏ Supplement.
+2.6. Các lỗi P0 còn lại
+--- TABLE ---
+Lỗi | Sửa bắt buộc
+“corrected Gate B1” | Xóa từ corrected ở county và Discussion. Đây là lịch sử phiên bản, không phải thuật ngữ phương pháp. Chỉ giữ “Gate B” hoặc “Gate B1”.
+Ridge P(rank 1)=1.00 | Kiểm tra code. Nếu rank chỉ trong Ridge subgroup phải định nghĩa; nếu deterministic metric không có nghĩa, in N/A; nếu bug, sửa và regenerate.
+Raw repository paths trong narrative | Thay paper/generated/... bằng Supplementary Table Sx/Fig. Sy hoặc “reproducibility manifest”. Raw paths chỉ ở README/manifest.
+PJM citation | Thêm nguồn chính thức cho demand và day-ahead forecast, access/version/hash. Không để “public records” không citation.
+PJM easy positive | Nói thẳng đây chỉ chứng minh policy không always-abstain; boundary sensitivity được đo bằng synthetic regimes. Không dùng như external validation mạnh.
+--- END TABLE ---
+3. P1 — nâng lập luận và phương pháp
+3.1. Nối validation RMSE 0.384 với test RMSE 0.669
+Suggested Results sentence:The selected configuration deteriorates from validation RMSE 0.384 in 2012–2015 to locked-test RMSE 0.669 in 2016–2025. This gap is consistent with the temporal instability seen in the rolling-origin analysis: one fold passes, one fold significantly favors the baseline, and the remaining folds are inconclusive. We therefore interpret the failure as instability under future-period shift rather than evidence that the weather signal is exactly zero.
+Không gọi chắc chắn là distribution shift nếu chưa kiểm tra covariate/target distributions. Dùng “consistent with temporal instability or shift”, hoặc bổ sung một covariate-shift diagnostic nếu code cho phép.
+3.2. Dung hòa ROC/PR dương với gate fail
+Suggested paragraph:The event scores retain weak global discrimination: ROC-AUC is 0.64–0.67 and the primary-tail PR-AUC exceeds its prevalence baseline. This does not contradict the gate failure. ROC-AUC summarizes pairwise ordering over all locked rows, whereas the event module asks whether the model improves paired error and recovers the prespecified tail beyond rank and top-k null checks. The available discrimination is therefore diagnostically positive but insufficient for the requested observed-event claim.
+Đưa đoạn này vào Results gần event diagnostics, không giấu hoàn toàn metric trong artifact.
+3.3. Định nghĩa population-level estimands
+For the locked target population P*, define:θ_A = RMSE_{P*}(f*) − RMSE_{P*}(f_0)θ_B = RMSE_{P*}(f_{M+W}) − RMSE_{P*}(f_M)The reported estimates replace P* by the locked empirical population, and uncertainty is obtained by paired calendar-year block resampling. Negative values favor the model on the left. Module E has separate error-, rank- and top-k functionals for the prespecified z<−1 tail.
+Không gọi empirical difference itself là estimand; estimand là functional của target population.
+Nếu paper muốn tránh notation nặng, một câu prose vẫn phải phân biệt population quantity và locked-sample estimate.
+3.4. Giải thích History 8 và 10 trùng nhau
+Từ artifact, kiểm tra distribution of available pre-cutoff histories.
+Viết lý do thật: ví dụ không có eligible series với exactly 8 or 9 prior observations ở cutoff; không được đoán.
+Nếu có series 8/9 nhưng vẫn rows identical vì test eligibility khác, giải thích đúng mechanism.
+Template after audit:The eight- and ten-year filters retain the same 313 final rows because [AUDITED DATA-STRUCTURE REASON]. Their targets are therefore identical, and their prediction vectors differ only at floating-point precision.
+3.5. References cần bổ sung và phải verify
+Thêm primary sources, không thêm chỉ để phình bibliography. Codex phải kiểm tra metadata trên trang hội nghị/publisher chính thức trước khi thêm:
+Adebayo et al., “Sanity Checks for Saliency Maps” — sanity/faithfulness boundary.
+Hooker et al., ROAR / benchmark for interpretability methods — performance-based evaluation of explanations.
+Yeh et al., “On the (In)fidelity and Sensitivity of Explanations” — formal faithfulness metrics.
+Một hoặc hai benchmark XAI có ground-truth/synthetic mechanisms, ví dụ OpenXAI hoặc benchmark tương đương, sau khi xác minh chính xác title/venue/version.
+Một source phù hợp cho small-cluster/block-bootstrap limitation nếu thêm claim thống kê mới.
+Related Work phải nói rõ: explanation faithfulness đối với model output khác outcome predictive adequacy; paper này bổ sung claim-level gate, không thay thế ROAR/saliency sanity checks.
+3.6. Feature definitions và provenance
+Tạo Supplementary Table S1: 40 crop-state series/crop×state availability.
+Tạo Table S2: 35 weather features — raw POWER variable, aggregation, window, unit, missing handling, availability time.
+Ghi raw NASS/NASA snapshot hash; 2025 data final hay as-of snapshot.
+Map GeoJSON và PJM files cũng phải version/hash.
+4. Bảng local PASS phải được trình bày tập trung
+--- TABLE ---
+Kết quả thuận lợi | Số hiện tại | Tại sao không đảo primary | Cách viết
+History 8/10 | ΔRMSE −0.023 [−0.041, −0.007], 313 rows | Khác primary 333-row population; thay eligibility/history stability. | Design clue: longer history may stabilize target; future study must prespecify.
+Rolling fold 4 | −0.035 [−0.053, −0.025] | Một non-primary fold; fold 2 lại significantly favors baseline. | Evidence of temporal heterogeneity, not stable generalization.
+Severe-tail error | z<−1.5 RMSE/MAE CIs below zero | Severe tails là sensitivity; rank/top-k fail; complete event module fail. | State exact failed component in table/caption.
+ROC/PR discrimination | ROC-AUC 0.64–0.67; PR-AUC > prevalence | Global discrimination khác paired error và null-aware tail recovery. | Call weak positive diagnostic signal, insufficient for claim.
+County Gate B | −0.71 [−1.23, −0.34] | County Gate A inconclusive, nên highest claim level vẫn descriptive only. | Report both in same sentence.
+--- END TABLE ---
+5. Kế hoạch hình/bảng và vị trí trong paper
+--- TABLE ---
+Thành phần | Giữ/thay | Vị trí | Mục tiêu
+Figure 1 | THAY HOÀN TOÀN | Cuối Protocol, trước Results | Branched algorithm: A/B/E/D, pass/fail and claim outputs.
+Old Figure 2 gate bars | BỎ nếu thiếu chỗ | — | Table Gate Decisions đã chứa cùng số; nhường chỗ cho map.
+XAI figure | VẼ LẠI | Sau primary/tail results | Grouped SHAP bar + local waterfall + compact module outcome.
+US result map | THÊM | Spatial/Model sensitivity subsection | 12-state locked ΔRMSE choropleth; optional forest plot.
+Synthetic scenario table | GIỮ nhưng sửa cột | Calibration section | A/B/E/Final hoặc policy ablation; giải thích admissibility labels.
+Gate decision table | GIỮ | Primary Results | Mỗi primary module có estimate/CI/status.
+Detailed tables | SUPPLEMENT | S1–Sx | Feature definitions, event metrics, resampling, temporal, full model grid.
+--- END TABLE ---
+Page budget: bản hiện 7 trang. Mục tiêu final 8 trang. Lấy chỗ từ old Figure 2, raw-path paragraphs, lặp traceability và caption dài; không thu nhỏ chữ quá mức.
+6. Văn phong tự nhiên và claim discipline
+--- TABLE ---
+Hiện tại/rủi ro | Sửa thành
+corrected Gate B1 | Gate B / Gate B1; bỏ version-history adjective.
+ABSTAIN/INTERPRET | MODEL-DESCRIPTIVE ONLY / PREDICTIVE-RELIANCE CLAIM PERMITTED.
+An invalid replicate fails the run; none are silently dropped. | All 2,000 bootstrap replicates were valid and retained.
+The selected row is a reproducible protocol choice... | We retain the prespecified selection without claiming clear superiority.
+paper/generated/table_x.tex trong main text | Supplementary Table Sx; paths and hashes are listed in the manifest.
+not X / cannot replace / never lặp nhiều lần | Định nghĩa role một lần trong policy table; Results tập trung vào số và ý nghĩa.
+weather effects/drivers | weather-specific predictive value/reliance, trừ khi đang mô tả prior causal literature.
+--- END TABLE ---
+7. Checklist nghiệm thu
+--- TABLE ---
+Mức | Tiêu chí | Đạt
+P0 | Abstract có local PASS sentence và Gate A/B số. | □
+P0 | Discussion mở bằng đoạn local PASS tập trung. | □
+P0 | A/B/E/D được định nghĩa và dùng nhất quán trong crop, synthetic, county, PJM. | □
+P0 | Workflow mới có branches, diamonds, PASS/FAIL, optional E và diagnostic D. | □
+P0 | US map dùng actual locked state-level result, 12 states, legend centered 0, caption scoped. | □
+P0 | XAI figure là bar/waterfall thật; rounding shares được xử lý. | □
+P0 | z<−1.5/−2 ghi rõ failed component. | □
+P0 | “corrected Gate B1” bị xóa. | □
+P0 | Ridge P(rank 1)=1.00 đã audit và sửa/giải thích. | □
+P0 | Không còn raw repository paths trong narrative. | □
+P0 | PJM có citation/version và được gọi easy sanity check, không boundary validation. | □
+P1 | Validation 0.384→test 0.669 được thảo luận như temporal instability/possible shift. | □
+P1 | ROC/PR weak signal được dung hòa với event-module fail. | □
+P1 | Population-level θA/θB được định nghĩa. | □
+P1 | History 8/10 identical rows có audited explanation. | □
+P1 | Faithfulness và XAI benchmark references được verify từ primary sources. | □
+P1 | Supplement có crop×state matrix và 35 feature definitions. | □
+QA | All figures vector/high resolution, fonts readable at 100%. | □
+QA | Map and manuscript numbers generated from artifacts, no manual values. | □
+QA | PDF ≤8 pages; no overflow; anonymous links/build pass. | □
+--- END TABLE ---
+8. Báo cáo Codex phải trả lại
+1. Current-status items closed- [item → file/section/commit]2. Gate/module definitions and final values- A overall:- B incremental weather:- E event recovery:- D diagnostic:- Highest permitted claim for state panel, county panel and PJM:3. Local PASS disclosure- Abstract sentence:- Discussion paragraph:- Table failed-component changes:4. Figures- Branched workflow path + generation script- XAI figure path + inputs- US map path + exact metric + state-level data artifact + geometry source/hash5. New analyses/checks- Ridge rank audit- validation-to-test shift statement/diagnostic- ROC/PR reconciliation- history 8/10 explanation- synthetic A/B/E/final or policy ablation6. References/data provenance- New verified references- PJM source/version- map geometry source/version- supplementary feature tables7. Build/QA- commands- page count- numerical assertions- anonymous artifact check- remaining limitations
+Nguyên tắc cuối: Điểm mạnh của paper không phải mọi analysis đều FAIL. Điểm mạnh là paper công khai cả các PASS cục bộ, xác định đúng estimand/role của chúng và không dùng chúng để thay đổi primary rule sau khi thấy dữ liệu. Workflow và map phải giúp reviewer hiểu logic này trong vài giây.

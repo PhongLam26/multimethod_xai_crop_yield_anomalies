@@ -1,0 +1,40 @@
+{
+  "created_utc": "2026-07-21T18:49:04.206059+00:00",
+  "status": "PASS",
+  "package_dir": "submission/claim_eligibility_v5_2_blind_package",
+  "zip_path": "submission/claim_eligibility_v5_2_blind_package.zip",
+  "zip_sha256": "08ca0fa86b6f42e7c0785010abfe8266f989c1ce190b3b3742022d64b09ae1de",
+  "files_copied": 20,
+  "missing": [],
+  "sensitive_hits": [],
+  "pdf_metadata": {
+    "paper/final/ictai2026_claim_eligibility_audit_v5_2_final.pdf": {
+      "/Producer": "MiKTeX pdfTeX-1.40.29",
+      "/Author": "Anonymous",
+      "/Title": "Claim-Eligibility Auditing for Post-hoc Explanations: Synthetic Calibration and Cross-Domain Cases",
+      "/Subject": "",
+      "/Creator": "LaTeX with hyperref",
+      "/Keywords": "",
+      "/CreationDate": "D:20260722014348+07'00'",
+      "/ModDate": "D:20260722014348+07'00'",
+      "/Trapped": "/False",
+      "/PTEX.Fullbanner": "This is MiKTeX-pdfTeX 4.27.0 (1.40.29)"
+    },
+    "paper/generated/figure_state_delta_rmse_map.pdf": {
+      "/Creator": "Matplotlib v3.10.7, https://matplotlib.org",
+      "/Producer": "Matplotlib pdf backend v3.10.7",
+      "/CreationDate": "D:20260720003517+07'00'"
+    },
+    "paper/generated/figure_synthetic_dumbbell_v5_1.pdf": {
+      "/Creator": "Matplotlib v3.10.7, https://matplotlib.org",
+      "/Producer": "Matplotlib pdf backend v3.10.7",
+      "/CreationDate": "D:20260722010901+07'00'"
+    },
+    "paper/generated/figure_xai_claim_eligibility_v5_1.pdf": {
+      "/Creator": "Matplotlib v3.10.7, https://matplotlib.org",
+      "/Producer": "Matplotlib pdf backend v3.10.7",
+      "/CreationDate": "D:20260722010901+07'00'"
+    }
+  },
+  "final_pdf_author_ok": true
+}

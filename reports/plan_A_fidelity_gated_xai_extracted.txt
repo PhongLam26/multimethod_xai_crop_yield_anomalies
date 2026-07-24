@@ -1,0 +1,508 @@
+--- word/document.xml ---
+KẾ HOẠCH SỬA TOÀN DIỆN BẢN A
+Auditing Weather-Feature Reliance in Detrended Crop-Yield Models
+Prompt và đặc tả triển khai để gửi Codex
+Bám sát góp ý của giảng viên dành cho bản B, đồng thời xử lý các vấn đề mới của bản A
+Mục tiêu cuối cùng
+Biến bản A thành một paper phương pháp có câu chuyện thống nhất: một protocol xác định phạm vi claim được phép trong predictive XAI, được kiểm tra bằng ca nông nghiệp âm tính, benchmark mô phỏng có cơ chế sinh dữ liệu đã biết, một ca robustness cấp county và một positive sanity check ngoài miền. Bài phải tự nhiên, không mang giọng rebuttal, không phóng đại novelty, và mọi gate chính phải có estimate, khoảng tin cậy và quyết định được in rõ.
+Tài liệu này không yêu cầu Codex chỉ sửa văn phong. Codex phải kiểm tra mã, artifact, con số, bảng, hình, logic claim và cấu trúc paper; chạy lại thí nghiệm khi cần; rồi tự kiểm tra cho tới khi toàn bộ tiêu chí nghiệm thu ở cuối tài liệu đều đạt.
+0. Prompt tổng hợp để giao cho Codex
+Cách dùng
+Có thể gửi nguyên phần này cho Codex làm nhiệm vụ chính. Các phần sau là đặc tả chi tiết và tiêu chí nghiệm thu; Codex phải đọc toàn bộ trước khi sửa.
+Bạn đang sửa bản A của paper “Auditing Weather-Feature Reliance in Detrended Crop-Yield Models”. Hãy làm việc trực tiếp trên repository và nguồn LaTeX hiện có. Trước khi sửa, hãy đọc toàn bộ paper, mã sinh dữ liệu, mã huấn luyện, mã bootstrap, artifact manifest, bảng, hình và bibliography. Không được đoán tên file hoặc tự bịa con số.Mục tiêu là biến paper thành một nghiên cứu phương pháp thống nhất, tự nhiên và có contribution rõ: protocol không “cho phép giải thích” theo nghĩa rộng, mà xác định phạm vi claim dựa trên hai câu hỏi tách biệt: (1) mô hình có predictive adequacy trên locked future period hay không; (2) weather có incremental predictive value sau metadata hay không. Passing gate chỉ cho phép predictive-reliance interpretation trên population và target đã khóa; tuyệt đối không cấp phép causal claim.Bám sát các góp ý của giảng viên dành cho bản B, đồng thời xử lý các vấn đề mới của bản A. Ưu tiên theo thứ tự P0, P1, P2 trong tài liệu này. Với mọi thay đổi số liệu, phải sinh từ mã audit. Không chỉnh tay một con số trong LaTeX. Hãy tạo hoặc cập nhật một machine-readable gate artifact chứa contrast, estimate, confidence interval, p-value nếu có, role và status; dùng artifact này để sinh abstract, bảng gate và nhãn Figure 2; thêm assertion để build dừng nếu các vị trí không khớp.Không được đổi primary split, primary population, primary tail hoặc model selection sau khi đã xem locked test. Sensitivity có thể được bổ sung nhưng phải giữ đúng vai trò. Không được dùng favorable sensitivity để đảo quyết định primary. Không được dùng từ effect, driver hoặc cause khi bằng chứng chỉ là predictive reliance/value.Hãy thực hiện theo quy trình:1. Audit repository và lập bảng ánh xạ mỗi claim chính sang artifact/mã nguồn.2. Chạy lại pipeline hiện tại để xác nhận mọi con số.3. Thực hiện P0; chạy lại toàn bộ paper và artifact tests.4. Thực hiện P1; chạy lại thí nghiệm mới và kiểm tra tính nhất quán.5. Tái cấu trúc paper để toàn bộ evidence nằm trước Discussion.6. Viết lại abstract, contribution paragraph, claim policy, Results và Discussion bằng văn tự nhiên; giảm giọng rebuttal và các câu “not X / cannot replace / never”.7. Gộp bảng, chuyển chi tiết sang supplement, giữ main paper tập trung vào decision và calibration.8. Build PDF, kiểm tra page limit, overflow, reference, figure readability và anonymous artifact links.9. Chạy checklist nghiệm thu cuối tài liệu. Chỉ dừng khi tất cả mục bắt buộc đều PASS; nếu mục nào không thể làm vì thiếu dữ liệu hoặc giới hạn kỹ thuật, ghi rõ bằng chứng, tác động và phương án tối thiểu thay thế. Không được che giấu hoặc bịa kết quả.
+1. Hướng biên tập cốt lõi
+Bản A mạnh hơn bản B vì đã sửa Gate B1 thành Full versus Metadata-only, thêm synthetic benchmark, county-level check và PJM permission case. Tuy nhiên, paper hiện có nguy cơ trông như một bản được chắp thêm theo phản biện: phần bằng chứng ngoài miền đặt sau Discussion, nhiều câu tự phòng thủ, quá nhiều bảng, và khái niệm INTERPRET vẫn rộng hơn evidence thực sự cho phép.
+Ưu tiên
+Mục tiêu
+Kết quả phải thấy trong paper
+P0 — bắt buộc
+Sửa logic claim, in đầy đủ số gate, giải thích Metadata collapse, thống nhất structure, đưa output XAI thật vào đối chiếu, làm synthetic benchmark có baseline/ablation có ý nghĩa.
+Reviewer có thể hiểu contribution và kiểm tra mọi quyết định chính mà không phải suy số từ hình hoặc repository.
+P1 — rất nên làm
+Bổ sung mô tả dữ liệu/feature, kết quả Ridge, temporal selection stability, small-block limitation, per-regime synthetic results và secondary tuned representation contrast.
+Bài đủ tái lập, khó bị bắt lỗi thiết kế và có bằng chứng sâu hơn cho framework.
+P2 — biên tập
+Giảm giọng rebuttal, gộp bảng, rút caption, chuẩn hóa thuật ngữ, giảm lặp reproducibility/verified.
+Văn phong tự nhiên, paper có nhịp kể chuyện và không giống checklist do AI ghép.
+2. Định vị contribution mới của bản A
+Không trình bày novelty như “train-only preprocessing” hoặc “locked testing”. Đây là safeguards. Contribution phải nằm ở policy về phạm vi claim và cách policy được đánh giá.
+2.1. Bốn contribution nên giữ
+Một claim-eligibility protocol ở cấp nghiên cứu cho predictive XAI. Protocol phân biệt mô tả fitted function, overall predictive adequacy và weather-specific incremental predictive reliance.
+Một Gate B1 đúng estimand: so sánh Full với Metadata-only để đo giá trị dự báo tăng thêm của weather sau context; Weather-only với Metadata-only chỉ là representation diagnostic.
+Một calibration suite gồm simulation với cơ chế sinh dữ liệu đã biết, ablation của các policy, agricultural abstention cases và một positive sanity-check permission case.
+Một audit trail liên kết split, target construction, model selection, paired predictions, bootstrap draws và manuscript claims; đây là cơ chế truy vết, không phải bằng chứng khoa học tự thân.
+2.2. Contribution paragraph đề xuất
+This paper makes four contributions. First, we formulate a study-level claim-eligibility protocol for post-hoc explanations of predictive models. The protocol distinguishes descriptions of a fitted function from claims about locked-period outcomes. Second, we separate overall predictive adequacy (Gate A) from the conditional incremental value of weather beyond metadata (Gate B1); a weather-only comparison is retained only as a representation diagnostic. Third, we evaluate the decision rule in simulations with known data-generating mechanisms and in three empirical settings that include both abstention and permission outcomes. Fourth, we release an audit trail that binds each reported gate, interval, prediction vector, and target definition to a reproducible artifact. Train-only preprocessing and locked testing are safeguards that support these contributions rather than standalone claims of novelty.
+Codex không được chép máy móc nếu cấu trúc cuối thay đổi. Giữ ý và viết sao cho phù hợp số trang. Trong abstract và conclusion, không cần lặp đủ bốn contribution.
+2.3. Claim ladder bắt buộc
+Kết quả
+Claim được phép
+Claim không được phép
+Gate A FAIL
+Mô tả hành vi của fitted model; báo cáo SHAP/LIME/permutation dưới nhãn model-descriptive.
+Không nói explanation phản ánh observed yield events; không nói weather-specific predictive value; không nói cause/driver/effect.
+Gate A PASS, Gate B1 FAIL
+Nói mô hình có overall predictive adequacy trên locked population.
+Không nói weather có incremental predictive value sau metadata; không suy causal.
+Gate A PASS, Gate B1 PASS
+Nói weather có predictive reliance/value có điều kiện trên target, feature set, population và evaluation period đã khóa.
+Không tự động nói weather gây ra event hoặc có causal effect.
+Gate B2
+Diagnostic về representation Weather-only so với Metadata-only.
+Không thay Gate B1, không re-select model, không cấp phép weather-specific claim.
+Thuật ngữ nên đổi
+Không dùng PASS: INTERPRET theo nghĩa chung. Dùng các nhãn cụ thể hơn: MODEL-DESCRIPTIVE ONLY; OVERALL PREDICTIVE CLAIM PERMITTED; WEATHER-SPECIFIC PREDICTIVE RELIANCE PERMITTED. Nếu cần giữ INTERPRET/ABSTAIN cho title hoặc figure, phải định nghĩa ngay rằng INTERPRET chỉ là predictive interpretation, không phải causal attribution.
+3. P0 — các thay đổi bắt buộc
+3.1. In đầy đủ Gate A, Gate B1 và Gate B2
+Đây là góp ý trực tiếp và quan trọng nhất từ tài liệu giảng viên. Mọi gate được nêu trong abstract hoặc claim policy phải có estimate, interval và status trong main text.
+Tạo hoặc cập nhật `gates.json`/`gates.csv` với các trường tối thiểu: gate_id, role, left_model, right_model, estimand, n_rows, point_estimate, ci_low, ci_high, resampling_unit, status, source_prediction_hashes.
+Sinh Table Gate Decisions trực tiếp từ artifact này.
+Sinh nhãn số cạnh từng cột ở Figure 2 trực tiếp từ artifact.
+Sinh câu tóm tắt trong abstract từ cùng artifact hoặc dùng assertion kiểm tra text macro.
+Build phải dừng khi gate trong abstract, bảng và hình không khớp.
+Gate
+Contrast cần in
+Giá trị hiện thấy trong bản A
+Vai trò
+Gate A
+Selected Weather-only − Zero residual
+−0.005 [−0.019, 0.009]
+Primary overall fidelity
+Gate B1
+Full − Metadata-only
+−0.012 [−0.029, 0.002]
+Primary conditional weather value
+Gate B2
+Weather-only − Metadata-only
+−0.005 [−0.019, 0.009]
+Diagnostic only
+Các giá trị trên chỉ là đối chiếu từ PDF hiện tại. Codex phải lấy lại từ prediction vectors và paired bootstrap artifacts, không được nhập tay.
+3.2. Giải thích Metadata-only trùng zero baseline
+Không gọi đây đơn giản là “model collapse” nếu chưa kiểm tra prediction vector. Trước hết phải xác nhận:
+Maximum absolute difference giữa Metadata-only predictions và zero-residual vector.
+Maximum absolute difference giữa Metadata-only và train-mean/crop-train-mean baselines.
+Các metadata features thực sự gồm những gì; feature nào time-invariant; tree leaves và mean target trong từng nhóm.
+Residual training mean theo crop-state có đúng xấp xỉ 0 do OLS trend có intercept hay không.
+Suggested manuscript wording after numerical verification:Because the target is an OLS residual constructed separately within each crop–state series, its training mean is approximately zero within each fitted series. The metadata variables are time-invariant identifiers and provide no within-series temporal signal. Under the locked ExtraTrees configuration, the metadata-only predictions therefore reduce to the zero-residual vector on the final rows (maximum absolute difference: [INSERT AUDITED VALUE]). Consequently, Gate B2 is numerically identical to Gate A in this panel, although the two contrasts answer different conceptual questions. Gate B1 remains distinct because the Full model can use weather jointly with metadata.
+Nếu prediction vectors không trùng tuyệt đối, sửa câu thành “nearly coincide” và in đúng maximum difference. Không được dùng `[0.000, 0.000]` ở precision thấp để kết luận exact equality nếu vector chỉ gần nhau.
+3.3. Đưa một output XAI nông nghiệp vào main paper
+Paper hứa SHAP, LIME, permutation, ablation và response curves nhưng không cho người đọc thấy một output XAI nào của agricultural model. Hãy tạo một figure đối chiếu trực tiếp giữa explanation trông hợp lý và gate failure.
+Dùng đúng locked Weather-only configuration; không chọn lại model dựa trên explanation.
+Panel A: global SHAP hoặc grouped permutation importance. Ưu tiên phương pháp phù hợp và ổn định nhất với ExtraTrees.
+Panel B: một local explanation cho một below-trend row, nếu LIME/SHAP local có thể tái lập.
+Panel C hoặc phần bên cạnh: Gate A/B1 estimate và interval.
+Caption ghi rõ đây là description of the fitted function; failed gate blocks observed-event interpretation.
+Toàn bộ output còn lại chuyển supplement, kèm seed/reference distribution/settings.
+Suggested bridge paragraph:The locked model produces a coherent feature-ranking narrative: [briefly summarize the audited top groups]. These outputs are useful descriptions of how the fitted predictor varies with its inputs. However, the same model does not establish locked-period predictive adequacy, and the Full model does not establish incremental weather value beyond metadata. We therefore report the explanations as model diagnostics rather than evidence about the observed yield losses.
+Không dùng hình XAI để ám chỉ weather có ý nghĩa khoa học. Mục tiêu của hình là làm rõ khoảng cách giữa explanation fidelity và outcome validity.
+3.4. Làm synthetic benchmark thành calibration thật sự
+Kết quả “ungated explanations false-permit 240/240 invalid runs” gần như đúng theo định nghĩa nếu ungated policy luôn cho phép. Thay baseline này bằng các policy ablation có thể cạnh tranh và có ý nghĩa.
+Policy 0: validation RMSE only.
+Policy 1: locked overall RMSE gate only.
+Policy 2: Gate A overall + tail error, không rank/top-k.
+Policy 3: Gate A đầy đủ, không Gate B1.
+Policy 4: Gate A + Gate B1, không null-aware tail check.
+Policy 5: full proposed policy.
+Tùy mục tiêu, thêm một explanation-stability heuristic baseline nếu code hiện có hỗ trợ.
+Báo cáo theo từng regime, không chỉ aggregate:
+Regime
+Admissibility label
+Gate A pass rate
+Gate B1 pass rate
+Full permission rate
+Lỗi chính
+No signal
+Invalid
+[run]
+[run]
+[run]
+False permission
+Weak signal
+Định nghĩa trước
+[run]
+[run]
+[run]
+Power / false abstention
+Strong signal
+Valid
+[run]
+[run]
+[run]
+Sensitivity
+Leakage
+Invalid
+[run]
+[run]
+[run]
+Leakage detection
+Omitted confounding
+Giới hạn/invalid theo policy
+[run]
+[run]
+[run]
+Claim mismatch
+Temporal/geographic shift
+Theo DGP
+[run]
+[run]
+[run]
+External validity
+Đưa equations hoặc pseudo-code của data-generating mechanisms vào supplement.
+Ghi rõ admissibility label được xác định trước khi chạy policy.
+Ghi rõ threshold của gate được đặt trước benchmark hay được calibration; nếu calibration, phải có train/calibration/test split ở cấp regimes hoặc seeds.
+Không gọi là ground truth chung chung; dùng `known data-generating mechanisms with prespecified admissibility labels`.
+3.5. Làm rõ vai trò của PJM
+PJM là positive sanity check, không phải bằng chứng mạnh về transfer. Day-ahead demand forecast là feature gần target nên kết quả PASS dự kiến.
+Đổi wording thành `cross-domain sanity-check permission case`.
+Mô tả nguồn dữ liệu, đơn vị, missing handling, row count và version.
+Nói rõ core gate áp dụng cho PJM là overall predictive adequacy + feature-group value; agricultural tail module không áp dụng vì claim không nhắm extreme-event recovery.
+Không gọi PJM là full validation của toàn protocol nếu tail components không được dùng.
+Sau khi pass, report permutation importance như predictive reliance, không causal importance.
+Suggested wording:The PJM analysis is a positive sanity check for the core two-stage policy rather than a transfer claim. Its target is continuous demand, so the crop-specific extreme-event module is not invoked. Gate A evaluates locked-period predictive adequacy, and Gate B1 evaluates the incremental value of the day-ahead forecast beyond calendar features. Passing both gates permits a predictive-reliance analysis on the locked PJM rows; it does not imply causal importance.
+3.6. Chuyển toàn bộ evidence lên trước Discussion
+Cấu trúc hiện tại đặt Section VI Synthetic and External-Domain Evidence sau Discussion, làm paper trông như được chắp thêm. Tái cấu trúc bắt buộc:
+Thứ tự mới
+Nội dung
+I
+Introduction
+II
+Related Work
+III
+Claim-Eligibility Protocol
+IV
+Data and Experimental Design
+V.A
+Primary crop–state audit
+V.B
+Descriptive XAI under abstention
+V.C
+Synthetic calibration and policy ablations
+V.D
+County-level robustness case
+V.E
+PJM positive sanity check
+V.F
+Sensitivity summary
+VI
+Discussion
+VII
+Conclusion
+3.7. Sửa claim mở đầu và định nghĩa permission
+Tránh claim phổ quát rằng interpretable ML luôn cần predictive accuracy. Paper chỉ nói về việc dùng post-hoc explanation của một predictive model làm evidence cho observed events.
+Không nên dùng
+Nên dùng
+Interpretable machine learning cannot support substantive claims ... unless ...
+Post-hoc explanations of a fitted predictive model should not be used as evidence about observed below-trend events when that model lacks locked-period predictive adequacy for the same target.
+The gate permits interpretation.
+The gate permits a specified predictive-reliance claim on the locked population.
+Weather effects / event drivers
+Weather-specific predictive value / reliance
+Ground-truth benchmark
+Simulation benchmark with known data-generating mechanisms and prespecified admissibility labels
+VERIFIED
+Regenerated successfully by the audit script
+4. P1 — bổ sung phương pháp và thực nghiệm
+4.1. Mô tả panel đầy đủ
+Liệt kê tên 12 states trong main text hoặc Table S1.
+Báo cáo số crop–state series thực tế; không suy từ 4 × 12.
+Tạo crop × state availability matrix.
+Báo cáo min/median/max số năm theo series và phân bố history length.
+Ghi candidate-validation count trước exclusion để đối xứng với locked test.
+Liệt kê exclusion reasons và row IDs trong artifact.
+Suggested compact main-text sentence:The panel contains [N_SERIES] observed crop–state series across [LIST OR REFERENCE TO TABLE S1]. Series coverage is unbalanced: the number of available years ranges from [MIN] to [MAX] (median [MEDIAN]). Validation begins with [N] candidate rows and retains 140 after four prespecified exclusions; the locked test begins with 343 candidates and retains 333 after ten exclusions.
+4.2. Mô tả 35 weather features
+Tạo Table S2 có feature name, raw NASA POWER variable, aggregation, time window, unit, missing-data rule và availability time.
+Nêu cách chọn state-representative coordinate hoặc spatial aggregation.
+Nêu full-season window theo calendar cố định hay crop/state-specific.
+Nêu early/middle/late proxies được tạo thế nào và vì sao chỉ sensitivity.
+Kiểm tra feature leakage: completed-season features chỉ phù hợp post-season audit.
+4.3. In kết quả Ridge và toàn bộ validation grid
+Main table thêm một dòng best Ridge candidate.
+Supplement chứa toàn bộ model × feature family × hyperparameter × seed summary.
+Không chỉ nói `finite pre-specified comparison`; cho người đọc thấy linear baseline thực sự hoạt động ra sao.
+Gộp Table III và IV: RMSE, Seed SD, P(rank=1), 1-SE, Selected/Role.
+4.4. Secondary tuned-representation contrast
+Primary Gate B1 giữ fixed architecture để cô lập feature family và tránh test re-selection. Nhưng thêm sensitivity trong đó mỗi representation được tune riêng trên validation rồi khóa trước test.
+Tune Metadata-only, Weather-only và Full hoàn toàn trong validation.
+Đóng băng từng winner trước locked test.
+Báo cáo Full-tuned − Metadata-tuned như secondary estimand.
+Không thay primary Gate B1; dùng để đánh giá fixed-architecture dependence.
+Nếu result khác, thảo luận rõ estimand khác nhau thay vì chọn result thuận lợi.
+4.5. Temporal stability của selection
+P(rank=1) qua random seeds chỉ đo stochastic variability, không đo temporal stability. Thêm một trong hai kiểm tra:
+Leave-one-validation-year-out selection trên 2012–2015; hoặc
+Blocked temporal validation trong pre-2016 data, với policy lựa chọn được xác định trước.
+Báo cáo model/feature family winner theo fold và mức ổn định.
+Nếu sample quá nhỏ để dùng làm selection chính, giữ là diagnostic và nói rõ.
+4.6. History threshold và event-scale stability
+Báo cáo số row theo history 3–4, 5–7, ≥8.
+Báo cáo event membership changes khi đổi min history.
+Giải thích history=3 là technical coverage minimum, không phải stable variance threshold.
+Khai thác History 8/10 PASS như tín hiệu thiết kế cho nghiên cứu tương lai, nhưng không đảo primary decision.
+Suggested wording:The favorable interval under the eight-year history rule does not overturn the primary decision because it evaluates a different locked population. It nevertheless suggests a design hypothesis: longer series may stabilize both detrending and residual-scale estimation. A future prospective study should prespecify a minimum-history requirement rather than treat it as a post-hoc filter.
+4.7. Nêu rõ raw-target và standardized-target đổi dấu
+The standardized-target sensitivity changes the point-estimate direction: the raw-residual model is slightly better than zero at the point estimate (ΔRMSE = −0.005), whereas the model fit directly to training-standardized residuals is slightly worse (ΔRMSE = +0.030). This reversal shows that target scale and series-specific variance estimates materially affect the predictive question; neither interval supports a primary pass.
+4.8. Small-number-of-blocks limitation
+Nói thẳng primary temporal bootstrap chỉ có 10 calendar-year blocks.
+Giải thích tại sao year-block vẫn là primary: giữ cross-sectional dependence trong cùng năm.
+Nhấn state-year và crop-state resampling là sensitivity, không tương đương hoàn toàn với temporal block.
+Cân nhắc leave-one-year-out influence plot hoặc exact/randomization-based check.
+Thêm nguồn primary về cluster/bootstrap inference với số cluster nhỏ nếu phù hợp; không trích blog.
+Suggested limitation sentence:The primary interval resamples only ten calendar-year blocks. This preserves cross-sectional dependence within a year but limits the precision of tail inference. State–year and crop–state resampling produce the same qualitative decision, although they encode different dependence assumptions and do not remove the small-number-of-years limitation.
+4.9. Kể đúng rolling-origin result
+Temporal performance is directionally unstable. Three folds favor the model at the point-estimate level, but only the 2013–2015 fold has an interval below zero. In contrast, the 2007–2009 fold significantly favors the zero-residual baseline (ΔRMSE = 0.017, 95% CI [0.003, 0.028]).
+4.10. Dữ liệu/versioning
+Archive raw NASS snapshot và NASA POWER responses hoặc checksum + deterministic download manifest.
+Nêu 2025 values là final hay snapshot as-of 2026-07-18.
+Locked test được khóa theo raw hash, không chỉ theo year range.
+Đối với PJM/county, cũng ghi source version, access date và hash.
+Anonymous repository phải hoạt động và không lộ author identity.
+5. Kế hoạch bảng và hình sau khi sửa
+Vị trí
+Giữ trong main paper
+Nội dung
+Table 1
+Có
+Data/split summary + số series + validation/test candidate/exclusion counts.
+Table 2
+Có
+Merged validation table: model, features, RMSE, seed SD, P(rank=1), 1-SE, role; có best Ridge.
+Table 3
+Có
+Gate A/B1/B2: contrast, estimate, CI, population, role, decision.
+Table 4
+Có, rút gọn
+Primary z<−1 tail components; severe tails chuyển supplement.
+Figure 1
+Có
+Claim-eligibility workflow; phân biệt core gates và optional event module.
+Figure 2
+Có
+Agricultural XAI output cạnh gate failure; đây là hình kể chuyện trung tâm.
+Figure 3
+Có
+Synthetic per-regime permission matrix hoặc policy-ablation trade-off.
+Table 5
+Có, rất gọn
+Empirical case summary: state panel, county panel, PJM; module used, A/B1 result, permitted claim.
+Supplement
+Có
+Event diagnostics, full sensitivities, all models, resampling, E1–E10, feature definitions, crop-state matrix, full XAI.
+Mục tiêu là giảm main paper từ 13 bảng xuống khoảng 5 bảng và 3 hình có vai trò rõ. Không để caption dài như một đoạn Methods; policy được giải thích ở Section III.
+6. Biên tập văn phong để bài tự nhiên
+6.1. Quy tắc tổng quát
+Mỗi đoạn chỉ có một luận điểm chính; mở bằng result hoặc scientific question, không mở bằng disclaimer.
+Không lặp `cannot replace`, `cannot trigger re-selection`, `not evidence`, `never` ở nhiều nơi. Định nghĩa role một lần trong claim-policy table.
+Giảm từ ghép: `future-period locked audit` → `evaluation on the locked future period`; `same-task baseline` → `baseline evaluated on the same rows`.
+Ưu tiên động từ cụ thể: `the interval crosses zero`, `the model ranks first in three seeds`, `the fold favors the baseline`.
+Không dùng audit language để thay scientific interpretation. Sau mỗi result, nói nó có nghĩa gì đối với question.
+Không tự khen `reproducible`, `rigorous`, `comprehensive`; cho artifact và design thể hiện.
+Không viết như rebuttal: tránh câu trả lời cho phản biện chưa xuất hiện.
+Dùng `we report`, `we evaluate`, `we interpret` vừa đủ; tránh lặp `we therefore`.
+6.2. Các thay thế câu cụ thể
+Câu/kiểu câu cũ
+Cách viết tự nhiên hơn
+Train-only preprocessing and locked testing are protocol safeguards, not claimed as standalone novelty.
+The methodological contribution is the claim-eligibility rule; train-only preprocessing and locked evaluation ensure that it is tested prospectively.
+An invalid replicate fails the run; none are silently dropped.
+All 2,000 bootstrap replicates were valid and retained.
+The selected row is a reproducible protocol choice rather than a claim of decisive superiority.
+The selected configuration has only a small validation advantage, so we treat it as the prespecified choice rather than evidence of clear superiority.
+These analyses are deliberately reported as sensitivities, not candidate routes to a favorable result.
+Because these analyses change the target or population, we retain the original specification for the primary decision and report them as sensitivities.
+This is an additional reproducible agricultural abstention case, not a successful result or evidence of transfer.
+The county analysis reaches the same abstention decision and serves as a robustness case rather than evidence of predictive success or transfer.
+VERIFIED means regenerated and checked, never scientifically favorable.
+The status records successful regeneration by the audit script; it does not indicate that a scientific gate passed.
+Gate B2 cannot trigger re-selection or replace Gate B1.
+Gate B2 is a representation diagnostic and is not part of the weather-specific claim rule.
+6.3. Những từ phải kiểm tra toàn văn
+Từ/cụm
+Rủi ro
+Quy tắc
+effect, driver, cause, attributable
+Causal overclaim
+Chỉ dùng khi nói về prior literature hoặc phủ định rõ; kết quả của paper dùng predictive value/reliance.
+interpret
+Mơ hồ
+Luôn gắn loại claim: model-descriptive hoặc predictive-reliance.
+fidelity
+Có thể nhầm explanation fidelity
+Định nghĩa là locked-period predictive adequacy; cân nhắc dùng predictive adequacy.
+ground truth
+Phô trương
+Dùng known DGP/admissibility labels.
+independent gates
+Có thể hiểu statistical independence
+Dùng conceptually distinct decision questions; nêu numerical coincidence khi metadata equals zero.
+verified
+Nghe như external audit
+Dùng regenerated successfully / audit check passed.
+external validation
+Quá mạnh
+County = robustness; PJM = sanity-check permission case.
+7. Khung Abstract mới
+Codex phải viết lại abstract sau khi mọi số đã được sinh lại. Dưới đây là khung nội dung, không phải bản cuối cố định.
+Post-hoc explanations of a predictive model should not be used as evidence about observed yield losses when the model lacks predictive adequacy for the same locked target. We formulate a study-level claim-eligibility protocol that separates overall predictive adequacy (Gate A) from the incremental value of weather beyond metadata (Gate B1). The primary audit uses 1,257 U.S. crop–state–year observations for four crops from 1990–2025, with train-only detrending, validation-based selection, and a locked 2016–2025 evaluation. The selected weather-only ExtraTrees model does not outperform the zero-residual baseline (ΔRMSE = −0.005, 95% CI [−0.019, 0.009]), and the Full model does not establish incremental weather value over metadata (ΔRMSE = −0.012, 95% CI [−0.029, 0.002]). Agricultural explanations are therefore reported as descriptions of the fitted function rather than evidence about observed events. Simulations with known data-generating mechanisms evaluate false permission and false abstention across prespecified regimes, while county-level agriculture and a PJM demand sanity check illustrate abstention and permission outcomes. The protocol supports scoped predictive-reliance claims; it does not convert feature attribution into causal evidence.
+Không liệt kê cả SHAP, LIME, permutation, ablation, response curves trong abstract.
+Nếu synthetic ablation numbers thay đổi, thêm một câu định lượng ngắn; không nhồi quá nhiều metric.
+Đảm bảo Gate B1 có số và CI.
+Không dùng `cannot support` theo nghĩa phổ quát.
+8. Hướng sửa theo từng section
+8.1. Introduction
+Mở bằng mismatch giữa explanation of model và explanation of observed event.
+Cho một ví dụ cụ thể: Full model có point estimate hấp dẫn nhưng CI inconclusive; đây là kiểu result dễ dẫn tới SHAP story.
+Định nghĩa scope: post-hoc predictive XAI, không bao quát causal inference.
+Nêu contribution paragraph mới.
+Không dùng một đoạn dài để tự phủ định novelty.
+8.2. Related Work
+Giữ crop yield/detrending.
+Giữ XAI boundary nhưng thêm distinction explanation fidelity vs outcome validity.
+Giữ selective prediction; nhấn decision unit là study-level claim, không per-row rejection.
+Không phình citation list; chỉ thêm nguồn thật sự hỗ trợ small-cluster inference hoặc claim-policy positioning.
+Double-check từng reference bằng DOI/official publisher metadata; không bịa nguồn.
+8.3. Claim-Eligibility Protocol
+Đặt Gate A/B1/B2 trước data-specific details.
+Tách core policy khỏi crop-specific event module.
+Định nghĩa estimand và population cho mỗi gate.
+Nêu fixed architecture primary B1 và tuned-representation sensitivity.
+Có claim ladder table.
+Không dùng từ independent nếu dễ bị hiểu statistical independence.
+8.4. Data and Experimental Design
+Panel, crop-state matrix, feature table, split, exclusion, target equations.
+Candidate model grid và baselines.
+Bootstrap và limitation 10 blocks.
+Synthetic DGP, county and PJM data provenance.
+Feature timing: post-season audit, không pre-harvest forecast.
+8.5. Results
+Bắt đầu bằng validation selection, nhưng gộp bảng.
+Báo Gate A/B1/B2 bằng table có số.
+Giải thích metadata-zero identity.
+Đưa XAI-versus-gate figure ngay sau primary gate result.
+Synthetic per-regime + policy ablation.
+County robustness.
+PJM sanity check.
+Sensitivity summary: history, standardized target, rolling folds, resampling.
+8.6. Discussion
+Mở bằng ý nghĩa của abstention, không lặp toàn bộ Results.
+Phân biệt predictive adequacy, feature-group value và causal attribution.
+Thảo luận metadata collapse như đặc điểm của target/feature design.
+Thảo luận longer history như design hypothesis.
+Thảo luận 10 year blocks và low-resolution weather.
+Giới hạn generality của simulation regimes và PJM sanity case.
+Nói rõ passing does not guarantee causality.
+8.7. Conclusion
+Tối đa hai đoạn ngắn.
+Không liệt kê lại mọi artifact.
+Kết luận procedural và scoped.
+Một câu future work: prospectively versioned inputs, richer exposure, independent future test, preregistered claim policy.
+9. Quy trình kiểm tra mã và manuscript
+Chạy clean pipeline từ raw data đến final PDF trong môi trường mới hoặc clean workspace.
+Lưu config, package versions, random seeds và input hashes.
+So sánh prediction hashes với artifact hiện tại; giải thích mọi thay đổi.
+Regenerate all tables/figures, không copy số cũ.
+Chạy assertion: split lock, forbidden columns, no test access during selection, row alignment, baseline identity, bootstrap replicate count.
+Chạy assertion cross-document: abstract, gate table, Figure 2 labels, conclusion.
+Kiểm tra bibliography: tồn tại, metadata đúng, được cite trong text, không duplicate.
+Build anonymous PDF; kiểm tra page count, overflow, unreadable tables, broken links, author leakage.
+Đọc PDF như reviewer: có tìm được contribution, gate numbers, allowed claim và positive case trong dưới hai phút không?
+Chỉ commit bản cuối sau khi checklist P0/P1/P2 được cập nhật.
+10. Tiêu chí nghiệm thu cuối cùng
+Mức
+Tiêu chí
+Đạt
+P0
+Gate A/B1/B2 có estimate, CI, role và decision trong main table.
+□
+P0
+Abstract chứa số Gate A và Gate B1 được sinh từ artifact.
+□
+P0
+Metadata-only versus zero được kiểm tra vector-level và giải thích đúng.
+□
+P0
+Có agricultural XAI output được gắn nhãn model-descriptive.
+□
+P0
+Synthetic benchmark có per-regime results và meaningful policy ablations.
+□
+P0
+PJM được mô tả là core-policy sanity check; không lẫn tail module.
+□
+P0
+Mọi experimental evidence nằm trước Discussion.
+□
+P0
+INTERPRET được thay/định nghĩa thành scoped predictive-reliance permission.
+□
+P0
+Không có causal overclaim từ SHAP/permutation/gate pass.
+□
+P1
+Tên states, số series và crop-state matrix có trong paper/supplement.
+□
+P1
+35 weather features được định nghĩa đầy đủ.
+□
+P1
+Best Ridge result và full validation grid có thể kiểm tra.
+□
+P1
+Table III/IV đã gộp.
+□
+P1
+Có tuned-representation sensitivity cho B1 hoặc lý do rõ nếu không làm.
+□
+P1
+Có temporal selection-stability diagnostic.
+□
+P1
+History distribution và standardized-target sign reversal được thảo luận.
+□
+P1
+Giới hạn 10 year blocks được nêu rõ.
+□
+P1
+Rolling fold 2 được mô tả là significant baseline-favoring fold.
+□
+P1
+Raw data snapshots/version/hash được ghi.
+□
+P2
+Giảm lặp not/cannot/never và thuật ngữ ghép.
+□
+P2
+VERIFIED đổi thành regeneration status trung tính.
+□
+P2
+Main paper khoảng 5 bảng, 3 hình; chi tiết chuyển supplement.
+□
+P2
+Caption ngắn và không thay Methods.
+□
+QA
+All numbers regenerated; no manual edits.
+□
+QA
+References verified; no fabricated citation.
+□
+QA
+PDF nằm trong page limit và không có lỗi layout.
+□
+QA
+Anonymous repository/artifact link hoạt động.
+□
+11. Báo cáo Codex phải trả lại sau khi sửa
+Khi hoàn tất, Codex không chỉ nói “đã sửa”. Phải trả lại một báo cáo ngắn theo mẫu:
+1. Files changed- [list source, scripts, configs, figures, supplement]2. Experiments rerun- [commands]- [runtime/environment]- [which results changed and why]3. Primary gate results- Gate A: estimate, CI, status- Gate B1: estimate, CI, status- Gate B2: estimate, CI, status- Metadata vs zero max absolute prediction difference4. New analyses- Synthetic policy ablations- Per-regime results- XAI figure- Tuned representation sensitivity- Temporal selection stability- Any small-block sensitivity5. Manuscript restructuring- New section order- Tables/figures moved to supplement- Claims narrowed6. Validation- Cross-document numerical assertions- Citation verification- Page count and build result- Remaining limitations or tasks that could not be completed
+12. Nguyên tắc không được vi phạm
+Không chạy theo kết quả đẹp
+Không được thay primary population, tail, split, architecture hoặc gate threshold sau khi xem locked test để làm PASS. Mọi analysis mới phải được ghi đúng vai trò. Một result âm tính nhưng được thiết kế và trình bày trung thực mạnh hơn một result dương tính do cherry-pick.
+Không bịa dữ liệu hoặc citation
+Nếu repository thiếu artifact hoặc thí nghiệm không thể chạy, Codex phải dừng ở mục đó, ghi rõ thiếu gì và đề xuất phương án tối thiểu. Không được tự điền số, tên bang, số series, feature definition, DOI hoặc kết quả mô phỏng.
+Contribution phải rõ nhưng vừa đủ
+Paper đóng góp một scoped decision protocol cho predictive XAI, không chứng minh quy luật phổ quát rằng mọi explanation cần predictive accuracy, và không biến predictive feature reliance thành causal attribution.
+--- word/footer1.xml ---
+Tài liệu hướng dẫn triển khai cho Codex
+--- word/header1.xml ---
+Kế hoạch sửa bản A — Fidelity-Gated XAI

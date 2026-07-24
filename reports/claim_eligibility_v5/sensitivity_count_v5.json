@@ -1,0 +1,75 @@
+{
+  "artifact_id": "prespecified_sensitivity_count_v5",
+  "categories": [
+    {
+      "category": "history thresholds",
+      "source": "artifacts\\audit_records\\min_history_sensitivity.csv",
+      "rows": 4,
+      "sha256": "0204f5430ba638a7a99eff7194c12b7287997fefc5817d005d3d1f22ed093de4"
+    },
+    {
+      "category": "target scale",
+      "source": "artifacts\\audit_records\\target_scale_sensitivity.csv",
+      "rows": 1,
+      "sha256": "bb018440a79e8530af026bc7cddba161ad70bed1f311db2c9fd0f52669aa4d1b"
+    },
+    {
+      "category": "detrending variants",
+      "source": "artifacts\\audit_records\\alternative_detrending_sensitivity.csv",
+      "rows": 2,
+      "sha256": "2c6948f3ddc4293cc03c5ec56cbb7c7232ad33c8d92d85456952af6d5aefd157"
+    },
+    {
+      "category": "expanded model families",
+      "source": "artifacts\\audit_records\\expanded_model_baselines.csv",
+      "rows": 2,
+      "sha256": "23a1e4565bb6542569105ce64dc0d02f4d7dbd6c86d2bf4c67fdae5b9d878852"
+    },
+    {
+      "category": "resampling schemes",
+      "source": "artifacts\\audit_records\\bootstrap_scheme_comparison.csv",
+      "rows": 3,
+      "sha256": "121e5f97e4ea1ff66e6cee709f839e3e0a59dbd66b58ab387eb81ed9a5c08d6a"
+    },
+    {
+      "category": "temporal-stage features",
+      "source": "artifacts\\audit\\stage_features\\stage_feature_sensitivity.csv",
+      "rows": 2,
+      "sha256": "a0855a76ca4483142cc3b19907194bfd2a844cf237bb543552388fdd1dc2d44e"
+    },
+    {
+      "category": "crop checks",
+      "source": "artifacts\\audit\\crop\\crop_specific_metrics.csv",
+      "rows": 4,
+      "sha256": "24d1c858f2b4b730605cf4fb2a3b47e2da35a2b4f2388ef86608182123058d99"
+    },
+    {
+      "category": "spatial checks",
+      "source": "artifacts\\audit\\spatial\\leave_one_state_out.csv",
+      "rows": 12,
+      "sha256": "3cbb4c088b4f3d3b2a7e38e0112cfaca9f83a648930d9422b6f787e2768711b6"
+    },
+    {
+      "category": "temporal rolling/prefix analyses",
+      "source": "artifacts\\audit_records\\temporal_and_capacity_audits.csv",
+      "rows": 8,
+      "sha256": "6fa50803e548fb725324cad4bf8b01a00d63788ea51801f937e15cd9d6f785fb"
+    },
+    {
+      "category": "retrospective target",
+      "source": "artifacts\\audit_records\\retrospective_target_comparison.csv",
+      "rows": 1,
+      "sha256": "16c5160a863b9e93efabf0d598b87723de28181d06e3cf3746db499d8c8248cd"
+    },
+    {
+      "category": "state heterogeneity",
+      "source": "artifacts\\maps\\state_level_locked_delta_rmse.csv",
+      "rows": 12,
+      "sha256": "b5702dd03b2668c898bb26ba8fa1a6f46e6c12e8c9132661d48a24ac16b5195c"
+    }
+  ],
+  "category_count": 11,
+  "row_count": 51,
+  "statement": "11 pre-specified sensitivity categories covering 51 recorded rows",
+  "assertion_status": "PASS"
+}

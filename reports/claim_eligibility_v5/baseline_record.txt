@@ -1,0 +1,24 @@
+﻿baseline_pdf=paper\final\ictai2026_fidelity_gated_xai_v4_final_layout.pdf
+baseline_sha256=3795C026B63B86DEB69065ED2F81AD8F2E85D52F925C32A92B91D9C7D0CF6B7E
+Title:           Auditing Weather-Feature Reliance in Detrended Crop-Yield Models
+Subject:         
+Keywords:        
+Author:          Anonymous
+Creator:         LaTeX with hyperref
+Producer:        MiKTeX pdfTeX-1.40.29
+CreationDate:    Tue Jul 21 22:29:57 2026 SE Asia Standard Time
+ModDate:         Tue Jul 21 22:29:57 2026 SE Asia Standard Time
+Custom Metadata: yes
+Metadata Stream: no
+Tagged:          no
+UserProperties:  no
+Suspects:        no
+Form:            none
+JavaScript:      no
+Pages:           8
+Encrypted:       no
+Page size:       612 x 792 pts (letter)
+Page rot:        0
+File size:       534847 bytes
+Optimized:       no
+PDF version:     1.5

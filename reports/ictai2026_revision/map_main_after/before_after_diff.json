@@ -1,0 +1,98 @@
+[
+  {
+    "page": 1,
+    "same_sha256": false,
+    "rms_diff": 8.79,
+    "changed": true,
+    "bbox": [
+      639,
+      534,
+      1066,
+      601
+    ]
+  },
+  {
+    "page": 2,
+    "same_sha256": false,
+    "rms_diff": 61.124,
+    "changed": true,
+    "bbox": [
+      96,
+      126,
+      1126,
+      1438
+    ]
+  },
+  {
+    "page": 3,
+    "same_sha256": false,
+    "rms_diff": 58.103,
+    "changed": true,
+    "bbox": [
+      96,
+      757,
+      1126,
+      1437
+    ]
+  },
+  {
+    "page": 4,
+    "same_sha256": false,
+    "rms_diff": 63.547,
+    "changed": true,
+    "bbox": [
+      97,
+      434,
+      1126,
+      1437
+    ]
+  },
+  {
+    "page": 5,
+    "same_sha256": false,
+    "rms_diff": 36.984,
+    "changed": true,
+    "bbox": [
+      96,
+      1144,
+      1126,
+      1437
+    ]
+  },
+  {
+    "page": 6,
+    "same_sha256": false,
+    "rms_diff": 57.904,
+    "changed": true,
+    "bbox": [
+      97,
+      568,
+      1126,
+      1437
+    ]
+  },
+  {
+    "page": 7,
+    "same_sha256": false,
+    "rms_diff": 74.353,
+    "changed": true,
+    "bbox": [
+      96,
+      103,
+      1127,
+      1437
+    ]
+  },
+  {
+    "page": 8,
+    "same_sha256": false,
+    "rms_diff": 67.916,
+    "changed": true,
+    "bbox": [
+      99,
+      106,
+      1129,
+      1436
+    ]
+  }
+]

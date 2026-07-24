@@ -1,0 +1,315 @@
+CODEX — READ THIS FILE BEFORE EDITING V4
+Final corrective plan for “Auditing Weather-Feature Reliance in Detrended Crop-Yield Models”
+Edit the existing V4 revision in place, preserve all validated scientific results, and verify every change against the current V4 PDF.
+IMPORTANT: Work on the current V4 source, but create a safety backup or Git commit before any edit. Do not create a new V5 unless explicitly requested. Do not overwrite the only recoverable copy.
+1. Mission and non-negotiable rules
+Locate the current V4 LaTeX source directory and its most recent compiled PDF. Treat that PDF as the baseline for before/after comparison.
+Before editing, create either: (a) a Git commit/tag named `v4_before_remaining_fixes`, or (b) a full directory copy named `v4_before_remaining_fixes`.
+Apply the fixes directly to the working V4 source after the backup is confirmed.
+Do not change scientific results, sample sizes, train/validation/test splits, prediction vectors, module pass/fail decisions, or synthetic benchmark outputs.
+Do not rerun model experiments merely to obtain different results. Only rebuild artifacts when the existing generation pipeline requires it for consistency.
+Do not reintroduce Algorithm 1 into the main paper. V4 intentionally keeps Fig. 1 and Table II while removing the redundant algorithm.
+Keep the final review PDF at exactly 8 pages and in the IEEE conference template.
+Keep the submission double-blind. No real author, institution, email, repository owner, local path, Git username, funding statement, or acknowledgment may appear in the review package.
+Use the current V4 values as the numerical source of truth. If a generated artifact changes unexpectedly, stop and report the discrepancy instead of silently updating the paper.
+2. Current V4 status: items that are already correct and must not regress
+Already fixed
+Regression guard
+Abstract framing
+The abstract now leads with 240/240 ungated false permissions versus 171/240 under A+B+E, and states the necessary-but-not-sufficient boundary.
+Discussion framing
+The Discussion opens by explaining why predictive gates cannot detect all structural invalidity.
+Conclusion framing
+The Conclusion states that the gate reduces unsupported permission but does not establish structural validity.
+Fig. 2 base value
+The caption explains that grouped SHAP contributions sum to 0.217 and the approximately −0.008 base value yields 0.209.
+Table VII
+The synthetic calibration table is numbered Table VII and states that GT/DGP are not policy inputs.
+Table IV reference row
+Zero residual is shown as 0.000 [0.000, 0.000].
+Module B definition
+The paper states that Module B is paired Full-minus-Metadata and explains why it numerically matches Full-minus-zero in this panel.
+Module D rationale
+The first method description now explains why D is retained even though it matches A numerically here.
+Module E defense
+The paper explains distinct failure modes and shows that E passes 30/30 seeds in strong/moderate/valid imbalanced-tail regimes.
+ROC/PR explanation
+The paper distinguishes global discrimination from paired tail recovery.
+Bootstrap limitation
+The paper states the low power from ten year blocks and justifies year-block resampling.
+Recent XAI literature
+Recent 2021–2023 faithfulness/counterfactual/evaluation references are included.
+Redundancy reduction
+Algorithm 1 was removed from the main paper.
+Page count
+Current V4 PDF is 8 pages.
+PDF anonymity
+Current checked PDF shows Anonymous and does not visibly expose author identity.
+3. Remaining required fixes for V4
+Priority
+Item
+Required action
+Acceptance evidence
+P1
+Thousands separators
+Use commas for integers ≥ 1,000 throughout text and tables: 1,257; 1,291; 2,000. Keep 333, 343, and 574 without commas.
+A global search finds no standalone `1257` or `1291`; the final PDF visibly shows 1,257 and 1,291.
+P1
+Bibliography author consistency
+Remove literal/manual `et al.` from BibTeX author fields, keep complete author data, and let IEEEtran.bst format the list consistently.
+Clean rebuild produces one IEEE-consistent author style; no mixed manual formatting.
+P1
+Awkward capitalization/date typography
+Replace `On the Locked 2016-2025 audit` with `On the locked 2016–2025 test` (preferred) or `On the locked 2016–2025 audit`.
+Exact old phrase is absent; en dash is used consistently.
+P1
+Map requirement
+Verify whether the U.S. state map remains required by the instructor. Preserve it in the anonymized supplementary package at minimum. Do not silently delete the source figure.
+Map file exists in supplementary/artifacts and is referenced or documented; main PDF remains 8 pages.
+P1
+Supplementary anonymity
+Audit every supplementary file, manifest, ZIP, log, README, and repository reference for names, emails, local paths, usernames, commit authors, and institution identifiers.
+An anonymization report lists all checked files and confirms no identifying string remains.
+P2
+House-price overlap
+Compare this V4 paper with the related house-price paper if present. Confirm distinct contributions, datasets, figures, wording, and submission status.
+A written overlap report identifies shared method language and confirms no problematic duplicate submission or verbatim reuse.
+P2
+Table VII caption length
+Optionally shorten the caption without losing the GT-only-for-scoring and observable-policy message, if space or readability improves.
+Table VII remains citable and the policy-input distinction remains explicit.
+P2
+Global typography consistency
+Normalize Weather-only/Metadata-only/Full-minus-Metadata, locked test, year-block, below-trend, and 2016–2025 typography.
+Search report shows no inconsistent variants in the final source/PDF.
+P2
+Final metadata/link audit
+Recheck PDF metadata and all embedded links after the final rebuild.
+Author is Anonymous; no identifying URL/path is embedded.
+P3
+Reference QA
+Check DOI/URL/title/year/venue data for the five newly added XAI references and the whole bibliography.
+BibTeX build has no missing-entry or malformed-name warnings.
+4. Exact implementation instructions
+4.1 Create a recoverable baseline before editing
+☐ Identify the V4 source folder, master `.tex` file, bibliography file, figure sources, generation scripts, and current V4 PDF.
+☐ Create a Git commit/tag `v4_before_remaining_fixes`, or copy the V4 directory to `v4_before_remaining_fixes`.
+☐ Record the baseline PDF SHA-256, file size, page count, and build command in a small text/Markdown log.
+☐ Render the baseline PDF to page PNGs for later visual comparison.
+Suggested baseline record:
+- baseline_source: <absolute or repository-relative V4 source path>
+- baseline_pdf: <current V4 PDF>
+- baseline_sha256: <hash>
+- baseline_pages: 8
+- baseline_build_command: <latexmk/pdflatex+bibtex command>
+- baseline_timestamp: <timestamp>
+4.2 Fix thousands separators consistently
+The current V4 still mixes `1257`/`1291` with `2,000` and large comma-separated PJM values. Follow standard English/IEEE number grouping: add a comma only for integers of four or more digits.
+☐ Replace all prose occurrences of `1257` with `1,257`.
+☐ Replace all prose/table occurrences of `1291` with `1,291`.
+☐ Keep `2,000`, `77,521`, `227,417`, and `335,037` as written.
+☐ Do not change `333`, `343`, `574`, `140`, `73`, `52`, or `36`; these are below 1,000.
+☐ Do not add commas inside years, decimal values, citation numbers, file hashes, scientific notation, or table IDs.
+☐ Re-run a source-wide search for `1257|1291` and inspect matches manually before replacing.
+Acceptance searches:
+rg -n "(?<![0-9,])1257(?![0-9])|(?<![0-9,])1291(?![0-9])" <V4_SOURCE_DIR>
+rg -n "\b1,257\b|\b1,291\b|\b2,000\b" <V4_SOURCE_DIR>
+4.3 Fix the awkward sentence and date typography
+Find the sentence beginning with:
+On the Locked 2016-2025 audit, the selected model has ...
+Replace it with the more natural wording:
+On the locked 2016–2025 test, the selected model has ...
+☐ Use an en dash in year ranges throughout visible manuscript text: `2012–2015`, `2016–2025`, `2022–2025`.
+☐ Do not change minus signs used in numeric intervals or negative values.
+4.4 Normalize bibliography author handling
+The current reference list mixes entries rendered with `et al.` and entries that list long author groups. This may be caused by literal `et al.` or `and others` inside some BibTeX author fields. Use complete author metadata and allow `IEEEtran.bst` to apply the conference style.
+☐ Inspect every `author = {...}` field in `references.bib`.
+☐ Remove literal text such as `et al.`, `et. al.`, or manually truncated author lists.
+☐ Use BibTeX-separated authors with `and` between all known authors.
+☐ Use `and others` only if source metadata truly omits the remaining authors and the entry cannot be completed from the authoritative source; prefer complete data.
+☐ Do not manually edit the generated `.bbl` as the permanent fix.
+☐ Delete stale `.aux`, `.bbl`, `.blg`, `.out`, `.toc`, `.fls`, `.fdb_latexmk`, and rebuild cleanly.
+☐ Inspect the rendered references on pages 7–8 for author consistency, missing accents, broken URLs, and line-wrap problems.
+Clean IEEE rebuild example:
+latexmk -C <MASTER_TEX>
+latexmk -pdf -interaction=nonstopmode -halt-on-error <MASTER_TEX>
+
+If latexmk is unavailable:
+pdflatex <MASTER_TEX>
+bibtex <MASTER_BASENAME>
+pdflatex <MASTER_TEX>
+pdflatex <MASTER_TEX>
+4.5 Preserve and verify the U.S. state map
+The current 8-page V4 main PDF no longer contains the U.S. state-level map that appeared in an earlier version. The latest written instructor checklist does not explicitly require the map in the main paper, but an earlier instructor request did. Do not silently discard the map.
+☐ Locate the original map source script, data, manifest, and exported vector/raster figure.
+☐ Confirm the map remains reproducible and anonymized.
+☐ At minimum, include the map in the anonymized supplementary material as a numbered supplementary figure with a caption explaining that it is descriptive state-level heterogeneity, not a separate module decision.
+☐ If the instructor explicitly requires the map in the main paper, create a layout proposal that restores it while keeping the paper at 8 pages; do not remove core Table VI or Table VII to make room without approval.
+☐ If the main paper remains unchanged, add a brief note to the completion report: `Map preserved in anonymized supplementary material; not restored to main paper to preserve the 8-page limit.`
+☐ Do not alter map values or recolor it in a way that changes interpretation.
+4.6 Audit the complete double-blind package, not only the PDF
+The previously checked PDF is anonymous, but the submission can still be deanonymized by the supplementary ZIP, repository, manifests, logs, source comments, paths, or metadata.
+☐ Search for real author names and initials.
+☐ Search for institution names and domains.
+☐ Search for personal email addresses.
+☐ Search for GitHub/OSF/Drive owner names.
+☐ Search for Windows paths such as `C:\Users\<name>`.
+☐ Search for Linux/macOS paths such as `/home/<name>` or `/Users/<name>`.
+☐ Search for Git commit authors and signed commits.
+☐ Search for Word/PDF/ZIP metadata author fields.
+☐ Search for README acknowledgments or funding text.
+☐ Search for filenames that include names or student IDs.
+☐ Search for comments in LaTeX/Python/Markdown that reveal identity.
+☐ If an anonymous repository is used, verify every linked landing page is anonymous in a private/incognito browser.
+☐ If no safe anonymous repository exists, replace public-release claims with `will be released upon acceptance` and remove identifying links from the review package.
+☐ Keep Acknowledgment and Funding absent from the review version.
+☐ Generate a final anonymization report listing searched patterns, files scanned, and any replacements made.
+4.7 Check overlap with the related house-price paper
+This check is required only if the related house-price paper exists in the repository or is under concurrent submission. Do not claim the check passed without locating the other manuscript.
+☐ Search the repository for filenames/titles containing `house`, `housing`, `price`, `stop-gate`, `claim-eligibility`, or `companion`.
+☐ If found, compare abstracts, introductions, contribution lists, workflow figures, algorithm text, Discussion framing, and conclusions.
+☐ Measure verbatim or near-verbatim overlap and identify shared method language that is unavoidable.
+☐ Confirm the two papers have materially distinct domain questions, data, empirical contributions, results, and figures.
+☐ Confirm neither paper is a simultaneous duplicate submission prohibited by the venue policy.
+☐ Do not add a deanonymizing self-citation. If a relationship must be disclosed, use neutral anonymous wording and follow conference policy.
+☐ Write a short `house_price_overlap_check.md` report with findings and unresolved risks.
+4.8 Optional readability improvement for Table VII
+The current Table VII caption is scientifically correct but long. Shorten it only if the layout or readability improves. Do not remove the key policy-input clarification.
+Acceptable shorter caption:
+SYNTHETIC SCENARIO-LEVEL CALIBRATION. GT IS USED ONLY FOR
+EVALUATION; POLICY PERMISSION IS COMPUTED SOLELY FROM OBSERVABLE
+MODULES A, B, AND E. RATES ARE REPORTED ACROSS 30 SEEDS.
+☐ If the caption is shortened, keep the sentence in surrounding text stating that neither the GT label nor hidden DGP is a policy input.
+☐ Do not change any percentages or row order in Table VII.
+4.9 Global terminology and typography pass
+Preferred term
+Rule
+Weather-only
+Use consistently as a compound modifier.
+Metadata-only
+Use consistently as a compound modifier.
+Full-minus-Metadata
+Use this wording when referring to the Module B paired contrast.
+locked test
+Lowercase unless beginning a sentence or appearing in an all-caps table caption.
+year-block
+Hyphenate consistently.
+below-trend
+Hyphenate consistently.
+event-recovery
+Hyphenate consistently when used adjectivally.
+claim-eligibility
+Hyphenate consistently.
+2016–2025
+Use an en dash for year ranges.
+5. Mandatory regression checks after editing
+5.1 Numerical invariance audit
+The following values must remain unchanged unless the existing generation pipeline proves the prior V4 artifact is inconsistent:
+☐ Ungated false permissions: 240/240 invalid runs.
+☐ Observable-policy false permissions: 171/240; 71.2%.
+☐ Sensitivity: 88.9%; specificity: 28.7%; permission rate: 78.8%.
+☐ False abstentions: 20/180; 11.1%.
+☐ Module A: ΔRMSE −0.005, 95% CI [−0.019, 0.009], FAIL.
+☐ Module B: ΔRMSE −0.012, 95% CI [−0.029, 0.002], FAIL.
+☐ Module E primary: ΔRMSE −0.043 [−0.074, 0.007]; rank 0.180; top-10 1/10; FAIL.
+☐ State-panel locked RMSE: 0.669 t ha−1; R² = −0.014.
+☐ Fig. 2: grouped SHAP sum 0.217; base ≈ −0.008; prediction 0.209; observed −0.510.
+☐ County Module B: ΔRMSE −0.71 [−1.23, −0.34]; Module A inconclusive.
+☐ PJM RMSE values and intervals must remain unchanged.
+5.2 Structural regression audit
+☐ Abstract still foregrounds 240/240 → 171/240 and the necessary-but-not-sufficient boundary.
+☐ Discussion still opens with the scope of predictive gating.
+☐ Conclusion still states that structural-validity checks remain design-stage requirements.
+☐ Fig. 2 caption still reconciles 0.217 + base ≈ 0.209.
+☐ Table VII remains numbered and citable.
+☐ Algorithm 1 remains absent from the main paper.
+☐ Module D rationale remains near its first method definition.
+☐ Module E defense remains in Results.
+☐ ROC-AUC/PR-AUC distinction remains explicit.
+☐ Bootstrap power limitation remains explicit.
+5.3 Page-by-page visual comparison
+☐ Render the baseline V4 PDF and revised V4 PDF at the same resolution.
+☐ Create a page-by-page visual diff or side-by-side contact sheet.
+☐ Inspect all eight pages at 100% zoom.
+☐ Confirm no table text is clipped, no figure caption overlaps, no reference runs past the margin, and no glyph is missing.
+☐ Confirm the revised PDF is still exactly 8 pages.
+☐ Confirm Table VII and Fig. 2 remain readable in two-column layout.
+☐ Confirm bibliography changes do not create a ninth page.
+☐ If a ninth page appears, first shorten wording/caption or move non-primary detail to supplementary; do not reduce font below the IEEE template.
+5.4 Automated source/PDF searches
+Search the final source and extracted PDF text for regressions:
+
+# Old/incorrect numeric formatting
+rg -n "\b1257\b|\b1291\b" <V4_SOURCE_DIR>
+
+# Old awkward sentence
+rg -n "On the Locked 2016-2025 audit" <V4_SOURCE_DIR>
+
+# Obsolete or dangerous scientific claims
+rg -n "0/240|100% specificity|detects all|proves structural validity|causal effect" <V4_SOURCE_DIR>
+
+# Deanonymizing strings (extend with actual names, emails, institutions, usernames)
+rg -ni "author_name|institution_name|@example\.com|github\.com/<username>|C:\\Users\\|/home/|/Users/" <SUBMISSION_PACKAGE>
+
+# Redundant algorithm
+rg -n "Algorithm 1|Locked claim-eligibility audit" <V4_SOURCE_DIR>
+6. Build and delivery workflow
+1. Create and verify the V4 backup/commit.
+2. Apply textual and BibTeX fixes.
+3. Preserve/verify the map in supplementary material.
+4. Run the house-price overlap check if the related manuscript exists.
+5. Run the full anonymization scan on the complete submission package.
+6. Clean-build the paper from scratch.
+7. Confirm exactly 8 pages.
+8. Extract PDF metadata and embedded links.
+9. Render all eight pages and inspect them.
+10. Compare the revised PDF with the baseline V4 PDF.
+11. Run numerical, structural, and terminology checks.
+12. Only then replace the working V4 output PDF.
+7. Required completion report from Codex
+Do not return only “done.” Produce a concise but evidence-based report containing all sections below.
+Report section
+Required contents
+A. Backup
+Backup/commit name, source path, baseline PDF hash, and page count.
+B. Files changed
+Every modified `.tex`, `.bib`, script, figure, supplementary file, and generated PDF.
+C. Exact edits
+Old → new wording for each textual change; bibliography normalization method.
+D. Map status
+Main/supplementary location, file name, caption, and anonymity result.
+E. House-price overlap
+Other manuscript found/not found; comparison outcome and unresolved risk.
+F. Anonymity
+PDF metadata, embedded URLs, package scan, and any redactions.
+G. Numerical invariance
+Confirmation that all listed values remain unchanged.
+H. Visual QA
+Eight pages inspected; no clipping/overlap; Table VII and Fig. 2 readable.
+I. Before/after comparison
+Summary of page-level differences and confirmation that already-fixed items did not regress.
+J. Final artifacts
+Final V4 PDF path, source path, supplementary package path, hashes, and page count.
+8. Final acceptance checklist
+☐ Current V4 was backed up before editing.
+☐ Edits were applied to the working V4, not a new V5.
+☐ All `1257`/`1291` display instances were normalized to `1,257`/`1,291`.
+☐ The old sentence `On the Locked 2016-2025 audit` is absent.
+☐ Bibliography author data is consistent and IEEEtran-generated.
+☐ No manual bibliography edit will be lost on rebuild.
+☐ The U.S. map is preserved in an anonymized reproducible location.
+☐ The complete package—not only the PDF—passes anonymity checks.
+☐ House-price overlap was assessed if the manuscript exists.
+☐ All core numerical results are unchanged.
+☐ Abstract, Discussion, and Conclusion retain the corrected contribution framing.
+☐ Fig. 2 base-value explanation remains present.
+☐ Table VII remains numbered and accurate.
+☐ Algorithm 1 remains removed.
+☐ Final PDF uses IEEE conference format and is exactly 8 pages.
+☐ All eight rendered pages were visually inspected.
+☐ No clipping, overflow, broken references, or missing glyphs remain.
+☐ Final PDF metadata author is Anonymous.
+☐ No identifying embedded link remains.
+☐ A before/after comparison report is included.
+STOP CONDITION: If any required numerical value changes, the paper becomes 9 pages, an identifying string remains, or the map/house-price status cannot be resolved, do not silently finalize. Report the blocker and preserve the last valid V4 build.
+End of Codex execution plan — V4 remaining fixes and regression audit

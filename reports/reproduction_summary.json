@@ -1,0 +1,25 @@
+{
+  "command": "python scripts/reproduce_all.py --clean",
+  "started_utc": "2026-07-18T18:04:38.388066+00:00",
+  "finished_utc": "2026-07-18T18:09:51.213432+00:00",
+  "runtime_seconds": 312.8,
+  "exit_code": 0,
+  "tests_run": 20,
+  "test_failures_or_errors": 0,
+  "cleaned_outputs": [
+    "paper/build",
+    "paper/generated",
+    "submission",
+    "artifacts/audit",
+    "artifacts/audit_records",
+    "artifacts/tables",
+    "artifacts/gates",
+    "artifacts/sensitivity",
+    "artifacts/targets",
+    "artifacts/validation"
+  ],
+  "used_cache": false,
+  "deterministic": true,
+  "final_pdf": "submission/ictai2026_paper_blind.pdf",
+  "anonymous_artifact": "submission/ictai2026_anonymous_artifact.zip"
+}

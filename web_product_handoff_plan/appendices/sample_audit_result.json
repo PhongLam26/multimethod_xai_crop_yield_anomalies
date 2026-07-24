@@ -1,0 +1,47 @@
+{
+  "schema_version": "claim-audit-result-v1",
+  "audit_run_id": "example-run-001",
+  "highest_permitted_claim": "feature_specific_predictive_reliance_only",
+  "primary_reason_code": "E_TOPK_FAIL",
+  "modules": {
+    "A": {
+      "status": "PASS",
+      "metric": "rmse",
+      "delta_left_minus_right": -0.42,
+      "ci95": [-0.63, -0.11],
+      "rule": "upper_ci_below_zero"
+    },
+    "B": {
+      "status": "PASS",
+      "metric": "rmse",
+      "delta_left_minus_right": -0.18,
+      "ci95": [-0.31, -0.04],
+      "rule": "upper_ci_below_zero"
+    },
+    "E": {
+      "status": "DOES_NOT_PASS",
+      "checks": {
+        "tail_error": "PASS",
+        "rank_recovery": "PASS",
+        "top_k_recovery": "DOES_NOT_PASS"
+      }
+    },
+    "D": {
+      "status": "DIAGNOSTIC_ONLY",
+      "affects_verdict": false
+    }
+  },
+  "hashes": {
+    "row_manifest_sha256": "example-not-real",
+    "observed_target_sha256": "example-not-real",
+    "selected_prediction_sha256": "example-not-real",
+    "config_sha256": "example-not-real"
+  },
+  "warnings": [
+    {
+      "code": "LOW_BLOCK_COUNT",
+      "message": "Example warning text for documentation only."
+    }
+  ]
+}
+

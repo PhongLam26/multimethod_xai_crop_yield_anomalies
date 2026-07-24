@@ -1,0 +1,15 @@
+{
+  "created_utc": "2026-07-19T18:49:17.189325+00:00",
+  "pdf": "paper_versions/v3_method_benchmark/source/fidelity_gated_xai_method_benchmark_v3.pdf",
+  "checks": {
+    "eight_or_fewer_pages": true,
+    "last_page_not_orphan_reference": true,
+    "no_undefined_references": true,
+    "claims_consistent": true,
+    "generated_number_diff_zero": true
+  },
+  "page_manifest": "build/page_manifest.json",
+  "number_diff_report": "build/generated_number_diff_report.json",
+  "claim_checks": "artifacts/validation/claim_consistency_check.txt",
+  "last_page_reference_count": 35
+}

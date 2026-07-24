@@ -1,11 +1,7 @@
 \documentclass[conference]{IEEEtran}
 \IEEEoverridecommandlockouts
-% Template version as of 6/27/2024. The override is kept for IEEE template
-% compatibility; this blind submission does not use funding footnotes.
-
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
-\usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
@@ -13,597 +9,431 @@
 \usepackage{array}
 \usepackage{tabularx}
 \usepackage[hidelinks]{hyperref}
-\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
-    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
-
-\graphicspath{{figures/}}
+\graphicspath{{figures/}{../generated/}}
 \setlength{\textfloatsep}{7pt plus 2pt minus 2pt}
 \setlength{\floatsep}{7pt plus 2pt minus 2pt}
 \setlength{\intextsep}{7pt plus 2pt minus 2pt}
 \renewcommand{\arraystretch}{0.98}
+\input{../generated/audit_numbers.tex}
 
-\title{Explaining Crop-Yield Anomalies with Multi-Method Interpretable Machine Learning}
-
+\title{Auditing Weather-Feature Reliance in Detrended Crop-Yield Models}
 \author{\IEEEauthorblockN{Anonymous Submission}}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-Yield prediction alone does not explain why particular crop--state--year outcomes
-fall below their long-run expectation. This study combines detrended low-yield
-anomaly screening with a multi-method interpretable machine-learning protocol to
-identify which extreme-weather driver groups are consistently emphasized by a
-fitted residual model. We use a U.S. crop--state--year panel for Barley, Canola,
-Oats, and Wheat from 1990--2025, with USDA yield records and NASA POWER weather
-features. Linear detrending within crop--state series flags 214 of 1,257
-observations as low-yield anomalies using $z<-1.0$. ExtraTrees yield models retain
-strong forward-time skill, while the residual model is treated as a diagnostic
-surface rather than a high-skill anomaly-magnitude forecaster. We compare SHAP,
-grouped SHAP, group permutation, group ablation, ALE curves, and selected LIME
-case studies. Heat is the strongest global model-reliance signal, while
-anomaly-focused explanations show co-leading heat and drought signals across
-methods. The contribution is a robust grouped-XAI diagnostic protocol for cautious
-model-based interpretation rather than causal event attribution.
+Interpretable machine learning cannot support substantive claims about below-trend
+crop-yield events unless its fitted predictive model has adequate out-of-sample
+fidelity. We audit this condition in a U.S. crop--state--year panel with
+\AuditTotalRows{} rows for Barley, Canola, Oats, and Wheat from 1990--2025.
+Trends and residual scales are fit on training years only; selection uses
+2012--2015 validation, and 2016--2025 remains locked until final evaluation. The
+validation-selected \AuditSelectedModel{} \AuditSelectedFamily{} model has final
+$R^2=\AuditSelectedRtwo{}$, RMSE \AuditSelectedRMSE{} t ha$^{-1}$, and paired
+$\Delta$RMSE versus a zero-residual baseline of \AuditSelectedDeltaRMSE{} with
+upper 95\% bound \AuditSelectedDeltaHigh{}. Its fidelity gate fails. We therefore
+retain SHAP, LIME, permutation, ablation, and response-curve results only as
+descriptions of a fitted function, not evidence that weather caused observed
+events. The contribution is a reproducible stop-gate protocol with paired
+year-block uncertainty, tail checks, robustness checks, and an explicit warning
+that full-series detrending is retrospective only.
 \end{abstract}
 
 \begin{IEEEkeywords}
-crop yield, yield anomaly, explainable machine learning, SHAP, permutation
-importance, drought, heat stress
+crop yield, explainable machine learning, temporal validation, negative results,
+reproducibility
 \end{IEEEkeywords}
 
 \section{Introduction}
-Crop-yield machine learning is often evaluated by average predictive accuracy, but
-decision-makers also need to understand low-yield anomaly years. A model that
-predicts yield levels well can still leave open a diagnostic question: which
-physical weather drivers does the fitted model associate with below-trend crop
-outcomes? This distinction matters because prediction and explanation can diverge,
-especially when weather variables are correlated and yield anomalies are rare.
+Machine-learning yield forecasts are increasingly built from weather, remote
+sensing, management, and crop-model variables. Studies report useful predictive
+systems across large and small panels, diverse model families, and hybrid
+formulations \cite{Paudel2021,Meroni2021,Khaki2019,LengHall2020,Klompenburg2020,Chlingaryan2018,Shahhosseini2021}.
+Yet a plausible feature attribution is not causal evidence, and agreement between
+explanation methods cannot compensate for a model that does not predict the future
+target reliably. This distinction is especially important for below-trend yield
+events, where a compelling explanation of an individual fitted prediction can be
+mistaken for an explanation of the observed loss.
 
-This paper reframes the task as multi-method model explanation. We first detrend
-yield within crop--state series and flag unusually low residual years. We then train
-a weather-yield residual model and compare explanation methods that operate at
-feature, driver-group, response-curve, and selected event levels. The central
-question is: which extreme-weather driver groups are consistently emphasized by the
-fitted residual model, and are those conclusions stable across several
-interpretable machine-learning methods?
+Weather extremes and climate variability are materially associated with crop-yield
+variation at several spatial scales \cite{Lesk2016,Ray2015,Lobell2011,SchlenkerRoberts2009,Zampieri2017,Vogel2019,Heino2023,Schierhorn2021,Sjulgard2023}.
+Those findings motivate careful predictive evaluation; they do not license an
+event-level attribution from this restricted panel. We ask a narrower question:
+does a leakage-safe residual model have enough future-period fidelity and stability
+to permit substantive weather-feature-reliance interpretation? The answer is
+evaluated before XAI is interpreted.
 
-The study makes three contributions. First, it combines crop--state yield
-detrending with low-yield anomaly screening to separate long-run production trends
-from short-run weather-sensitive deviations. Second, it implements a shared
-driver-group XAI protocol that compares feature-level SHAP, grouped SHAP, group
-permutation, group ablation, ALE response curves, and selected LIME explanations.
-Third, it evaluates method agreement at global and anomaly-focused levels, allowing
-driver claims to be stated more cautiously when several methods identify the same
-weather-driver group.
+The paper makes three contributions. First, it uses train-only target construction
+and validation-then-locked-test selection. Second, it specifies a quantitative
+fidelity gate with same-task baselines, paired year-block intervals, tail metrics,
+and pre-specified robustness checks. Third, it contrasts a prospective target with
+a retrospective full-series detrending diagnostic. A gate failure is a negative
+methodological result: it stops causal or event-driver claims, rather than choosing
+the most attractive explanation.
 
-The analysis avoids causal overclaiming. Terms such as ``driver'', ``attribution'',
-and ``explanation'' are used in a model-based diagnostic sense. Agreement across
-methods means that the fitted model repeatedly identifies the same driver group; it
-does not prove a real-world causal mechanism or formal climate-event attribution.
-This framing is useful for decision support because it distinguishes between
-forecasting yield levels and diagnosing the fitted model's behavior on below-trend
-events.
+\section{Related Work}
+\subsection{Yield Modeling and Detrending}
+Detrending separates a local historical yield trajectory from residual variation,
+but the result can depend on the detrending procedure and information available at
+the evaluation date \cite{Lu2017,Meng2024}. We therefore fit each crop--state trend
+and residual scale on training observations only. Ridge regression, Random Forest,
+and ExtraTrees provide deliberately distinct linear and tree-based model families
+\cite{HoerlKennard1970,Breiman2001,Geurts2006}; the implementations use
+scikit-learn \cite{Pedregosa2011}. This is a finite pre-specified comparison, not
+a search over the locked test period.
+
+\subsection{Explanation Methods and Their Boundary}
+SHAP and LIME explain a model output under their respective approximation and
+reference choices \cite{LundbergLee2017,Ribeiro2016}. Permutation-style analyses,
+model reliance, accumulated local effects, and conditional importance likewise
+describe feature dependence or behavior of a fitted predictor
+\cite{Fisher2019,ApleyZhu2020,Strobl2008}. They can be useful diagnostic artifacts.
+However, none turns failed prospective predictive fidelity into evidence about an
+observed yield anomaly. The gate below formalizes this boundary.
+
+\subsection{Evaluation and Reproducibility}
+Random splits can be inappropriate when temporal or hierarchical structure is
+present \cite{Roberts2017}. Leakage can create seemingly strong scientific
+machine-learning results while invalidating the intended forecast claim
+\cite{KapoorNarayanan2023}. Reproducible ML also requires explicit code, data
+paths, settings, and numerical evidence \cite{Pineau2021}. Accordingly, every
+manuscript number is generated from an auditable run: configuration, prediction
+vectors, bootstrap draws, citation check, and final PDF are all versioned outputs.
+
+\section{Data and Protocol}
+\subsection{Panel, Features, and Target}
+The unit is a crop--state--year row. The processed panel contains \AuditTotalRows{}
+observations from 1990--2025 for Barley, Canola, Oats, and Wheat across 12 U.S.
+states. Yield in t ha$^{-1}$ comes from USDA NASS Quick Stats
+\cite{USDANASSQuickStats}; daily maximum/minimum temperature, precipitation, and
+shortwave radiation come from NASA POWER \cite{NASAPOWER2026}. The primary design
+has 35 full-season weather features. A separate sensitivity design adds early-,
+middle-, and late-season proxies without redefining the target or locked population.
+
+\begin{table}[t]
+\centering
+\caption{Data-flow and final-test eligibility reconstructed from the raw inputs.}
+\label{tab:dataflow}
+\scriptsize
+\resizebox{\columnwidth}{!}{\input{../generated/table_data_flow.tex}}
+\end{table}
+
+For a test interval, each crop--state linear trend and residual scale is estimated
+using only its associated training rows. A row is eligible only with at least three
+training observations. The validation period contains \AuditValidationRows{} eligible
+rows after \AuditValidationExcluded{} pre-specified exclusions. The locked test
+starts with \AuditTestCandidateRows{} candidates, excludes \AuditTestExcluded{},
+and evaluates \AuditTestRows{} rows. Future yields cannot change a previously
+constructed evaluation target; this property has a unit test and row-level audit.
+The learned target is the raw train-only residual in t ha$^{-1}$; the standardized
+residual $z=r/\hat{\sigma}_{\mathrm{train}}$ defines below-trend events only.
+This distinction prevents a pooled raw-error score from being misread as a
+standardized event-recovery metric. Min-history rules of 3, 5, 8, and 10 years are
+reported as sensitivity analyses because both eligibility and the fitted residual
+scale can change with available history.
+
+\subsection{Selection and Baselines}
+Ridge $\alpha\in\{1,10\}$ and Random Forest/ExtraTrees with 160 trees and
+$\mathrm{min\_samples\_leaf}\in\{1,2\}$ are evaluated on metadata-only,
+weather-only, and full representations. Stochastic fits use fixed seeds
+$\{7,17,27,37,47\}$; numeric imputation/scaling, categorical encoding, and model
+fitting occur within the training fold. Mean per-row seed-aggregated validation
+RMSE chooses the configuration, with lexicographic tie-breaking and no locked-test
+access. Seed-level RMSE standard deviations are reported so tiny differences are
+not presented as deterministic wins.
+
+The final audit compares learned predictions on identical rows to zero residual,
+training-mean residual, and crop training-mean residual baselines. Prediction
+vectors are hashed and pairwise maximum absolute differences are retained, so any
+nearly coincident baselines are demonstrated rather than assumed. We use 2,000
+deterministic calendar-year block bootstrap replicates and percentile 95\%
+intervals. An invalid replicate fails the run; none are silently dropped.
+This block-resampling choice follows the dependent-observation motivation of the
+stationary-bootstrap literature \cite{PolitisRomano1994}; state-year and
+crop--state cluster schemes are reported as pre-specified sensitivity analyses.
 
 \begin{figure*}[t]
   \centering
-  \includegraphics[width=0.9\textwidth]{fig01_method_workflow.png}
-  \caption{Workflow for detecting detrended low-yield anomalies, fitting residual
-  models, applying multiple explanation methods, and comparing driver-group support.}
+  \includegraphics[width=0.96\textwidth]{figure_audit_workflow.png}
+  \caption{Prospective audit workflow. Selection is complete before the locked
+  2016--2025 test; the final fidelity gate controls whether interpretation may
+  proceed.}
   \label{fig:workflow}
 \end{figure*}
 
-\section{Related Work}
-Machine-learning yield studies show that weather and climate variables can support
-crop prediction across regions and crops
-\cite{Paudel2021,Meroni2021,Khaki2019,LengHall2020}. A related literature links
-yield anomalies to weather extremes, including drought, heat, excess water, and cold
-stress \cite{Lesk2016,Zampieri2017,Vogel2019,Heino2023,Schierhorn2021,Sjulgard2023}.
-Because technological and management trends can dominate raw yield trajectories,
-detrending is a standard step before interpreting weather-related yield variability
-\cite{Ray2015,Lu2017,Meng2024}.
-
-Explainable machine learning offers complementary tools for interpreting fitted
-models. SHAP provides additive feature contributions \cite{LundbergLee2017}; LIME
-offers selected local surrogate explanations \cite{Ribeiro2016}; model-reliance and
-permutation ideas support grouped dependence checks \cite{Fisher2019}; and ALE
-curves summarize response shape while reducing unrealistic feature combinations that
-can affect simple partial-dependence displays \cite{ApleyZhu2020}. Rather than
-treating any single method as decisive, this study compares whether several methods
-point to the same physically meaningful driver groups.
-
-\section{Data}
-The unit of analysis is a crop--state--year. The processed frame contains 1,257
-observations from 1990--2025 for Barley, Canola, Oats, and Wheat across 12 U.S.
-states: Colorado, Illinois, Iowa, Kansas, Minnesota, Montana, Nebraska, North
-Dakota, Oklahoma, South Dakota, Texas, and Washington. Yield is measured in t
-ha$^{-1}$ from USDA NASS \cite{USDANASSQuickStats}. Weather features are derived
-from NASA POWER daily data \cite{NASAPOWER2025} and summarized over growing-season
-windows labelled spring or winter.
-
-Each row contains crop identity, state identity, year, growing-season window, yield,
-representative state latitude and longitude, and aggregated weather indicators. The
-weather extraction uses representative state coordinates rather than gridded or
-crop-area-weighted weather. Therefore, explanations should be interpreted at a
-state-representative scale; within-state heterogeneity in soils, irrigation,
-cultivar, and management is not resolved. The panel is moderately unbalanced:
-Canola has fewer observations and fewer states than Oats or Wheat, so crop-specific
-patterns should not be generalized equally across crops.
-
-The XAI analysis uses 35 full-season weather features grouped into heat, drought,
-frost/cold, excess rain, and radiation. Numerical predictors are median-imputed and
-standardized inside the model pipeline; crop and state identifiers are imputed by
-most frequent category and one-hot encoded. The same preprocessing pipeline is used
-for yield and residual models. The feature set includes rainfall totals, wet days,
-dry spells, heat days, heatwave summaries, frost days, and radiation summaries.
+\subsection{Pre-specified Fidelity Gate}
+For a paired comparison, model-minus-baseline error passes only when the upper
+95\% year-block interval is below zero. Gate A is predictive fidelity of the
+validation-locked choice; Gate B is incremental weather value relative to context.
+Gate B never triggers re-selection. The primary operational tail is $z<-1$;
+$z<-1.5$ and $z<-2$ are sensitivity analyses because their smaller samples reduce
+power. Sign accuracy on a negative-only subset is reported only as a diagnostic,
+not a gate component. Instead, rank recovery requires a positive lower bootstrap
+bound and a within-year permutation $p<.05$. Top-$k$ recovery reports random
+expectation $k/n$, lift, hypergeometric probability, permutation $p$, and a
+year-block lift interval. Thus a severe-event row cannot pass simply by overlapping
+one arbitrary event. The fixed policy is in Table~\ref{tab:gate}.
 
 \begin{table}[t]
 \centering
-\caption{Dataset summary by crop.}
-\label{tab:dataset_summary}
+\caption{Fixed gate policy. Gate A and Gate B are independent; machine-readable
+values are in \texttt{configs/fidelity\_gate.yaml}.}
+\label{tab:gate}
 \scriptsize
-\begin{tabular}{@{}lrrrrl@{}}
-\toprule
-Crop & Obs. & States & Years & Anom. & Window \\
-\midrule
-Barley & 283 & 10 & 1990--2025 & 52 & spring \\
-Canola & 133 & 6 & 1991--2025 & 21 & spring \\
-Oats & 416 & 12 & 1990--2025 & 71 & spring \\
-Wheat & 425 & 12 & 1990--2025 & 70 & spring/winter \\
-\bottomrule
-\end{tabular}
+\resizebox{\columnwidth}{!}{\input{../generated/table_gate_definition.tex}}
 \end{table}
 
-\begin{table}[t]
-\centering
-\caption{Extreme-weather driver groups used in the grouped-XAI analysis.}
-\label{tab:driver_groups}
-\scriptsize
-\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}Xr@{}}
-\toprule
-Group & Description & Features \\
-\midrule
-Heat & High temperature, heatwave, and growing-degree exposure & 12 \\
-Drought & Low rainfall, dry spells, and hot-dry compound stress & 8 \\
-Frost/cold & Cold nights, frost days, and low minimum-temperature stress & 5 \\
-Excess rain & Heavy rainfall, wetness, and short-duration rainfall maxima & 8 \\
-Radiation & Seasonal solar-radiation anomalies & 2 \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-\section{Method}
-\subsection{Anomaly Screening}
-For each crop--state series, yield $y_{c,s,t}$ is linearly detrended against year:
-\begin{equation}
-  y_{c,s,t} = \alpha_{c,s} + \beta_{c,s}t + e_{c,s,t}.
-\end{equation}
-The residual is standardized within the crop--state series,
-\begin{equation}
-  z_{c,s,t} = \frac{e_{c,s,t}}{\operatorname{sd}(e_{c,s,\cdot})},
-\end{equation}
-using sample standard deviation. An observation is flagged as a low-yield anomaly
-when $z<-1.0$. Robustness checks use stricter thresholds of $z<-1.5$ and $z<-2.0$,
-and compare the linear-trend anomaly set with a centered seven-year rolling-trend
-baseline.
-
-\begin{table}[t]
-\centering
-\caption{Compact anomaly-screening robustness checks.}
-\label{tab:robustness}
-\scriptsize
-\begin{tabularx}{\linewidth}{@{}ll>{\raggedright\arraybackslash}X@{}}
-\toprule
-Check & Setting & Result \\
-\midrule
-Threshold & $z<-1.0$ & 214 anomalies; default broad anomaly set \\
-Threshold & $z<-1.5$ & 85 anomalies; stricter low-yield subset \\
-Threshold & $z<-2.0$ & 30 anomalies; most severe subset \\
-Detrending & 7-year rolling & 192 anomalies; Jaccard overlap 0.618 \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-\subsection{Yield and Residual Models}
-The yield baseline uses ExtraTrees with year, location, crop, state, and weather
-features \cite{Geurts2006,Pedregosa2011}. Its role is to check whether the data
-contain substantial predictive signal for yield levels. The residual model uses
-weather features, location, crop, and state to predict detrended yield residuals.
-Its role is narrower: it provides a controlled diagnostic surface for comparing
-explanation methods.
-
-All SHAP-based explanations are computed on the fitted residual ExtraTrees model,
-not the yield-level baseline. Main global summaries use the forward-time evaluation
-split, while anomaly-focused summaries use low-yield anomalies within that split
-unless explicitly marked as selected LIME cases. This separation prevents global
-feature importance from being interpreted as event-level anomaly explanation.
-
-\begin{table}[t]
-\centering
-\caption{Forward-time yield and residual model performance. RMSE is in t ha$^{-1}$.}
-\label{tab:model_performance}
-\scriptsize
-\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}Xrrrr@{}}
-\toprule
-Target & Protocol & Scope & $n$ & $R^2$ & RMSE \\
-\midrule
-Yield & train 1990--2015; test 2016--2021 & all & 209 & 0.807 & 0.527 \\
-Yield & train 1990--2018; test 2019--2025 & all & 236 & 0.813 & 0.529 \\
-Residual & train 1990--2015; test 2016--2025 & all & 343 & 0.091 & 0.431 \\
-Residual & train 1990--2015; test 2016--2025 & anom. & 67 & -4.396 & 0.660 \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-\subsection{Global Explanation Methods}
-Let $F_g$ be the feature set for driver group $g$, and let $\phi_{i,j}$ be the SHAP
-value for observation $i$ and feature $j$. Grouped SHAP magnitude is
-\begin{equation}
-  G_{i,g}^{abs} = \sum_{j \in F_g} |\phi_{i,j}|.
-\end{equation}
-Global grouped SHAP is the mean of $G_{i,g}^{abs}$ across forward-time evaluation
-rows; anomaly-only grouped SHAP averages the same quantity over anomaly rows in the
-same evaluation split. Signed grouped SHAP,
-\begin{equation}
-  G_{i,g}^{signed} = \sum_{j \in F_g} \phi_{i,j},
-\end{equation}
-is retained for directional inspection, while the main rankings use absolute
-grouped SHAP magnitude.
-
-Group permutation jointly shuffles all features in $F_g$ across rows in the
-evaluation set while leaving all other features unchanged. Importance is the
-increase in residual RMSE relative to the unshuffled model:
-\begin{equation}
-  I_g^{perm} =
-  \operatorname{RMSE}(\hat{f}(X_{perm(g)}), y) - \operatorname{RMSE}(\hat{f}(X), y).
-\end{equation}
-Group ablation is a retraining-level diagnostic. For each driver group, all
-features in $F_g$ are removed, the residual model is retrained with the same split
-and hyperparameters, and importance is
-\begin{equation}
-  I_g^{abl} =
-  \operatorname{RMSE}(\hat{f}_{-g}(X_{-g}), y) - \operatorname{RMSE}(\hat{f}(X), y).
-\end{equation}
-Permutation measures prediction-time dependence of the fitted model; ablation
-measures whether the model can compensate after a group is removed and retrained.
-
-\subsection{Event-Level Explanations, ALE, and Agreement}
-Event-level evidence is restricted to two non-perturbation views. First, grouped
-SHAP is aggregated for each anomaly event and the largest grouped contribution is
-used as the event's top driver. Second, LIME is applied only to selected case-study
-events from 2012, 2021, and 2022; selected cases are the lowest-$z$ anomaly rows
-within those years. LIME is therefore a selected-case check rather than a
-full-dataset ranking method.
-
-ALE curves are used as response-shape diagnostics rather than causal dose-response
-estimates. They are preferred over simple PDP-style displays because many weather
-features are correlated. The curves help check whether the fitted residual model
-responds plausibly to selected heat, drought, and rainfall variables, but they do
-not identify independent causal effects.
-
-\begin{table}[t]
-\centering
-\caption{Explanation methods and their role in the diagnostic protocol.}
-\label{tab:xai_methods}
-\scriptsize
-\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
-\toprule
-Method & Main question & Use in this study \\
-\midrule
-SHAP & Which features contribute to a tree-model prediction? & Feature-level ranking and signed residual inspection. \\
-Grouped SHAP & Which physical driver group has the largest total contribution? & Global and anomaly-row driver ranking. \\
-Permutation & How much does error rise when a group is jointly shuffled? & Prediction-time dependence check. \\
-Ablation & What is lost when a group is removed and the model is retrained? & Retraining-level model-reliance check. \\
-ALE & How does model response change across exposure levels? & Response-shape plausibility check. \\
-LIME & How is a selected event explained locally? & Selected 2012, 2021, and 2022 case checks. \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-For a scope $s$ and method $m$, let $T_m(s)$ be the rank-one driver group. The
-consensus vote count for driver group $g$ is
-\begin{equation}
-  V_g(s) = \sum_m \mathbf{1}\{T_m(s)=g\}.
-\end{equation}
-We use rank-one vote counts rather than averaging raw explanation scores because
-SHAP magnitudes, RMSE-increase diagnostics, and LIME scores are measured on
-different scales. The vote count is therefore a scale-free summary of whether
-methods select the same top driver group.
+\begin{center}
+\fbox{\begin{minipage}{0.94\linewidth}\scriptsize
+\textbf{Algorithm 1: Locked fidelity audit}\par
+\textbf{Input:} panel, fixed split/configuration, seed list, gate configuration.\par
+1. Fit detrending and preprocessing on each training period only.\par
+2. Select one configuration on validation RMSE; lock it.\par
+3. Refit the locked choice through 2015 and predict 2016--2025.\par
+4. Compare same-row baselines with paired year-block bootstrap intervals.\par
+5. Evaluate null-aware primary-tail rank/top-$k$ recovery and sensitivity tails.\par
+6. Return Gate A and Gate B separately; stop substantive event claims when Gate A
+fails and weather-specific claims unless both gates pass.
+\end{minipage}}
+\end{center}
 
 \section{Results}
-\subsection{Anomalies and Model Skill}
-The default threshold identifies 214 low-yield anomalies, or 17.0\% of the processed
-panel. The threshold is intentionally inclusive: it is designed to collect a broad
-set of below-trend yield events for explanation rather than only the most extreme
-failures. Tightening the threshold produces smaller nested sets, while the rolling
-trend baseline shows moderate overlap with the linear-trend anomaly set
-(Table \ref{tab:robustness}). We therefore interpret the reported XAI results as
-conditional on the explicit linear detrending choice, while using the stricter
-thresholds and rolling-trend comparison as robustness checks rather than alternative
-main definitions.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\linewidth]{fig02_anomaly_timeline.png}
-  \caption{Detrended low-yield anomaly counts by year, with 2012, 2021, and 2022
-  highlighted as plausibility-check years rather than training labels.}
-  \label{fig:anomaly_timeline}
-\end{figure}
-
-Figure \ref{fig:anomaly_timeline} shows that the anomaly set is not evenly
-distributed over time. The highlighted years are retained as sanity-check years
-because broad heat and drought conditions were documented for 2012 and for parts of
-the Northern Plains and western U.S. in 2021--2022
-\cite{NOAA2012Drought,DroughtGov2021NorthernPlains,NOAA2022Drought}. Table
-\ref{tab:model_performance} shows why the residual model is interpreted cautiously:
-yield-level prediction is strong, but residual anomaly-magnitude prediction is weak,
-so the XAI results are diagnostic explanations of fitted-model behavior.
-
-\subsection{Feature and Driver Rankings}
-Figure \ref{fig:shap_summary} indicates that the residual model relies on a mixture
-of rainfall, dry-spell, heatwave, wetness, and cold-stress features rather than a
-single variable family. This motivates grouping features by physical driver process
-instead of interpreting isolated feature rankings alone.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\linewidth]{fig03_shap_summary.png}
-  \caption{Top weather features by mean absolute SHAP value in the residual model on
-  the forward-time evaluation split.}
-  \label{fig:shap_summary}
-\end{figure}
-
-Grouped SHAP shows a shift between forward-time evaluation rows and anomaly rows
-(Fig.~\ref{fig:grouped_shap}). On the forward-time anomaly subset, heat and drought
-are the two largest grouped contributions, with excess rain next. The difference
-between evaluation-row and anomaly-only summaries is important: anomaly explanation
-should not be reduced to global feature importance alone.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\linewidth]{fig04_grouped_shap.png}
-  \caption{Grouped SHAP summaries for forward-time evaluation rows and anomaly rows.}
-  \label{fig:grouped_shap}
-\end{figure}
+\subsection{Validation and Locked Test}
+Table~\ref{tab:selection} shows leading validation configurations. The selected
+model is \AuditSelectedModel{} with \AuditSelectedFamily{} features. The complete
+grid, seed-level metrics, tie rule, and locked-test access flag are supplied in the
+artifact. A non-selected ExtraTrees full model can have a small final point estimate
+without changing the decision: it was not validation-selected, and the locked test
+is never used to switch configurations.
 
 \begin{table}[t]
 \centering
-\caption{Global and anomaly-focused driver-group rankings across explanation methods.}
-\label{tab:driver_rankings}
+\caption{Validation selection on 2012--2015. RMSE is computed after fixed-seed
+prediction aggregation; Seed SD is the across-seed RMSE standard deviation.}
+\label{tab:selection}
 \scriptsize
-\begin{tabular}{@{}llll@{}}
-\toprule
-Scope & Method & Rank 1 & Rank 2 \\
-\midrule
-Global & Ablation & heat (0.0078) & excess rain (0.0025) \\
-Global & Permutation & heat (0.0214) & drought (0.0199) \\
-Global & Grouped SHAP & drought (0.0480) & heat (0.0411) \\
-Anomaly & Ablation & heat (0.0287) & radiation (0.0044) \\
-Anomaly & Permutation & drought (0.0243) & excess rain (0.0113) \\
-Anomaly & Grouped SHAP & drought (0.0614) & heat (0.0566) \\
-Anomaly & LIME cases & heat (0.0238) & drought (0.0224) \\
-\bottomrule
-\end{tabular}
+\resizebox{\columnwidth}{!}{\input{../generated/table_validation_selection.tex}}
 \end{table}
 
-Table \ref{tab:driver_rankings} provides complementary global and anomaly-focused
-views. Grouped SHAP, permutation, and ablation are all reported on the forward-time
-evaluation split; LIME remains a selected-case check and is identified by its
-smaller evaluation scope. Because the score units differ across methods, the table
-should be read as a cross-method rank summary rather than an identical-scale
-statistical comparison. Globally, heat is the strongest group under retraining
-ablation and group permutation, while grouped SHAP ranks drought first. On anomaly
-rows, heat and drought become co-leading signals: heat ranks first under group
-ablation and selected LIME cases, while drought ranks first under grouped SHAP and
-group permutation.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\linewidth]{fig05_group_importance.png}
-  \caption{Global group permutation and group ablation importance measured by
-  residual RMSE increase.}
-  \label{fig:group_importance}
-\end{figure}
-
-Figure \ref{fig:group_importance} explains why method comparison is useful.
-Permutation measures how much the fitted model depends on a driver group at
-prediction time; ablation measures whether the model can compensate when the group
-is removed and retrained. Heat ranks highest under both global diagnostics,
-suggesting robust global reliance. Drought ranks strongly under permutation but
-less strongly under retraining ablation, suggesting that drought information partly
-overlaps with other rainfall and wetness features.
-
-\subsection{Response Curves and Agreement}
-ALE curves provide qualitative support for the driver rankings. Heat-related curves
-generally decline at higher exposure levels, consistent with adverse
-high-temperature behavior in the fitted residual model. Rainfall and dry-spell
-curves are more nonlinear, suggesting that the model does not treat water stress as
-a simple monotonic process.
-
-\begin{figure*}[t]
-  \centering
-  \includegraphics[width=0.92\textwidth]{fig07_ale_curves.png}
-  \caption{ALE curves for selected heat, drought, and rainfall features.}
-  \label{fig:ale}
-\end{figure*}
+The selected weather-only ExtraTrees configuration ranks first in 3/5 stochastic
+validation seeds. Its advantage is small relative to several seed standard
+deviations, so the selected row is a reproducible protocol choice rather than a
+claim of decisive superiority. The one-standard-error flag and every seed-level
+score are retained; no final-test statistic changes this selection.
 
 \begin{table}[t]
 \centering
-\caption{Scale-free rank-one support across heterogeneous explanation methods.}
-\label{tab:agreement}
+\caption{Validation stability of the leading configurations. The rank probability
+is across fixed stochastic seeds; 1-SE denotes inclusion under the pre-specified
+one-standard-error diagnostic, not a post-hoc replacement.}
+\label{tab:stability}
 \scriptsize
-\begin{tabularx}{\linewidth}{@{}lcl>{\raggedright\arraybackslash}X@{}}
-\toprule
-Scope & Methods & Driver & Interpretation \\
-\midrule
-Global & 3 & heat, 2/3 & Majority support from group ablation and group permutation. \\
-Anomaly & 4 & heat, 2/4; drought, 2/4 & Co-leading anomaly-focused signals under rank-one support. \\
-\bottomrule
-\end{tabularx}
+\resizebox{\columnwidth}{!}{\input{../generated/table_selection_stability.tex}}
 \end{table}
 
-\begin{figure*}[t]
-  \centering
-  \includegraphics[width=0.84\textwidth]{fig08_method_agreement.png}
-  \caption{Driver-group rank positions across global and anomaly-focused XAI methods.}
-  \label{fig:agreement}
-\end{figure*}
+On the locked test, the selected model has $R^2=\AuditSelectedRtwo{}$ and RMSE
+\AuditSelectedRMSE{} t ha$^{-1}$. Its paired RMSE difference from zero crosses
+zero, so Gate A fails. Table~\ref{tab:baselines} includes all same-task naive
+baselines and the selected configuration across feature families. Figure
+\ref{fig:finalaudit} deliberately separates selected-model predictive fidelity
+from the distinct full-versus-metadata incremental-weather comparison; neither is
+a post-hoc model-selection mechanism.
 
-Table \ref{tab:agreement} summarizes rank-one support across heterogeneous
-explanation methods. It should be read as a scale-free consensus summary, not as a
-statistical test of driver importance. Figure \ref{fig:agreement} visualizes rank
-positions rather than method-by-method rate estimates: darker/high-rank cells
-indicate which driver groups are placed near the top by each method. Global
-diagnostics give majority rank-one support to heat, while anomaly-focused
-explanations split their rank-one support between heat and drought.
+\begin{table*}[t]
+\centering
+\caption{Locked 2016--2025 same-task audit. Learned-model predictions are seed
+aggregated. $\Delta$RMSE is model minus zero-residual RMSE with paired 95\%
+year-block intervals; RMSE is t ha$^{-1}$.}
+\label{tab:baselines}
+\scriptsize
+\resizebox{\textwidth}{!}{\input{../generated/table_final_baselines.tex}}
+\end{table*}
+
+\subsection{Event-Detection Diagnostics}
+Event detection is evaluated over all 333 locked rows, not only a tail preselected
+by the observed outcome. The score is negative predicted residual and the score
+threshold is fixed at zero before final evaluation. Table~\ref{tab:event} reports
+PR-AUC, ROC-AUC, balanced accuracy, precision, recall, and F1. These are
+diagnostics rather than Gate A components: they describe discrimination, but they
+do not override the paired-error and null-aware rank failures. In particular, an
+always-negative predictor cannot gain a gate pass through the negative-only sign
+rate used in older drafts.
 
 \begin{table}[t]
 \centering
-\caption{Selected event-level method-sensitivity checks using grouped SHAP and LIME.}
-\label{tab:event_checks}
+\caption{Locked-test event-detection diagnostics on all rows. These values are
+not tuned on the final test and do not replace Gate A components.}
+\label{tab:event}
 \scriptsize
-\begin{tabular}{@{}lllll@{}}
-\toprule
-Crop/state & Year & $z$ & SHAP & LIME \\
-\midrule
-Canola ND & 2012 & -1.49 & heat & heat \\
-Oats KS & 2012 & -2.33 & heat & drought \\
-Barley SD & 2021 & -2.98 & heat & heat \\
-Wheat WA & 2021 & -2.92 & heat & heat \\
-Oats OK & 2022 & -3.44 & drought & heat \\
-Wheat NE & 2022 & -2.64 & drought & drought \\
-\bottomrule
-\end{tabular}
+\resizebox{\columnwidth}{!}{\input{../generated/table_event_detection.tex}}
 \end{table}
-
-Table \ref{tab:event_checks} reports representative cases from the selected LIME
-case-study set and illustrates selected case-level method sensitivity. Its purpose
-is not to validate event-level correctness. Agreement between grouped SHAP and LIME
-in four of six selected cases provides stronger diagnostic support for those
-examples, while the two disagreements indicate that event-level driver assignments
-should be treated cautiously and not reported as robust single-driver claims.
-
-\section{Decision-Support Prototype}
-To make the diagnostic workflow inspectable, we package the validated output tables
-in a lightweight web prototype. The dashboard is not a retraining service or a
-real-time weather system. Instead, it consumes the static CSV outputs produced by
-the reproducible pipeline and exposes the same anomaly-screening and XAI evidence
-used in the paper. This design makes the result auditable: users can inspect a
-crop--state--year event, its standardized residual, its weather indicators, and the
-available explanation tables without changing the underlying model.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\linewidth]{fig09_application_prototype.png}
-  \caption{Decision-support prototype architecture. The dashboard consumes static
-  validated outputs and exposes anomaly screening, residual-model diagnostics,
-  multi-method XAI evidence, and consensus summaries without retraining or
-  real-time weather queries.}
-  \label{fig:prototype_architecture}
+  \includegraphics[width=\linewidth]{figure_final_audit.png}
+  \caption{Two distinct locked-test comparisons. Negative values favor the left
+  model; bars are paired 95\% year-block intervals.}
+  \label{fig:finalaudit}
 \end{figure}
 
-Figure \ref{fig:prototype_architecture} summarizes the deployed data flow. The
-interface first filters crop, state, year, and growing-window rows, then presents
-low-yield anomaly events selected by the detrended residual $z$-score. For a
-selected event, the tool displays weather indicators and links them to method-level
-evidence such as SHAP, grouped SHAP, group permutation, group ablation, ALE, LIME,
-and method agreement. The output is therefore a decision-support view over
-model-based diagnostics rather than an automatic attribution rule.
+\subsection{Below-Trend Gate and Robustness}
+The broad below-trend subset contains \AuditTailRows{} locked-test rows. Table
+\ref{tab:tail} separates error, rank-null, and chance-adjusted event-recovery
+components. The primary $z<-1$ top-10 lift is below random expectation and its
+permutation result is not significant; rank uncertainty also crosses zero. Gate A
+therefore fails without relying on a directional-sign statistic. Neither local
+explanations nor global/group diagnostics are evidence of weather causes or event
+drivers in this primary analysis.
 
-\begin{figure*}[t]
+\begin{table*}[t]
+\centering
+\caption{Tail components on train-only targets. Only $z<-1$ is primary; severe
+tails are sensitivity analyses. A status is a defined component result, not an
+artifact-verification label.}
+\label{tab:tail}
+\scriptsize
+\resizebox{\textwidth}{!}{\input{../generated/table_tail_components_v2.tex}}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Gate A/B decision components. Gate A controls substantive observed-event
+claims; Gate B is additionally required for weather-specific claims.}
+\label{tab:gateab}
+\scriptsize
+\resizebox{\textwidth}{!}{\input{../generated/table_gate_ab.tex}}
+\end{table*}
+
+Table~\ref{tab:robustness} gives exact temporal pass counts and summary ranges for
+the pre-specified stage-feature, crop, spatial, and target-protocol checks. These
+checks do not reverse the central decision; they show its stability boundary rather
+than optimize around it.
+
+\begin{table}[t]
+\centering
+\caption{Robustness and protocol sensitivity. Complete row-level outputs and
+settings are included in the audit artifact.}
+\label{tab:robustness}
+\scriptsize
+\resizebox{\columnwidth}{!}{\input{../generated/table_robustness.tex}}
+\end{table}
+
+\subsection{Target, Cluster, and Model-Family Sensitivity}
+The primary rule requires at least three earlier observations for a crop--state
+trend. Increasing this rule to eight years changes the final population from 333
+to 313 rows and changes the paired overall interval. That is not used to replace
+the pre-specified primary result: it demonstrates that eligibility and trend scale
+are consequential design choices. We therefore report it as a limitation rather
+than select the favorable sensitivity. State-year and crop--state cluster resampling
+also retain an interval crossing zero under the primary rule. Finally,
+HistGradientBoosting and ElasticNet are added as pre-specified tabular comparators;
+their locked-test point estimates are diagnostic, not post-hoc replacements for the
+validation-selected configuration. Table~\ref{tab:sensitivity} preserves the exact
+population, interval, and status for these checks.
+
+\begin{table*}[t]
+\centering
+\caption{Target, cluster, and expanded-model sensitivity. History 3 is the
+primary pre-specified eligibility rule; later history rules are not used to change
+selection or the primary claim.}
+\label{tab:sensitivity}
+\scriptsize
+\resizebox{\textwidth}{!}{\input{../generated/table_sensitivity_v2.tex}}
+\end{table*}
+
+The standardized-target model is actually refit on the train-only residual $z$,
+rather than obtained by rescaling raw-target predictions after the fact; its paired
+interval also crosses zero. Replacing ordinary least-squares detrending by a
+training-only Huber trend changes the primary event count from 73 to 40, but its
+paired interval still crosses zero. These analyses are deliberately reported as
+target-construction sensitivities, not candidate routes to a favorable result.
+
+\subsection{Temporal Stability and Capacity}
+The four rolling-origin folds use non-overlapping future blocks after 2003, 2006,
+2009, and 2012 training cutoffs. Only the fourth has a fully negative interval;
+three folds do not. A prefix learning curve retrains the same validation-locked
+configuration using progressively longer historical prefixes, while retaining only
+crop--state series with at least three prefix observations. None of the four
+prefix intervals establishes improvement over zero. This makes the conclusion
+conditional on the available panel and model family, not a claim that more data
+cannot help.
+
+\begin{table*}[t]
+\centering
+\caption{Exact temporal robustness and prefix learning-curve checks. Each entry
+compares the locked weather-only configuration to zero residual with paired
+calendar-year-block 95\% intervals.}
+\label{tab:temporalcapacity}
+\scriptsize
+\resizebox{\textwidth}{!}{\input{../generated/table_temporal_capacity.tex}}
+\end{table*}
+
+\subsection{Audit Traceability and Interpretation Limits}
+Table~\ref{tab:trace} maps each numerical claim family to a concrete artifact.
+This is intentionally more than a code-release statement. E1 records the temporal
+split and train-only target construction; E2 records the entire validation grid,
+fixed seed outcomes, and tie rule; E3 stores every sampled calendar-year block;
+and E4 records every tail prediction, metric, and paired interval. The remaining
+checks preserve the temporal, feature, crop, spatial, target-construction, and
+baseline evidence required to reproduce the stop decision. Consequently, a reader
+can distinguish an empirical model result from a narrative inference about weather.
+
+\begin{table}[t]
+\centering
+\caption{E1--E10 numerical traceability. VERIFIED means the evidence artifact
+was regenerated and checked; it does not mean a scientific gate passed.}
+\label{tab:trace}
+\scriptsize
+\resizebox{\columnwidth}{!}{\input{../generated/table_audit_traceability.tex}}
+\end{table}
+
+Several limits should shape interpretation. State-representative weather
+coordinates can miss within-state exposure; the weather covariates are correlated;
+and this panel lacks soil, irrigation, cultivar, management, and phenological
+measurements. The response variable is a detrended state aggregate rather than a
+farm-level loss. The observed gate failure may therefore reflect a mismatch among
+target, resolution, features, and model family, not an absence of physical weather
+effects. Conversely, these limitations do not justify relaxing the gate after
+observing the locked test. They identify inputs for a future, separately specified
+study: richer spatial covariates, prospectively defined phenology windows, and an
+independent evaluation period.
+
+\subsection{Retrospective Target Sensitivity}
+Full-series detrending uses later yields to construct earlier residuals. It is
+therefore a retrospective diagnostic, not a prospective target. Relative to the
+train-only construction, the $z<-1$ final-period set has Jaccard overlap 0.605
+with year-block 95\% interval [0.500, 0.675]; 21 prospective events are not
+retrospective events and 13 retrospective events are not prospective events
+(Fig.~\ref{fig:leakage}). A coherent retrospective explanation would still not
+repair the prospective fidelity failure.
+
+\begin{figure}[t]
   \centering
-  \includegraphics[width=0.98\textwidth]{fig10_web_dashboard.png}
-  \caption{Web prototype views. The anomaly explorer filters crop--state--year rows
-  and highlights the strongest low-yield residual events, while the XAI view exposes
-  feature- and driver-group evidence for selected cases.}
-  \label{fig:web_dashboard}
-\end{figure*}
+  \includegraphics[width=\linewidth]{figure_retrospective_v2.png}
+  \caption{\textbf{RETROSPECTIVE ONLY.} Full-series detrending uses future yields.
+  Bars show exact event counts and the transition panel shows prospective/
+  retrospective membership; this is not prospective forecast evidence.}
+  \label{fig:leakage}
+\end{figure}
 
-Figure \ref{fig:web_dashboard} illustrates the two main inspection modes. In the
-anomaly explorer, a user can focus on low-yield rows and identify the strongest
-events, such as Oats--Oklahoma in 2022 with $z=-3.44$. In the XAI view, the same
-analysis surface exposes feature rankings and driver groups, allowing a user to
-check whether heat, drought, excess rain, frost/cold, or radiation is emphasized by
-the selected method. The intended use is post-season diagnosis, screening, and
-follow-up prioritization; it is not a farm-level recommendation engine, insurance
-payout rule, or causal climate-event attribution system.
+\section{Discussion and Conclusion}
+The result is informative because the model was selected without final-test access,
+compared with same-task baselines, evaluated with paired uncertainty, stress-tested
+on negative tails, and checked across temporal, feature, crop, spatial, and target
+protocol settings. The evidence does not support substantive weather-feature claims
+for observed below-trend events in this crop--state panel. It does not imply that
+weather effects are absent; it limits what the present target, features, and model
+families can establish.
 
-\section{Discussion}
-The multi-method comparison supports a more nuanced conclusion than a single ranking
-would provide. Heat is the strongest global model-reliance driver: both group
-permutation and retraining ablation place heat first in the forward-time evaluation
-setting. Anomaly-focused explanations are more method-sensitive. Drought ranks first
-in evaluation-scope grouped SHAP and anomaly-row permutation, while heat ranks first
-in anomaly-row ablation and selected LIME cases. Excess rain is a meaningful
-secondary signal because rainfall and wetness features appear in feature-level and
-grouped summaries.
-
-Method disagreement is informative. SHAP describes additive contributions within the
-fitted tree model; permutation measures prediction-time dependence; retraining
-ablation measures whether other variables can substitute for a removed group; ALE
-describes response shape; and LIME provides selected local surrogate checks. Weather
-features are correlated, so methods that answer different questions should not agree
-perfectly. The agreement protocol clarifies which driver claims are stable across
-several lenses and which are method-sensitive.
-
-The practical application of the protocol is decision support rather than automatic
-event attribution. After a low-yield crop--state--year is detected, the workflow can
-help analysts inspect which driver groups the residual model emphasizes and whether
-that emphasis is stable across contribution, perturbation, retraining, curve-based,
-and selected local explanations. Such a tool can support post-season diagnosis,
-prioritize heat- or drought-related adaptation questions, and guide follow-up
-agronomic investigation. It should not be used as a direct insurance payout rule,
-farm-level recommendation engine, or proof that one weather driver caused a
-specific yield loss.
-
-The global and anomaly-focused scopes should also be interpreted differently.
-Global model reliance summarizes behavior across all forward-time evaluation rows,
-including ordinary years. It therefore asks which driver group is generally
-important for the fitted residual model. Anomaly-focused explanation asks a more
-specific question: among the below-trend cases selected by the anomaly screen, which
-driver groups dominate the explanation summaries? The answer shifts from a clearer
-global heat signal to a heat--drought split on anomaly rows. This is a substantive
-result rather than a nuisance, because low-yield events can concentrate in regions
-of feature space where drought, rainfall, and heat variables overlap more strongly
-than they do in the full evaluation set.
-
-The state-representative design is most appropriate for screening and triage. For
-example, if a region repeatedly shows below-trend yield years whose explanations are
-heat-dominant under both permutation and ablation, the result can motivate more
-localized investigation into heat-stress timing, cultivar sensitivity, and possible
-management adaptation. If grouped SHAP and LIME disagree on a selected event, the
-protocol deliberately lowers confidence in a single-driver narrative. This behavior
-is desirable for operational dashboards because it helps users separate robust
-model-reliance signals from event-level cases that require domain follow-up.
-
-The analysis also provides a reproducible template for extending the study. Future
-versions can replace representative state coordinates with gridded or
-crop-area-weighted weather, add soil and irrigation covariates, or evaluate
-crop-specific calendars. The same agreement logic would still apply: claims should
-be strongest when feature contribution, perturbation, retraining, response-curve,
-and local explanation views point toward the same driver group. Conversely, method
-disagreement should be reported as uncertainty rather than hidden by averaging
-incompatible scores.
-
-Several limitations remain. The dataset is state-level and uses representative
-coordinates, so it cannot capture within-state weather, soil, irrigation, cultivar,
-or management heterogeneity. Detrending choices influence which rows are labelled
-as anomalies. The residual model has limited skill for anomaly magnitudes, which
-narrows the claim to diagnostic explanation of fitted-model behavior. Finally, the
-analysis is not a formal climate-event attribution study; that task requires a
-different causal and probabilistic framework \cite{Otto2017,Oldenborgh2021,Otto2023}.
-
-\section{Conclusion}
-This study presents a reproducible multi-method XAI protocol for explaining
-detrended crop-yield anomalies. By combining anomaly screening, residual modeling,
-SHAP, grouped SHAP, group permutation, group ablation, ALE, selected LIME cases, and
-method agreement, the analysis avoids relying on a single explanation method. The
-main empirical pattern is that heat is the strongest global model-reliance driver,
-while heat and drought are co-leading anomaly-focused signals depending on the
-explanation method. The approach provides a cautious, auditable bridge between
-crop-yield prediction and diagnostic decision support.
+The reusable lesson is procedural. Lock selection before testing; distinguish Gate A
+predictive fidelity from Gate B incremental feature value; require paired uncertainty
+and tail recovery; expose baseline vectors; and stop interpretation when any
+pre-specified component fails. The anonymized artifact contains raw-input
+reconstruction evidence, configuration files, row-level predictions, bootstrap
+draws, reference/citation audits, generated figures/tables, and one-command
+reproduction. USDA NASS and NASA POWER remain subject to their source terms.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
-
 \end{document}

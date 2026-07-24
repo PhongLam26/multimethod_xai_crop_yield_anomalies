@@ -1,0 +1,157 @@
+{
+  "created_utc": "2026-07-21T18:18:19.516802+00:00",
+  "status": "PASS",
+  "package_dir": "submission/claim_eligibility_v5_1_blind_package",
+  "zip_path": "submission/claim_eligibility_v5_1_blind_package.zip",
+  "zip_sha256": "8706664fa8d104375144336665f53a1db1caaa9688c59d1908b5a543194a3ec8",
+  "copied_files": [
+    {
+      "source": "paper/final/ictai2026_claim_eligibility_audit_v5_1_complete.pdf",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper\\final\\ictai2026_claim_eligibility_audit_v5_1_complete.pdf",
+      "sha256": "42ad29572e45f9c4014d7a51fbd30ac3b2d017eb5af671f3cad284288204cf05"
+    },
+    {
+      "source": "paper/final/ictai2026_claim_eligibility_audit_v5_1_complete.sha256",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper\\final\\ictai2026_claim_eligibility_audit_v5_1_complete.sha256",
+      "sha256": "b3d07ffbdacad2677f85bcf49427d84e6b933954c22869a87fd9d9b0d243fd5c"
+    },
+    {
+      "source": "paper_versions/v5_claim_eligibility_audit/source/fidelity_gated_xai_method_benchmark_v3.tex",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper_versions\\v5_claim_eligibility_audit\\source\\fidelity_gated_xai_method_benchmark_v3.tex",
+      "sha256": "ef00b113086cc6baa8761427fabf1db3e348410993fcdcdaa91d56ae9efb6b6b"
+    },
+    {
+      "source": "paper_versions/v5_claim_eligibility_audit/source/references.bib",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper_versions\\v5_claim_eligibility_audit\\source\\references.bib",
+      "sha256": "d82917126deec695d3caeaafd626db618bbcc412b334b4eb13fc14bf64c3c675"
+    },
+    {
+      "source": "paper_versions/v5_claim_eligibility_audit/source/IEEEtran.cls",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper_versions\\v5_claim_eligibility_audit\\source\\IEEEtran.cls",
+      "sha256": "c972aca108fda004c3514d63658e02816da2e54d9a1451e870b9bd970e003f55"
+    },
+    {
+      "source": "paper_versions/v5_claim_eligibility_audit/source/IEEEtran.bst",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper_versions\\v5_claim_eligibility_audit\\source\\IEEEtran.bst",
+      "sha256": "d83aa3c9b47fc120bb3d9d8e476216cb889c738f72ec950beeac3661c45ded24"
+    },
+    {
+      "source": "paper_versions/v5_claim_eligibility_audit/source/ot1ptm.fd",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper_versions\\v5_claim_eligibility_audit\\source\\ot1ptm.fd",
+      "sha256": "5285cba58569a01b8353719a26ddf30ce3f67687dfab8df9afa7320eb3a1194e"
+    },
+    {
+      "source": "paper_versions/v5_claim_eligibility_audit/source/generated/audit_numbers_v4.tex",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper_versions\\v5_claim_eligibility_audit\\source\\generated\\audit_numbers_v4.tex",
+      "sha256": "fa2b9035b46e337b15ec1125fe8130d252f41433e53c0e6f39fced0f5178abad"
+    },
+    {
+      "source": "paper_versions/v5_claim_eligibility_audit/source/generated/table_final_baselines_v4.tex",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper_versions\\v5_claim_eligibility_audit\\source\\generated\\table_final_baselines_v4.tex",
+      "sha256": "eb498eb008d71cb57eaa3dc44ebf2611b6215b85e50acdca8b67c5d2c7f5d16a"
+    },
+    {
+      "source": "paper/generated/figure_workflow_us_v5_1.pdf",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper\\generated\\figure_workflow_us_v5_1.pdf",
+      "sha256": "c7d09322b91dd00e2a906d3e0de1bb3e6428acd062a72b86fc259ffda28ce553"
+    },
+    {
+      "source": "paper/generated/figure_workflow_us_v5_1.png",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper\\generated\\figure_workflow_us_v5_1.png",
+      "sha256": "81c6f0372adfc7f04896d7b6bbe3e035167398a53c8a319735533c185d7581f5"
+    },
+    {
+      "source": "paper/generated/figure_xai_claim_eligibility_v5_1.pdf",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper\\generated\\figure_xai_claim_eligibility_v5_1.pdf",
+      "sha256": "b8d9746a659300c30c78e90a96f746267b10f45257c9bdefd1b184d1dd45c4e6"
+    },
+    {
+      "source": "paper/generated/figure_xai_claim_eligibility_v5_1.png",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper\\generated\\figure_xai_claim_eligibility_v5_1.png",
+      "sha256": "de67d8e42dbc2660741926e545a7f4cf19f7449f720a21b82e55c0aeebe477fd"
+    },
+    {
+      "source": "paper/generated/figure_synthetic_dumbbell_v5_1.pdf",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper\\generated\\figure_synthetic_dumbbell_v5_1.pdf",
+      "sha256": "6aad4aece59d09d6c8ad60a00f303f21f548c703cf256d005ebddade653f5244"
+    },
+    {
+      "source": "paper/generated/figure_synthetic_dumbbell_v5_1.png",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper\\generated\\figure_synthetic_dumbbell_v5_1.png",
+      "sha256": "1c404ad45fff5d6d00df72c61c3a65c66abd79b62d903cb1033b83ee11e81c87"
+    },
+    {
+      "source": "paper/generated/figure_state_delta_rmse_map.pdf",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper\\generated\\figure_state_delta_rmse_map.pdf",
+      "sha256": "d3986159271d661f3383156c03d2938d4fa81a65417b8fba0c81d1417786f289"
+    },
+    {
+      "source": "paper/generated/table_claim_eligibility_modules_v5_1.tex",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper\\generated\\table_claim_eligibility_modules_v5_1.tex",
+      "sha256": "6e2ff5e46d762f5444b5e4a40176757028b9867eb39af01606dd657bee4cf627"
+    },
+    {
+      "source": "paper/generated/table_synthetic_scenario_decisions_v5_1.tex",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\paper\\generated\\table_synthetic_scenario_decisions_v5_1.tex",
+      "sha256": "1a0a702294a3d045426adfc1a6f17147ffbfd8c6eb6596a7b9dd0000ee043d57"
+    },
+    {
+      "source": "reports/claim_eligibility_v5_1/synthetic_gt_label_audit_v5_1.json",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\reports\\claim_eligibility_v5_1\\synthetic_gt_label_audit_v5_1.json",
+      "sha256": "068fa45fba3f8ec968a01e2747baabe7473c7e3f537650dab826b46446a17add"
+    },
+    {
+      "source": "reports/claim_eligibility_v5_1/v5_1_provenance.json",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\reports\\claim_eligibility_v5_1\\v5_1_provenance.json",
+      "sha256": "54c3a7d8c249a0bbb4f9a2e3db06251b4a11cdd491503a28f6d977a8bde82697"
+    },
+    {
+      "source": "scripts/build_claim_eligibility_v5_1_assets.py",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\scripts\\build_claim_eligibility_v5_1_assets.py",
+      "sha256": "039a28230a559285c3d4054674f90b0ed39d2e9af9917f18a4ce5f32a350ac5f"
+    },
+    {
+      "source": "scripts/claim_eligibility_v5_1_audit.py",
+      "package_path": "C:\\Users\\phong\\Downloads\\send\\multimethod_xai_crop_yield_anomalies\\submission\\claim_eligibility_v5_1_blind_package\\scripts\\claim_eligibility_v5_1_audit.py",
+      "sha256": "60b99c5da912eddf2d4c12186ecae6f56dda1b25faa6e1e4254bcbe1d6a0b47f"
+    }
+  ],
+  "missing_files": [],
+  "text_sensitive_hits": [],
+  "binary_sensitive_hits": [],
+  "pdf_metadata": {
+    "paper/final/ictai2026_claim_eligibility_audit_v5_1_complete.pdf": {
+      "/Producer": "MiKTeX pdfTeX-1.40.29",
+      "/Author": "Anonymous",
+      "/Title": "Claim-Eligibility Auditing for Post-hoc Explanations: Synthetic Calibration and Cross-Domain Cases",
+      "/Subject": "",
+      "/Creator": "LaTeX with hyperref",
+      "/Keywords": "",
+      "/CreationDate": "D:20260722011123+07'00'",
+      "/ModDate": "D:20260722011123+07'00'",
+      "/Trapped": "/False",
+      "/PTEX.Fullbanner": "This is MiKTeX-pdfTeX 4.27.0 (1.40.29)"
+    },
+    "paper/generated/figure_state_delta_rmse_map.pdf": {
+      "/Creator": "Matplotlib v3.10.7, https://matplotlib.org",
+      "/Producer": "Matplotlib pdf backend v3.10.7",
+      "/CreationDate": "D:20260720003517+07'00'"
+    },
+    "paper/generated/figure_synthetic_dumbbell_v5_1.pdf": {
+      "/Creator": "Matplotlib v3.10.7, https://matplotlib.org",
+      "/Producer": "Matplotlib pdf backend v3.10.7",
+      "/CreationDate": "D:20260722010901+07'00'"
+    },
+    "paper/generated/figure_workflow_us_v5_1.pdf": {
+      "/Creator": "Matplotlib v3.10.7, https://matplotlib.org",
+      "/Producer": "Matplotlib pdf backend v3.10.7",
+      "/CreationDate": "D:20260722010900+07'00'"
+    },
+    "paper/generated/figure_xai_claim_eligibility_v5_1.pdf": {
+      "/Creator": "Matplotlib v3.10.7, https://matplotlib.org",
+      "/Producer": "Matplotlib pdf backend v3.10.7",
+      "/CreationDate": "D:20260722010901+07'00'"
+    }
+  },
+  "final_pdf_author_anonymous": true
+}
